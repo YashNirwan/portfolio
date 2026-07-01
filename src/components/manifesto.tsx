@@ -1,43 +1,33 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
 const proofs = ["A strategy deck.", "A churn model.", "A payments system in production."];
 
 export function Manifesto() {
   const reduce = useReducedMotion();
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  // Gentle parallax drift so the block feels alive as it passes through.
-  const drift = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
   const container = {
     hidden: {},
     show: { transition: { staggerChildren: 0.18, delayChildren: 0.05 } },
   };
   const line = {
-    hidden: reduce ? {} : { opacity: 0, y: 24, filter: "blur(10px)" },
+    hidden: reduce ? {} : { opacity: 0, y: 24 },
     show: {
       opacity: 1,
       y: 0,
-      filter: "blur(0px)",
       transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
     },
   };
 
   return (
-    <section ref={ref} className="relative overflow-hidden px-6 py-28 sm:py-40">
-      <motion.div
-        style={reduce ? undefined : { y: drift }}
-        className="pointer-events-none absolute right-[-10%] top-1/2 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full blur-[150px]"
+    <section className="relative overflow-hidden px-6 py-28 sm:py-40">
+      {/* Static accent wash — no scroll-linked transform, so it stays cheap. */}
+      <div
+        className="pointer-events-none absolute right-[-8%] top-1/2 h-[24rem] w-[24rem] -translate-y-1/2 rounded-full blur-[120px]"
+        style={{ background: "var(--color-accent-soft)" }}
         aria-hidden
-      >
-        <div className="h-full w-full" style={{ background: "var(--color-accent-soft)" }} />
-      </motion.div>
+      />
 
       <motion.div
         className="relative mx-auto max-w-4xl"

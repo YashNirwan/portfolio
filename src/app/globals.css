@@ -51,17 +51,26 @@ html.lenis body {
 /* No CSS scroll-behavior here: Lenis owns smooth scrolling and the two conflict. */
 body {
   background-color: var(--color-ink);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Viewport-fixed background wash as a single composited layer, so it never
+   repaints during scroll (unlike background-attachment: fixed, which does). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background-image: radial-gradient(
       120% 80% at 50% -10%,
       color-mix(in oklab, var(--accent) 6%, transparent) 0%,
       transparent 42%
     ),
     radial-gradient(85% 55% at 100% 100%, #161a22 0%, transparent 55%);
-  background-attachment: fixed;
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
 ::selection {
@@ -101,13 +110,14 @@ body {
   text-wrap: balance;
 }
 
+/* No mix-blend-mode: it recomposites the whole viewport every scroll frame.
+   A static fixed layer is composited once and stays cheap. */
 .grain {
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: 0.04;
-  mix-blend-mode: overlay;
+  opacity: 0.022;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 

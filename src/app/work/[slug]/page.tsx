@@ -41,7 +41,7 @@ export default async function CaseStudyPage({ params }: Params) {
       style={{ ["--accent" as string]: accent } as React.CSSProperties}
     >
       {/* Top bar */}
-      <header className="sticky top-0 z-50 border-b border-line bg-ink/80 backdrop-blur-md">
+      <header className="sticky top-0 z-50 border-b border-line bg-ink/95">
         <div className="mx-auto flex h-16 max-w-4xl items-center justify-between px-6">
           <Link
             href="/#work"

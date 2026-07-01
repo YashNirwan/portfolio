@@ -90,9 +90,9 @@ export function Hero() {
           <AnimatePresence mode="wait">
             <motion.div
               key={active}
-              initial={reduce ? false : { opacity: 0, y: 14, filter: "blur(10px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={reduce ? undefined : { opacity: 0, y: -10, filter: "blur(10px)" }}
+              initial={reduce ? false : { opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduce ? undefined : { opacity: 0, y: -10 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               <p className="mb-3 font-mono text-sm text-accent">{lens.role}</p>

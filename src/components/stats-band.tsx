@@ -5,7 +5,7 @@ import { CountUp } from "./count-up";
 import { Reveal } from "./reveal";
 import { SectionLabel } from "./section-label";
 
-const stats = [
+const stats: { to: number; prefix?: string; suffix?: string; label: string }[] = [
   { to: 1000, suffix: "+", label: "Property records I owned end-to-end" },
   { to: 95, suffix: "%", label: "Peak AI-assisted adoption driven" },
   { to: 45, suffix: "+", label: "Countries on live commerce I built" },

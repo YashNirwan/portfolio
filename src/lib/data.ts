@@ -10,7 +10,7 @@ export const profile = {
 
 export const links = {
   email: "yn2328@nyu.edu",
-  linkedin: "https://www.linkedin.com/in/yash-nirwan-6942b2194/",
+  linkedin: "https://www.linkedin.com/in/yash-nirwan-6942b2194",
   github: "https://github.com/yashnirwan",
   resume: "/Yash_Nirwan.pdf",
 };

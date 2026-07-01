@@ -8,7 +8,6 @@ import { GithubIcon, LinkedinIcon } from "./brand-icons";
 import { Magnetic } from "./magnetic";
 import { DecodeText } from "./decode-text";
 import { Tilt } from "./tilt";
-import { Spotlight } from "./spotlight";
 import { useLens } from "./lens-context";
 import { LensRadar } from "./lens-radar";
 import { cn } from "@/lib/utils";
@@ -39,7 +38,6 @@ export function Hero() {
         style={{ background: "var(--color-accent-soft)" }}
         aria-hidden
       />
-      <Spotlight />
       <Crosshair className="left-5 top-20" />
       <Crosshair className="right-5 top-20" />
       <Crosshair className="bottom-6 left-5" />

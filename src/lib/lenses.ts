@@ -54,7 +54,7 @@ export const lenses: Lens[] = [
     blurb:
       "Financial-services consulting at Accenture: discovery through steady state, framed for the people who sign off.",
     proof: [
-      { value: "$40M", label: "valuation anomaly surfaced & escalated" },
+      { value: "1,000+", label: "property records owned end-to-end" },
       { value: "40→95%", label: "AI-assisted validation adoption driven" },
       { value: "20pts", label: "fewer correction cycles" },
     ],

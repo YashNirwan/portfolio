@@ -51,7 +51,7 @@ export const work: WorkItem[] = [
     blurb:
       "Owned delivery of a commercial-insurance data platform spanning 1,000+ property records, turning ambiguous client requirements into product features, success metrics, and roadmaps.",
     highlights: [
-      "Engineered a cross-field validation framework that surfaced a $40M valuation anomaly, packaged into a decision-ready executive brief that drove client remediation.",
+      "Engineered a cross-field validation framework that flagged a critical data anomaly, packaged into a decision-ready executive brief that drove client remediation.",
       "Drove AI-assisted validation adoption from 40% to 95% in eight weeks via a catch-log system and field-feedback iteration.",
       "Reduced correction cycles by 20 percentage points working across compliance, actuarial, and data-engineering teams on Jira-tracked sprints.",
     ],

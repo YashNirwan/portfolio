@@ -6,7 +6,7 @@ import { Reveal } from "./reveal";
 import { SectionLabel } from "./section-label";
 
 const stats = [
-  { to: 40, prefix: "$", suffix: "M", label: "Valuation anomaly I surfaced & escalated" },
+  { to: 1000, suffix: "+", label: "Property records I owned end-to-end" },
   { to: 95, suffix: "%", label: "Peak AI-assisted adoption driven" },
   { to: 45, suffix: "+", label: "Countries on live commerce I built" },
   { to: 20, suffix: "k", label: "User reviews mined for a roadmap" },

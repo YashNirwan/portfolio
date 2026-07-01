@@ -6,6 +6,9 @@ import { lenses } from "@/lib/lenses";
 import { links, profile } from "@/lib/data";
 import { GithubIcon, LinkedinIcon } from "./brand-icons";
 import { Magnetic } from "./magnetic";
+import { DecodeText } from "./decode-text";
+import { Tilt } from "./tilt";
+import { Spotlight } from "./spotlight";
 import { useLens } from "./lens-context";
 import { LensRadar } from "./lens-radar";
 import { cn } from "@/lib/utils";
@@ -36,6 +39,7 @@ export function Hero() {
         style={{ background: "var(--color-accent-soft)" }}
         aria-hidden
       />
+      <Spotlight />
       <Crosshair className="left-5 top-20" />
       <Crosshair className="right-5 top-20" />
       <Crosshair className="bottom-6 left-5" />
@@ -96,7 +100,9 @@ export function Hero() {
               exit={reduce ? undefined : { opacity: 0, y: -10 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="mb-3 font-mono text-sm text-accent">{lens.role}</p>
+              <p className="mb-3 font-mono text-sm text-accent">
+                <DecodeText text={lens.role} />
+              </p>
               <h1 className="font-display text-4xl font-semibold leading-[1.04] tracking-tight text-balance text-text sm:text-5xl">
                 {lens.headline}
               </h1>
@@ -169,7 +175,9 @@ export function Hero() {
 
         {/* Right: radar */}
         <div className="relative order-1 lg:order-2">
-          <LensRadar />
+          <Tilt>
+            <LensRadar />
+          </Tilt>
           <div className="mt-4 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted">
             <AnimatePresence mode="wait">
               <motion.span

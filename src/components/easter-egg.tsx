@@ -1,9 +1,41 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { links } from "@/lib/data";
+
+function ConfettiBurst() {
+  const pieces = useMemo(
+    () =>
+      Array.from({ length: 30 }, (_, i) => ({
+        id: i,
+        emoji: ["🎮", "✨", "🎉", "⚡", "🕹️", "🔵"][i % 6],
+        left: Math.random() * 100,
+        delay: Math.random() * 0.25,
+        duration: 1.3 + Math.random() * 1,
+        rotate: (Math.random() - 0.5) * 620,
+        drift: (Math.random() - 0.5) * 180,
+      })),
+    [],
+  );
+  return (
+    <div className="pointer-events-none fixed inset-0 z-[65] overflow-hidden" aria-hidden>
+      {pieces.map((p) => (
+        <motion.span
+          key={p.id}
+          className="absolute text-2xl"
+          style={{ left: `${p.left}%`, top: -40 }}
+          initial={{ y: -40, x: 0, opacity: 0, rotate: 0 }}
+          animate={{ y: "112vh", x: p.drift, opacity: [0, 1, 1, 0], rotate: p.rotate }}
+          transition={{ duration: p.duration, delay: p.delay, ease: "easeIn" }}
+        >
+          {p.emoji}
+        </motion.span>
+      ))}
+    </div>
+  );
+}
 
 // ↑ ↑ ↓ ↓ ← → ← → b a
 const SEQUENCE = [
@@ -51,10 +83,12 @@ export function EasterEgg() {
   }, []);
 
   return (
-    <AnimatePresence>
-      {unlocked && (
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.96 }}
+    <>
+      {unlocked && <ConfettiBurst />}
+      <AnimatePresence>
+        {unlocked && (
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.96 }}
           transition={{ type: "spring", stiffness: 240, damping: 22 }}
@@ -86,7 +120,8 @@ export function EasterEgg() {
             Say hi →
           </a>
         </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
 import { about, profile } from "@/lib/data";
 import { Reveal } from "./reveal";
 import { SectionLabel } from "./section-label";
@@ -72,6 +73,50 @@ export function About() {
                   </div>
                 ))}
               </dl>
+            </Reveal>
+
+            <Reveal delay={0.55}>
+              <div className="mt-8">
+                <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-text-muted">
+                  <span className="text-accent">§</span> Beyond the work
+                </p>
+                <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
+                  <a
+                    href="https://lichess.org/@/YashNirwan"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group bg-ink-soft px-5 py-5 transition-colors hover:bg-surface"
+                  >
+                    <span className="flex items-center justify-between font-mono text-xs uppercase tracking-[0.16em] text-text-muted">
+                      Chess
+                      <ArrowUpRight className="size-3.5 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+                    </span>
+                    <p className="mt-2 text-sm leading-relaxed text-text-dim">
+                      I think in trade-offs and long games — on the board and off. ~1750 rapid on
+                      Lichess.
+                    </p>
+                  </a>
+
+                  <div className="bg-ink-soft px-5 py-5">
+                    <span className="font-mono text-xs uppercase tracking-[0.16em] text-text-muted">
+                      Film
+                    </span>
+                    <p className="mt-2 text-sm leading-relaxed text-text-dim">
+                      No Letterboxd, on purpose — I&rsquo;d rather form my own take than watch through
+                      someone else&rsquo;s rating.
+                    </p>
+                  </div>
+
+                  <div className="bg-ink-soft px-5 py-5">
+                    <span className="font-mono text-xs uppercase tracking-[0.16em] text-text-muted">
+                      Writing
+                    </span>
+                    <p className="mt-2 text-sm leading-relaxed text-text-dim">
+                      Essays, published spasmodically — for now, mostly for myself.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </Reveal>
           </div>
         </div>

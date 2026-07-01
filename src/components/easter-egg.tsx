@@ -61,7 +61,7 @@ export function EasterEgg() {
       "font:600 14px ui-monospace,monospace;color:#3b9eff;",
     );
     console.log(
-      "%cSame attention to detail I bring to the work.\npsst — try  ↑ ↑ ↓ ↓ ← → ← → b a",
+      "%cSame attention to detail I bring to the work.\npsst: try  ↑ ↑ ↓ ↓ ← → ← → b a",
       "font:12px ui-monospace,monospace;color:#828b98;",
     );
 
@@ -109,7 +109,7 @@ export function EasterEgg() {
             You read all the way down here.
           </p>
           <p className="mt-1.5 text-sm leading-relaxed text-text-dim">
-            Most people skim. You ran the Konami code on a portfolio — that&rsquo;s exactly the
+            Most people skim. You ran the Konami code on a portfolio. That&rsquo;s exactly the
             curiosity I bring to a problem. Let&rsquo;s talk.
           </p>
           <a

@@ -11,7 +11,7 @@ export default function NotFound() {
         wrong environment.
       </h1>
       <p className="mt-6 max-w-md text-lg text-text-dim">
-        This page doesn&rsquo;t exist — or it&rsquo;s still in my backlog. Either way, the work is
+        This page doesn&rsquo;t exist, or it&rsquo;s still in my backlog. Either way, the work is
         back home.
       </p>
       <Link

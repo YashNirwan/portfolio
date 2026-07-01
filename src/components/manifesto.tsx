@@ -22,7 +22,7 @@ export function Manifesto() {
 
   return (
     <section className="relative overflow-hidden px-6 py-28 sm:py-40">
-      {/* Static accent wash — no scroll-linked transform, so it stays cheap. */}
+      {/* Static accent wash: no scroll-linked transform, so it stays cheap. */}
       <div
         className="pointer-events-none absolute right-[-8%] top-1/2 h-[24rem] w-[24rem] -translate-y-1/2 rounded-full blur-[120px]"
         style={{ background: "var(--color-accent-soft)" }}
@@ -45,10 +45,10 @@ export function Manifesto() {
 
         <h2 className="mt-8 font-display text-3xl font-medium leading-[1.22] tracking-tight sm:text-5xl sm:leading-[1.18]">
           <motion.span variants={line} className="block text-text-dim">
-            I take something <span className="text-text">ambiguous</span> —
+            I take something <span className="text-text">ambiguous</span>
           </motion.span>
           <motion.span variants={line} className="block text-text-muted">
-            a vague ask, a messy dataset, a half-formed idea —
+            (a vague ask, a messy dataset, a half-formed idea)
           </motion.span>
           <motion.span variants={line} className="block text-text-dim">
             and turn it into something <span className="text-accent">shipped</span>.

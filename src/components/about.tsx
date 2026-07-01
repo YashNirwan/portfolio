@@ -61,8 +61,8 @@ export function About() {
             <Reveal delay={0.45}>
               <dl className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
                 {[
-                  { dt: "Now", dd: "MS, Management of Technology — NYU" },
-                  { dt: "Before", dd: "BE, Computer Science — Ramaiah" },
+                  { dt: "Now", dd: "MS, Management of Technology, NYU" },
+                  { dt: "Before", dd: "BE, Computer Science, Ramaiah" },
                   { dt: "Based", dd: profile.location },
                 ].map((row) => (
                   <div key={row.dt} className="bg-ink-soft px-5 py-5">
@@ -92,7 +92,7 @@ export function About() {
                       <ArrowUpRight className="size-3.5 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
                     </span>
                     <p className="mt-2 text-sm leading-relaxed text-text-dim">
-                      I think in trade-offs and long games — on the board and off.
+                      I think in trade-offs and long games, on the board and off.
                     </p>
                   </a>
 
@@ -101,7 +101,7 @@ export function About() {
                       Film
                     </span>
                     <p className="mt-2 text-sm leading-relaxed text-text-dim">
-                      No Letterboxd, on purpose — I&rsquo;d rather form my own take than watch through
+                      No Letterboxd, on purpose. I&rsquo;d rather form my own take than watch through
                       someone else&rsquo;s rating.
                     </p>
                   </div>
@@ -111,7 +111,7 @@ export function About() {
                       Writing
                     </span>
                     <p className="mt-2 text-sm leading-relaxed text-text-dim">
-                      Essays, published spasmodically — for now, mostly for myself.
+                      Essays, published spasmodically. For now, mostly for myself.
                     </p>
                   </div>
                 </div>

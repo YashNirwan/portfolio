@@ -60,7 +60,7 @@ export function Hero() {
             </span>
           </div>
 
-          {/* Lens switcher — the signature */}
+          {/* Lens switcher: the signature */}
           <div className="mb-7">
             <p className="mb-3 font-mono text-xs text-text-muted">
               <span className="text-accent">↳</span> hiring for which lens?

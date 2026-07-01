@@ -64,13 +64,13 @@ function Card({ item, n }: { item: WorkItem; n: number }) {
             href={href!}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={`${item.title} — visit live site`}
+            aria-label={`${item.title}: visit live site`}
             className="absolute inset-0 z-0 rounded-2xl"
           />
         ) : (
           <Link
             href={href!}
-            aria-label={`${item.title} — read case study`}
+            aria-label={`${item.title}: read case study`}
             className="absolute inset-0 z-0 rounded-2xl"
           />
         ))}
@@ -190,7 +190,7 @@ export function Work() {
             </h2>
             <p className="max-w-sm text-sm text-text-muted">
               {active === "all"
-                ? `Everything — ${work.length} pieces across consulting, product, data, and code.`
+                ? `Everything: ${work.length} pieces across consulting, product, data, and code.`
                 : `Showing ${filtered.length} ${filtered.length === 1 ? "piece" : "pieces"} relevant to this lens.`}
             </p>
           </div>

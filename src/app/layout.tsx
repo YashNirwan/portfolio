@@ -21,11 +21,11 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Yash Nirwan — Strategy · Product · Data · AI",
+  title: "Yash Nirwan · Strategy, Product, Data, AI",
   description:
-    "Yash Nirwan turns ambiguity into shipped outcomes — across strategy, product, data, and code. NYU MS Management of Technology. Ex-Accenture, ex-Amoga.",
+    "Yash Nirwan turns ambiguity into shipped outcomes across strategy, product, data, and code. NYU MS Management of Technology. Ex-Accenture, ex-Amoga.",
   openGraph: {
-    title: "Yash Nirwan — Strategy · Product · Data · AI",
+    title: "Yash Nirwan · Strategy, Product, Data, AI",
     description: "One operator, five lenses. Consultant, PM, PMM, analyst, and builder.",
     type: "website",
   },

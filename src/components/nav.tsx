@@ -35,7 +35,7 @@ export function Nav() {
         <a
           href="#top"
           className="font-mono text-sm tracking-tight text-text"
-          aria-label="Yash Nirwan — home"
+          aria-label="Yash Nirwan, home"
         >
           <span className="text-accent">Y</span>N
           <span className="text-text-muted">·</span>

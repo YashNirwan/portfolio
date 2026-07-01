@@ -36,7 +36,7 @@ export const lenses: Lens[] = [
     accent: "#3b9eff",
     headline: "I turn ambiguity into shipped outcomes.",
     blurb:
-      "One operator across strategy, product, data, and code. Pick the lens you're hiring for — the story reframes.",
+      "One operator across strategy, product, data, and code. Pick the lens you're hiring for, and the story reframes.",
     proof: [
       { value: "40→95%", label: "AI adoption I drove in 8 weeks" },
       { value: "5", label: "disciplines, one through-line" },
@@ -68,7 +68,7 @@ export const lenses: Lens[] = [
     accent: "#5b9dff",
     headline: "I own products end-to-end, from user research to shipped workflow.",
     blurb:
-      "B2B SaaS PM at Amoga: research, user stories, backlog, sprint ceremonies — and the releases that follow.",
+      "B2B SaaS PM at Amoga: research, user stories, backlog, sprint ceremonies, and the releases that follow.",
     proof: [
       { value: "E2E", label: "CRM product ownership" },
       { value: "40→95%", label: "AI-assisted workflow adoption driven" },
@@ -100,7 +100,7 @@ export const lenses: Lens[] = [
     accent: "#2fd4ad",
     headline: "I turn messy data into models and recommendations leaders can use.",
     blurb:
-      "Python, SQL, and the modeling stack — pointed at decisions, not just dashboards.",
+      "Python, SQL, and the modeling stack, pointed at decisions, not just dashboards.",
     proof: [
       { value: "76.6%", label: "recall on stockout prediction model" },
       { value: "$32.8k", label: "restock budget optimized via Gurobi LP" },
@@ -116,7 +116,7 @@ export const lenses: Lens[] = [
     accent: "#a87bff",
     headline: "I build working systems and explain them to anyone in the room.",
     blurb:
-      "Agentic AI apps and serverless commerce — shipped, in production, and demoable on demand.",
+      "Agentic AI apps and serverless commerce: shipped, in production, and demoable on demand.",
     proof: [
       { value: "45+", label: "countries on live serverless commerce" },
       { value: "8", label: "currencies, exactly-once payments" },

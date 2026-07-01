@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const item = work.find((w) => w.id === slug);
   if (!item) return {};
   return {
-    title: `${item.title} — Yash Nirwan`,
+    title: `${item.title} · Yash Nirwan`,
     description: item.blurb,
   };
 }

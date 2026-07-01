@@ -3,7 +3,6 @@ import { SmoothScroll } from "@/components/smooth-scroll";
 import { Nav } from "@/components/nav";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { Hero } from "@/components/hero";
-import { Manifesto } from "@/components/manifesto";
 import { StatsBand } from "@/components/stats-band";
 import { Work } from "@/components/work";
 import { Skills } from "@/components/skills";
@@ -21,7 +20,6 @@ export default function Home() {
         <Nav />
         <main>
           <Hero />
-          <Manifesto />
           <StatsBand />
           <Work />
           <Skills />

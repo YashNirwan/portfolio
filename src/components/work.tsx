@@ -47,13 +47,13 @@ function Card({ item, n }: { item: WorkItem; n: number }) {
   const clickable = isProject && !!href;
   return (
     <motion.article
-      layout
       initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.97 }}
+      whileHover={{ y: -3 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "group relative flex flex-col rounded-2xl border border-line bg-ink-soft p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-[0_24px_60px_-30px_var(--color-accent-soft)]",
+        "group relative flex flex-col rounded-2xl border border-line bg-ink-soft p-6 transition-[border-color,box-shadow] duration-300 hover:border-accent/50 hover:shadow-[0_24px_60px_-30px_var(--color-accent-soft)]",
         wide && "md:col-span-2",
         clickable && "cursor-pointer",
       )}
@@ -219,13 +219,13 @@ export function Work() {
           })}
         </div>
 
-        <motion.div layout className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
           <AnimatePresence mode="popLayout">
             {filtered.map((item, i) => (
               <Card key={item.id} item={item} n={i + 1} />
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

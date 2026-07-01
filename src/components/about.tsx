@@ -92,8 +92,7 @@ export function About() {
                       <ArrowUpRight className="size-3.5 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
                     </span>
                     <p className="mt-2 text-sm leading-relaxed text-text-dim">
-                      I think in trade-offs and long games — on the board and off. ~1750 rapid on
-                      Lichess.
+                      I think in trade-offs and long games — on the board and off.
                     </p>
                   </a>
 

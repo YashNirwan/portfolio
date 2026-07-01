@@ -5,6 +5,7 @@ import { ArrowDown, Mail } from "lucide-react";
 import { lenses } from "@/lib/lenses";
 import { links, profile } from "@/lib/data";
 import { GithubIcon, LinkedinIcon } from "./brand-icons";
+import { Magnetic } from "./magnetic";
 import { useLens } from "./lens-context";
 import { LensRadar } from "./lens-radar";
 import { cn } from "@/lib/utils";
@@ -126,21 +127,25 @@ export function Hero() {
 
           {/* Actions */}
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <a
-              href="#work"
-              className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-ink transition-transform hover:-translate-y-0.5"
-              style={{ backgroundColor: "var(--color-accent)" }}
-            >
-              See the work
-              <ArrowDown className="size-4" />
-            </a>
-            <a
-              href={`mailto:${links.email}`}
-              className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium text-text transition-colors hover:border-accent hover:text-accent"
-            >
-              <Mail className="size-4" />
-              Get in touch
-            </a>
+            <Magnetic>
+              <a
+                href="#work"
+                className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-ink transition-transform hover:-translate-y-0.5"
+                style={{ backgroundColor: "var(--color-accent)" }}
+              >
+                See the work
+                <ArrowDown className="size-4" />
+              </a>
+            </Magnetic>
+            <Magnetic>
+              <a
+                href={`mailto:${links.email}`}
+                className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium text-text transition-colors hover:border-accent hover:text-accent"
+              >
+                <Mail className="size-4" />
+                Get in touch
+              </a>
+            </Magnetic>
 
             <div className="ml-auto flex items-center gap-1">
               {[

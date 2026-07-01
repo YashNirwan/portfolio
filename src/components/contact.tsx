@@ -69,6 +69,13 @@ export function Contact() {
 
       <footer className="mx-auto mt-24 flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-line pt-8 font-mono text-xs text-text-muted sm:flex-row">
         <span>© {new Date().getFullYear()} {profile.name}</span>
+        <span
+          title="you know what to do"
+          aria-hidden
+          className="tracking-widest text-text-muted/40 transition-colors duration-300 hover:text-accent"
+        >
+          ↑↑↓↓←→←→BA
+        </span>
         <span>Vibe-coded, not templated · Next.js</span>
       </footer>
     </section>

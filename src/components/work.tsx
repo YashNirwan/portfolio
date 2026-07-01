@@ -115,7 +115,7 @@ function Card({ item, n }: { item: WorkItem; n: number }) {
         ))}
       </ul>
 
-      <div className="relative z-10 mt-auto pt-5">
+      <div className={cn("mt-auto pt-5", !clickable && "relative z-10")}>
         {item.stack && (
           <div className="mb-4 flex flex-wrap gap-1.5">
             {item.stack.map((s) => (

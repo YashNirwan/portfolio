@@ -77,6 +77,53 @@ export const work: WorkItem[] = [
     featured: true,
   },
   {
+    id: "foreman",
+    kind: "project",
+    title: "Foreman",
+    subtitle: "Agentic Vision AI · NVIDIA NIM",
+    meta: "2026",
+    blurb:
+      "A warehouse-safety video agent on NVIDIA's Nemotron VLM stack, and a public eval proving the part everyone skips: that the verification step earns its place.",
+    highlights: [
+      "Two-stage pipeline: a Nemotron VL perception pass proposes hazards, then a reasoning VLM re-opens the same frames to confirm or reject each one against a per-class evidence bar drawn from OSHA 29 CFR 1910.178.",
+      "Hand-labelled 49-window eval across seven ablation arms: frame-level verification roughly doubles precision (0.15 → 0.34) while recall falls 0.80 → 0.50. Text-only verification scored below the naive baseline.",
+      "Found and fixed a failure mode where both models read a title card's printed words as an observed event; a same-call scene gate removed the class entirely.",
+      "Ships an MCP server exposing the timeline as agent tools, so Claude Code or any agent can query the footage in natural language.",
+    ],
+    tags: ["engineer", "pmm", "pm"],
+    stack: ["Python", "NVIDIA NIM", "Nemotron VL", "MCP", "Streamlit", "ffmpeg"],
+    image: "/foreman.jpg",
+    imageAlt: "Foreman review console: verified warehouse safety alerts with evidence clips",
+    imagePosition: "top",
+    imageDomain: "github.com/YashNirwan/foreman",
+    links: [{ label: "GitHub", href: "https://github.com/YashNirwan/foreman" }],
+    featured: true,
+    caseStudy: {
+      context:
+        "Ask a vision language model whether footage contains a safety hazard and it will almost always say yes. On my labelled set, a single-pass VLM flagged a hazard in 77% of windows that contained none. No amount of prompt rewriting fixes that, because the prompt is not the problem: showing a model a safety camera and asking about hazards hands it an overwhelming prior that hazards are present. I wanted to find out whether that was an architecture problem instead.",
+      whatIDid: [
+        "Built the pipeline entirely on NVIDIA-hosted NIM endpoints, so it reproduces on a laptop with an API key and no GPU: Nemotron Nano VL for perception, a reasoning VLM for verification, and NeMo Retriever embeddings for natural-language search across every analysed window.",
+        "Let the perception pass over-report on purpose, then put a second model behind it that can only remove things. It re-opens the same frames and checks the claim against the evidence that class actually requires, plus the false positive that class is known to attract.",
+        "Hand-labelled 49 windows of real footage and built an eval harness with seven ablation arms, then measured run-to-run variance across repeats rather than quoting a single lucky number.",
+        "Wrote the repo as a reference architecture: every design decision stated with its tradeoff, every limitation listed, and a fetch script so the numbers can be reproduced without redistributing anyone's video.",
+      ],
+      outcome: [
+        "Frame-level verification roughly doubled precision, 0.15 → 0.34, with recall falling 0.80 → 0.50. The honest read is a real precision win that costs real recall, not a free lunch.",
+        "Two findings I did not expect and would not have got from a demo: confidence thresholds barely help (0.15 → 0.18), and text-only verification scores below doing nothing, because the written evidence is too thin to adjudicate on. The verifier has to see the pixels.",
+        "Both models once described a pedestrian walking in front of a moving forklift on a frame that was a black title card reading 'PASSING IN FRONT OF A FORKLIFT'. Burned-in text is everywhere in real deployments, and a scene gate in the same call removed the whole class at no extra cost.",
+      ],
+      closing:
+        "The demo was the easy half. The eval is the part that tells you whether the architecture is real, and it is the part that changed what I built.",
+      charts: [
+        {
+          src: "/chart-foreman-audit.jpg",
+          caption:
+            "Every suppressed detection stays visible and auditable. A safety tool that cannot show what it threw away is one nobody should trust.",
+        },
+      ],
+    },
+  },
+  {
     id: "vibecheck",
     kind: "project",
     title: "VibeCheck",

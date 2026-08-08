@@ -95,8 +95,11 @@ export const work: WorkItem[] = [
     image: "/foreman.jpg",
     imageAlt: "Foreman review console: verified warehouse safety alerts with evidence clips",
     imagePosition: "top",
-    imageDomain: "github.com/YashNirwan/foreman",
-    links: [{ label: "GitHub", href: "https://github.com/YashNirwan/foreman" }],
+    imageDomain: "foreman-safety.streamlit.app",
+    links: [
+      { label: "Live demo", href: "https://foreman-safety.streamlit.app" },
+      { label: "GitHub", href: "https://github.com/YashNirwan/foreman" },
+    ],
     featured: true,
     caseStudy: {
       context:

@@ -5,6 +5,10 @@ import { Spread, Note, Claim } from "@/components/spread";
 import { SectionHead } from "@/components/section-head";
 import { ForeEdge } from "@/components/fore-edge";
 
+/* Lives here rather than on the root layout so it applies to this page only.
+   Inherited from the layout it also stamped itself on the 404. */
+export const metadata = { alternates: { canonical: "/" } };
+
 const SECTIONS = [
   { id: "argument", label: "Argument" },
   { id: "work", label: "Work" },
@@ -24,7 +28,7 @@ export default function Home() {
       <div className="mx-auto max-w-[72rem] px-5 pb-32 sm:px-8">
         <Masthead />
 
-        <main id="main">
+        <main id="main" tabIndex={-1}>
           <Statement />
 
           <SectionHead n="One" title={argument.heading} id="argument" />

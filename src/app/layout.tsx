@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Newsreader, Source_Serif_4, Archivo_Narrow } from "next/font/google";
-import { profile, links } from "@/lib/data";
+import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 
 /* Newsreader carries real optical sizes, so it holds its drawing at 80px
@@ -33,18 +33,19 @@ const util = Archivo_Narrow({
   weight: ["400", "600"],
 });
 
-const SITE = "https://yashnirwan.com";
-
 /* The sentence that has to survive being pasted into Slack with no page
    around it. The old one listed five job titles. */
 const SUMMARY =
   "I build systems that don't trust their own output — the eval, the validator, the second pass that can only remove. New York.";
 
+/* No `alternates.canonical` here. Root metadata is inherited by every
+   descendant that does not override it, so a canonical of "/" on the layout
+   made every 404 on the domain declare itself the homepage. Canonicals belong
+   on the pages that own them. */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: "Yash Nirwan",
   description: SUMMARY,
-  alternates: { canonical: "/" },
   openGraph: {
     title: "Yash Nirwan",
     description: SUMMARY,
@@ -64,8 +65,9 @@ export const metadata: Metadata = {
 const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": `${SITE}#person`,
   name: profile.name,
-  email: `mailto:${links.email}`,
+  email: links.email,
   url: SITE,
   address: { "@type": "PostalAddress", addressLocality: "New York", addressRegion: "NY" },
   alumniOf: [

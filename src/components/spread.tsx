@@ -34,17 +34,24 @@ export function Spread({
 }
 
 /* A margin note. `cost` tone is reserved for things that got worse — a lost
-   metric, a retraction, a disclosure. It is the only red on the page. */
+   metric, a retraction, a disclosure. It is the only red on the page.
+
+   Deliberately a <div>, not an <aside>. An <aside> maps to role="complementary"
+   only when it is NOT scoped inside article/section — so as an <aside> this
+   component silently became a landmark or not depending on where it happened
+   to sit, and the top-level ones showed up as three identical unnamed
+   "complementary" entries in a screen reader's landmark menu. Marginalia are
+   not complementary regions; they are prose beside prose. */
 export function Note({ label, body, tone = "default" }: NoteData) {
   const accent = tone === "cost" ? "border-strike" : "border-pencil";
   return (
-    <aside
+    <div
       className={`note-sets ml-3 border-l-2 pl-3 font-util md:ml-0 ${accent}`}
       style={{ fontSize: "var(--text-note)", lineHeight: "var(--leading-note)" }}
     >
       {label ? <b className="mb-1 block font-semibold text-ink">{label}</b> : null}
       <p className={tone === "cost" ? "text-strike" : "text-graphite"}>{body}</p>
-    </aside>
+    </div>
   );
 }
 

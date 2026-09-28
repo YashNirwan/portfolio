@@ -17,6 +17,8 @@ export const profile = {
   priorDegree: "BE Computer Science, Ramaiah Institute of Technology",
 };
 
+export const SITE = "https://yashnirwan.com";
+
 export const links = {
   email: "yn2328@nyu.edu",
   linkedin: "https://www.linkedin.com/in/yash-nirwan-6942b2194",

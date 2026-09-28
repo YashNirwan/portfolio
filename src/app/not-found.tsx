@@ -14,7 +14,7 @@ export default function NotFound() {
         </Link>
       </header>
 
-      <main id="main" className="pt-[18vh]">
+      <main id="main" tabIndex={-1} className="pt-[18vh]">
         <Spread
           note={
             <Note body="Everything that exists is linked from the homepage. There is no hidden section." />

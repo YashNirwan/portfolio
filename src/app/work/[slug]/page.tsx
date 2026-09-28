@@ -21,15 +21,33 @@ export async function generateMetadata({
   const study = getStudy(slug);
   if (!study) return {};
 
+  const title = `${study.title} — Yash Nirwan`;
+
   return {
-    title: `${study.title} — Yash Nirwan`,
+    title,
     description: study.standfirst,
     alternates: { canonical: `/work/${study.slug}` },
+    /* `images` has to be repeated here. Next merges metadata objects between
+       segments shallowly, so defining `openGraph` at all replaces the root's
+       object wholesale — including the images contributed by the root
+       opengraph-image route. Without this line these pages ship a
+       summary_large_image card with no image, which renders blank. */
     openGraph: {
-      title: `${study.title} — Yash Nirwan`,
+      title,
       description: study.standfirst,
       type: "article",
       url: `/work/${study.slug}`,
+      images: ["/opengraph-image"],
+    },
+    /* Same reason, opposite direction: the root's `twitter` block is inherited
+       verbatim unless overridden, so these pages were advertising the
+       homepage's title and description to every client that prefers
+       twitter:* tags. */
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: study.standfirst,
+      images: ["/opengraph-image"],
     },
   };
 }
@@ -59,7 +77,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
         </span>
       </header>
 
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         <section className="pb-12 pt-[10vh] md:pb-16 md:pt-[16vh]">
           <Spread>
             <h1

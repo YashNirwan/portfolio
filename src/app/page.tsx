@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { statement, forklift, bio, links } from "@/lib/data";
+import { statement, forklift, bio, notWork, links } from "@/lib/data";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -151,20 +151,30 @@ function NotWork() {
       <div className="hold">
         <Trim tone="ash">Not work</Trim>
 
-        <div className="mt-8 grid items-baseline gap-3 md:grid-cols-[auto_minmax(0,28rem)] md:gap-12">
-          <p
-            className="display tabular text-turmeric"
-            style={{ fontSize: "var(--text-figure)", lineHeight: 0.9 }}
-          >
-            213,965
-          </p>
-          <p className="pretty text-ash">
-            flight prices, checked every few minutes since July. I have booked two of them. I look
-            at the graph most mornings, which I understand is not normal.
-          </p>
-        </div>
+        <dl className="mt-8">
+          {notWork.map((item) => (
+            <div
+              key={item.term}
+              className="grid items-baseline gap-x-10 gap-y-1 border-t border-bone/12 py-5 md:grid-cols-[minmax(0,17rem)_minmax(0,30rem)]"
+            >
+              <dt
+                className={`display min-w-0 ${item.hot ? "tabular text-turmeric" : "text-bone"}`}
+                style={{ fontSize: "var(--text-row)", lineHeight: 0.95 }}
+              >
+                {item.href ? (
+                  <a href={item.href} target="_blank" rel="noreferrer">
+                    {item.term}
+                  </a>
+                ) : (
+                  item.term
+                )}
+              </dt>
+              <dd className="pretty text-ash">{item.line}</dd>
+            </div>
+          ))}
+        </dl>
 
-        {/* Drawn straight from the database this paragraph is about. */}
+        {/* Drawn straight from the database the first row is about. */}
         <figure className="mt-10">
           <Image
             src="/farewatch.svg"

@@ -83,6 +83,51 @@ export const bio = {
   },
 };
 
+/* --- Not work -------------------------------------------------------------
+   Hobbies get the same typographic weight as the employment. That is the
+   whole argument of the section and it is never stated.
+
+   Rule applied throughout: if the payload of a sentence is how much effort
+   went in, it is a flex. If the payload is that the situation was absurd, it
+   is a joke. Same facts, opposite read.
+
+   `hot` marks the two numbers a reader can go and check. Turmeric appears
+   five times on the entire site and two of them are here. */
+export const notWork: {
+  term: string;
+  hot?: boolean;
+  href?: string;
+  line: string;
+}[] = [
+  {
+    term: "213,965",
+    hot: true,
+    line: "flight prices, checked every few minutes since July. I have booked two of them. I look at the graph most mornings, which I understand is not normal.",
+  },
+  {
+    term: "1709 rapid",
+    hot: true,
+    href: "https://lichess.org/@/YashNirwan",
+    line: "I never learned any theory. I have played the London every game and worked the rest out live, which got me here across 2,669 games and will presumably stop working at some point.",
+  },
+  {
+    term: "King of Comedy",
+    line: "The Stephen Chow one, not the Scorsese. Hard enough to find that I ended up watching it on YouTube with subtitles from somewhere else entirely.",
+  },
+  {
+    term: "Stay (2005)",
+    line: "Better than its ratings suggested, which is roughly why I do not keep a Letterboxd. I would rather arrive at a film cold than through someone else's score.",
+  },
+  {
+    term: "Mo lei tau",
+    line: "Cantonese nonsense comedy, more or less. That, 90s Hong Kong action and Wong Kar-wai is most of what I watch.",
+  },
+  {
+    term: "Unfinished books",
+    line: "I start far more than I finish, and I have stopped pretending that is going to change.",
+  },
+];
+
 /* --- The argument --------------------------------------------------------- */
 
 export const argument = {

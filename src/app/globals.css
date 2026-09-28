@@ -51,6 +51,10 @@
   --text-field: clamp(2.4rem, 8vw, 6.5rem);
   --text-project: clamp(1.9rem, 4vw, 3.4rem);
   --text-figure: clamp(2.8rem, 6vw, 5rem);
+  /* List rows, not hero moments. Six of these at figure scale overflow their
+     column and shout; this is the step that still reads as display type
+     against 17px body without taking the whole plate. */
+  --text-row: clamp(1.8rem, 3.2vw, 2.75rem);
 
   --leading-hero: 0.82;
   --leading-field: 0.86;

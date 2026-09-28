@@ -1,78 +1,74 @@
 @import "tailwindcss";
 
 /* ===========================================================================
-   THE MARGIN — design tokens
+   THE FIELD
 
-   The site is set like a technical book with the author's marginalia still in
-   it: the main column makes the claim, the margin volunteers the doubt.
+   There is no background colour on this site — only foregrounds. Every
+   section seizes a full screen of saturated ink, and sections meet on a hard
+   horizontal edge with no transition, the way two plates meet on a press.
 
-   Two deliberate choices worth stating, because both look like mistakes:
+   Two choices that look like mistakes and are not:
 
-   1. The ground is cool oat, not warm cream. Warm cream + display serif +
-      terracotta accent is currently the single most common generated-design
-      signature on the web. The green cast in the paper and the ink is what
-      keeps this off that shelf.
+   1. No neutral ground anywhere. Bone exists as type and as small trimmed
+      inserts, never as a page background. Its rarity is the point.
 
-   2. There is no dark theme. This is a document, and a dark broadsheet is an
-      incoherent object. Committing to one ground is the same kind of decision
-      as committing to one typeface — it reads as a choice, not an omission.
+   2. The cuts do not animate. A crossfade between colour fields would turn
+      printed plates back into a scrolling web page, which is the one thing
+      this system is built to avoid.
    =========================================================================== */
 
 @theme {
-  /* --- Ground ------------------------------------------------------------ */
-  --color-paper: #e7e9e4; /* cool oat — the field everything prints on */
-  --color-lift: #f2f3ef; /* the reading column, one step up from the field */
-  --color-sink: #dcdfd9; /* recessed panels, table zebra, archive rows */
+  /* --- The fields ------------------------------------------------------- */
+  /* Vat indigo: violet-leaning, not navy, and deliberately not the blue every
+     framework ships as its primary. */
+  --color-indigo: #232c63;
+  /* Madder red: a COLD, blue-shifted crimson. Terracotta is warm and orange
+     and is the single most common generated-design accent in circulation.
+     Putting a blue-red where that palette puts an orange-red is the most
+     legible anti-default move available here. */
+  --color-madder: #a3242f;
+  --color-madder-deep: #7a1a23; /* the one hard shadow, madder's own darker tone */
+  /* Warm near-black. Gives light UI screenshots a mount so they stop reading
+     as holes punched in the page. */
+  --color-iron: #1a1715;
 
-  /* --- Ink --------------------------------------------------------------- */
-  --color-ink: #1a1c19; /* a black with green in it, not blue-black */
-  --color-graphite: #5d625b; /* margin apparatus, captions, secondary text */
-  --color-rule: #b3b8ad; /* hairlines — dark enough to read as structure */
+  /* --- Type and trim ----------------------------------------------------- */
+  --color-bone: #efe9de;
+  /* The hot note. Five appearances site-wide, no more. Gold, not clay. */
+  --color-turmeric: #e0a82e;
+  /* The only neutral in the system. Legible on iron, never on madder. */
+  --color-ash: #9a9287;
 
-  /* --- The two accents, which carry meaning rather than decoration -------
-     Indigo marks an annotation — something the author added in the margin.
-     Red marks something that got worse: a cost, a retraction, a lost metric.
-     Nothing else in the site is allowed to be coloured. */
-  --color-pencil: #3d2ecc;
-  --color-strike: #9b1b30;
-  --color-confirm: #1b5e3f; /* verification checks only, never decorative */
-
-  /* --- Type -------------------------------------------------------------- */
-  --font-display: var(--font-newsreader);
-  --font-body: var(--font-source-serif);
-  --font-util: var(--font-archivo-narrow);
-
-  /* --- Measure ----------------------------------------------------------- */
-  --spacing-reading: 41rem; /* ~66ch at body size */
-  --spacing-margin-col: 17rem;
-  --spacing-track-gap: 3rem;
+  --font-display: var(--font-archivo);
+  --font-body: var(--font-literata);
 }
 
-/* ---------------------------------------------------------------------------
-   Fluid type scale. Every clamp has a min() floor so the page still reflows
-   at 320px / 200% zoom, which oversized display type otherwise breaks.
-   --------------------------------------------------------------------------- */
 :root {
-  --text-display: clamp(2.6rem, 7vw, 5.2rem);
-  --leading-display: 0.98;
-  --tracking-display: -0.028em;
+  /* Display sizes scale with the viewport rather than collapsing to a body
+     size on small screens. At 390px, 15vw is 58px — still 3× the body. The
+     failure mode for broadsheet type on mobile is letting it become an h1. */
+  --text-hero: clamp(3.2rem, 15vw, 13rem);
+  --text-field: clamp(2.8rem, 11vw, 10rem);
+  --text-project: clamp(2rem, 5vw, 4.25rem);
+  --text-figure: clamp(3.4rem, 8vw, 7rem);
 
-  --text-title: clamp(1.75rem, 3.8vw, 2.9rem);
-  --leading-title: 1.02;
-  --tracking-title: -0.022em;
+  --leading-hero: 0.82;
+  --leading-field: 0.86;
 
-  --text-sub: 1.42rem;
-  --leading-sub: 1.16;
-  --tracking-sub: -0.012em;
+  /* Tracking in em, never px, so it holds identically at 58px and 208px. */
+  --tracking-display: -0.03em;
 
+  --text-lede: 1.5rem;
   --text-body: 1.125rem;
-  --leading-body: 1.54;
+  --text-trim: 0.8125rem;
 
-  --text-note: 0.855rem;
-  --leading-note: 1.42;
+  --gutter: 1.25rem;
+}
 
-  --text-label: 0.76rem;
-  --tracking-label: 0.09em;
+@media (min-width: 768px) {
+  :root {
+    --gutter: 4rem;
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -80,97 +76,128 @@
    --------------------------------------------------------------------------- */
 html {
   scroll-behavior: smooth;
+  /* clip, not hidden: hidden silently breaks position:sticky on ancestors.
+     Full-bleed uses width:100% against this, never 100vw, because 100vw
+     includes the scrollbar gutter and causes horizontal scroll on desktop. */
+  overflow-x: clip;
 }
 
 body {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  background-color: var(--color-iron);
+  color: var(--color-bone);
   font-family: var(--font-body);
   font-size: var(--text-body);
-  line-height: var(--leading-body);
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  /* Oldstyle figures in running prose; the metrics get lining figures back
-     via .tabular where they need to align. */
-  font-variant-numeric: oldstyle-nums;
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--color-pencil) 18%, transparent);
+  background: var(--color-turmeric);
+  color: var(--color-iron);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-pencil);
+  outline: 2px solid var(--color-turmeric);
   outline-offset: 3px;
-  border-radius: 1px;
 }
 
 /* ---------------------------------------------------------------------------
-   Utilities
+   Display type
+
+   Archivo is set EXPANDED. Almost everyone reaching for newspaper drama
+   reaches for condensed; expanded does something condensed cannot, which is
+   fill a colour field edge to edge so the type and the field read as one
+   object.
    --------------------------------------------------------------------------- */
-.tabular {
-  font-variant-numeric: tabular-nums lining-nums;
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-variation-settings: "wdth" 120;
+  letter-spacing: var(--tracking-display);
+  text-wrap: nowrap;
 }
 
-.balance {
-  text-wrap: balance;
+/* At 390px, wdth 120 gives about four characters per line. Dropping the width
+   axis keeps the face recognisably wide while staying readable — which is the
+   entire reason a variable width axis was worth specifying. */
+@media (max-width: 640px) {
+  .display {
+    font-variation-settings: "wdth" 104;
+  }
+}
+
+.trim {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-trim);
+  letter-spacing: 0.02em;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .pretty {
   text-wrap: pretty;
 }
 
-/* A drop cap opens the one paragraph that carries the argument. The values are
-   tuned to Newsreader specifically and will need re-tuning if the face changes.
-   ::first-letter also swallows an opening quote mark, so never open that
-   paragraph with one. */
-.lede::first-letter {
-  font-family: var(--font-display);
-  float: left;
-  font-size: 3.4em;
-  line-height: 0.82;
-  font-weight: 400;
-  padding-right: 0.08em;
-  padding-top: 0.02em;
+/* ---------------------------------------------------------------------------
+   Fields and cuts
+   --------------------------------------------------------------------------- */
+.field {
+  width: 100%;
+  padding-inline: var(--gutter);
+  /* svh, not vh: vh includes the collapsing mobile toolbar, which produces a
+     visible jump mid-scroll and ruins a hard colour cut. */
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* Hanging punctuation is Safari-only. Used as pure enhancement: Safari readers
-   get the better setting, nobody else can tell it is missing. */
-.hang {
-  hanging-punctuation: first last;
+.plate {
+  width: 100%;
+  padding-inline: var(--gutter);
+  padding-block: clamp(4rem, 12vh, 9rem);
 }
 
 /* ---------------------------------------------------------------------------
    Motion
 
-   Written opt-in, so the reduced-motion path is the default rather than an
-   override. Nothing animates on load — the page is typeset, it arrives
-   finished. The only ambient motion in the entire site is a margin note
-   setting as it enters the reading zone, once, and never again.
+   One orchestrated load, then stillness. Written opt-in so that the reduced
+   path is the default rather than an override.
    --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .note-sets {
-      animation: note-set linear both;
-      animation-timeline: view();
-      animation-range: entry 8% entry 42%;
-    }
+  .press {
+    animation: press 520ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    /* A wipe rather than a fade: the line arrives like a stamp being pressed
+       rather than a thing being faded in. */
+    clip-path: inset(0 100% 0 0);
+  }
+  .press-2 {
+    animation-delay: 300ms;
   }
 }
 
-@keyframes note-set {
-  from {
-    opacity: 0;
-    transform: translateY(3px);
-  }
+@keyframes press {
   to {
-    opacity: 1;
-    transform: none;
+    clip-path: inset(0 0 0 0);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+}
+
+/* The one recurring interaction: a project title physically widens into its
+   field on hover. Variable-axis, user-triggered, zero bytes. */
+.widen {
+  transition: font-variation-settings 200ms ease;
+}
+@media (hover: hover) {
+  .widen:hover {
+    font-variation-settings: "wdth" 125;
   }
 }

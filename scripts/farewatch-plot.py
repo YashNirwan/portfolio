@@ -33,7 +33,7 @@ for r, s in series.items():
     hot = r == cheapest
     paths.append(
       f'<path d="{d}" fill="none" stroke="{TURMERIC if hot else BONE}" '
-      f'stroke-width="{2.4 if hot else 1.1}" stroke-opacity="{1 if hot else 0.34}" '
+      f'stroke-width="{3.0 if hot else 1.5}" stroke-opacity="{1 if hot else 0.52}" '
       f'stroke-linejoin="round" stroke-linecap="round"/>')
 
 svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Minimum observed fare over time across six routes out of New York">

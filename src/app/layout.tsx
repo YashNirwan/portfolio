@@ -1,36 +1,30 @@
 import type { Metadata } from "next";
-import { Newsreader, Source_Serif_4, Archivo_Narrow } from "next/font/google";
+import { Archivo, Literata } from "next/font/google";
 import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 
-/* Newsreader carries real optical sizes, so it holds its drawing at 80px
-   instead of looking like a text face that got stretched. It is set
-   `display: optional` on purpose: it renders the LCP headline, and a headline
-   that repaints mid-view is worse than one first visit in the fallback. */
-const display = Newsreader({
-  variable: "--font-newsreader",
+/* The `wdth` axis has to be requested explicitly — next/font ships only
+   `wght` by default to keep the file small. Without it the expanded setting
+   this whole design rests on silently does nothing, which is exactly the kind
+   of failure that looks like a taste problem rather than a config one.
+
+   `display: optional` because Archivo renders the LCP line on every route,
+   and a headline that repaints mid-view is worse than one first visit in the
+   fallback. */
+const display = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
+  axes: ["wdth"],
   display: "optional",
-  weight: ["400"],
-  style: ["normal", "italic"],
 });
 
-/* The body face sets metrics inline in prose constantly, so it was chosen for
-   its figure set as much as its texture. `swap` here because body copy
-   appearing late is worse than body copy shifting slightly. */
-const body = Source_Serif_4({
-  variable: "--font-source-serif",
+/* Drawn for Google Books: warm, sturdy, low-contrast, and engineered for long
+   reading at low contrast — which is precisely what body copy sitting on a
+   crimson field has to survive. */
+const body = Literata({
+  variable: "--font-literata",
   subsets: ["latin"],
   display: "swap",
-});
-
-/* Narrow is a functional choice, not a stylistic one — this face only ever
-   sets the margin column, and that column is 17rem wide. */
-const util = Archivo_Narrow({
-  variable: "--font-archivo-narrow",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "600"],
 });
 
 /* The sentence that has to survive being pasted into Slack with no page
@@ -86,11 +80,11 @@ const personSchema = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${util.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="min-h-svh">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:font-util focus:text-sm focus:tracking-wide focus:text-paper"
+          className="trim sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-bone focus:px-4 focus:py-2 focus:text-iron"
         >
           Skip to content
         </a>

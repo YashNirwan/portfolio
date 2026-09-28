@@ -28,14 +28,41 @@ export const links = {
 
 /* --- The statement -------------------------------------------------------- */
 
+/* The opening leads with a scene rather than a position. A position is
+   something a stranger could put someone else's name on; this scene only
+   happened to one person, and it is simultaneously the funniest thing here
+   and the hardest piece of evidence. */
 export const statement = {
-  line: "I don’t trust the first answer. Usually not even my own.",
-  stand:
-    "So I build the thing that checks it — the eval, the validator, the second pass that can only remove. That work has taken me through insurance data, a live storefront and a computer-use agent, which is less of a detour than it sounds.",
-  provenance: "New York · ex-Accenture, ex-Amoga · NYU MS 2026",
+  first: "Yash",
+  last: "Nirwan",
+  lede:
+    "The first frame of the first video was a black title card reading PASSING IN FRONT OF A FORKLIFT. Both models filed it as a real forklift incident. High severity, 0.95 confidence.",
+  ledeAfter:
+    "That is my favourite thing I have found, and finding things like it is most of what I actually do.",
+  trim: "Index — New York",
   currently:
-    "Building an eval harness for computer-use agents, and a flight-price watcher that has been running unattended on my laptop since June.",
+    "An eval harness for computer-use agents, and a flight-price watcher I have not turned off.",
   currentlyDate: "September 2026",
+};
+
+/* The madder plate. First person, specific, and the origin of everything
+   below it. */
+export const bio = {
+  paragraphs: [
+    "I spent nineteen months in insurance data, where I once found a $4M property that had been keyed in as $40M. Nobody had noticed.",
+    "That is more or less the story of everything I have built since. Something proposes an answer, and the interesting work is what you put downstream of it — a check, a second pass, a number you can go and verify yourself.",
+    "I finish a master's at NYU in May. Before that, a CS degree, a year at Accenture and a product role at a startup small enough that I also wrote the sales copy.",
+  ],
+  trim: "Accenture, 2023–24 · Amoga, 2022–23 · NYU, 2024–26",
+  /* Pre-cropped to 4:5 rather than cropped in CSS, so the browser isn't
+     downloading pixels it will throw away. The source was a downscaled
+     665x1182 copy; this is as much resolution as exists. */
+  portrait: {
+    src: "/portrait-4x5.jpg",
+    alt: "Yash Nirwan on Calton Hill in Edinburgh, in a sherpa jacket and beanie, the National Monument behind him",
+    w: 800,
+    h: 1000,
+  },
 };
 
 /* --- The argument --------------------------------------------------------- */

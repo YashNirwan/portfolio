@@ -47,10 +47,10 @@
   /* Display sizes scale with the viewport rather than collapsing to a body
      size on small screens. At 390px, 15vw is 58px — still 3× the body. The
      failure mode for broadsheet type on mobile is letting it become an h1. */
-  --text-hero: clamp(3.2rem, 15vw, 13rem);
-  --text-field: clamp(2.8rem, 11vw, 10rem);
-  --text-project: clamp(2rem, 5vw, 4.25rem);
-  --text-figure: clamp(3.4rem, 8vw, 7rem);
+  --text-hero: clamp(3rem, 11vw, 9.5rem);
+  --text-field: clamp(2.4rem, 8vw, 6.5rem);
+  --text-project: clamp(1.9rem, 4vw, 3.4rem);
+  --text-figure: clamp(2.8rem, 6vw, 5rem);
 
   --leading-hero: 0.82;
   --leading-field: 0.86;
@@ -58,16 +58,20 @@
   /* Tracking in em, never px, so it holds identically at 58px and 208px. */
   --tracking-display: -0.03em;
 
-  --text-lede: 1.5rem;
-  --text-body: 1.125rem;
+  --text-lede: 1.3rem;
+  --text-body: 1.0625rem;
   --text-trim: 0.8125rem;
 
   --gutter: 1.25rem;
+  /* Content stops before the viewport does. Without this the columns sit
+     hard left on a wide screen with a third of the page empty to the right,
+     which reads as unbalanced rather than as deliberate. */
+  --hold: 76rem;
 }
 
 @media (min-width: 768px) {
   :root {
-    --gutter: 4rem;
+    --gutter: 3.5rem;
   }
 }
 
@@ -114,6 +118,17 @@ body {
   font-weight: 800;
   font-variation-settings: "wdth" 120;
   letter-spacing: var(--tracking-display);
+  /* Deliberately NOT nowrap. Expanded Archivo at 100px is wide enough that a
+     five-word line overruns any viewport, and nowrap turns that into
+     horizontal scroll rather than a wrap. Display lines are authored short
+     and broken by hand; this is the safety net for when they are not.
+     hyphens stay off — a hyphenated masthead is fatal. */
+  hyphens: none;
+  overflow-wrap: normal;
+}
+
+/* The hero is short enough to hold a line, and must never break. */
+.display-hold {
   text-wrap: nowrap;
 }
 
@@ -144,21 +159,29 @@ body {
 /* ---------------------------------------------------------------------------
    Fields and cuts
    --------------------------------------------------------------------------- */
+/* svh, not vh: vh includes the collapsing mobile toolbar, which produces a
+   visible jump mid-scroll and ruins a hard colour cut. */
 .field {
   width: 100%;
-  padding-inline: var(--gutter);
-  /* svh, not vh: vh includes the collapsing mobile toolbar, which produces a
-     visible jump mid-scroll and ruins a hard colour cut. */
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-block: clamp(3rem, 7vh, 5rem);
 }
 
 .plate {
   width: 100%;
+  padding-block: clamp(3rem, 7vh, 5.5rem);
+}
+
+/* Every plate holds its content to the same measure and the same left edge,
+   so the hard colour cuts are the only thing that changes between them. */
+.hold {
+  width: 100%;
+  max-width: var(--hold);
+  margin-inline: auto;
   padding-inline: var(--gutter);
-  padding-block: clamp(4rem, 12vh, 9rem);
 }
 
 /* ---------------------------------------------------------------------------

@@ -35,14 +35,32 @@ export const links = {
 export const statement = {
   first: "Yash",
   last: "Nirwan",
+  /* Orienting, not arguing. The reader needs to know who this is before a
+     story about vision models can land — dropping the forklift scene
+     straight under the name gave them no bridge. */
   lede:
-    "The first frame of the first video was a black title card reading PASSING IN FRONT OF A FORKLIFT. Both models filed it as a real forklift incident. High severity, 0.95 confidence.",
-  ledeAfter:
-    "That is my favourite thing I have found, and finding things like it is most of what I actually do.",
+    "I build things that check other things. Nineteen months of that was paid, in insurance data and at a startup small enough that I also wrote the sales copy. The rest was because I wanted to know.",
+  ledeAfter: "I finish a master's at NYU in May.",
   trim: "Index — New York",
   currently:
     "An eval harness for computer-use agents, and a flight-price watcher I have not turned off.",
   currentlyDate: "September 2026",
+};
+
+/* The bone slab. The single light plate in a page of saturated colour, and
+   the only place the page reverses — which is what makes it land. It carries
+   the best thing in the material at display scale rather than burying it in
+   body copy where it reads as a non-sequitur. */
+export const forklift = {
+  /* Authored to the break, and short. Display type teases; the body below
+     explains. The longest line here is eleven characters, which holds inside
+     a 390px viewport at wdth 104. */
+  lines: ["Both models", "believed a", "title card."],
+  attribution: "foreman, 2026. I published that about my own system.",
+  body:
+    "The first frame of the first video was a title card: black screen, white words, PASSING IN FRONT OF A FORKLIFT. The perception model reported a pedestrian walking in front of a moving forklift at 0.95 confidence, and the verifier confirmed it as high severity. Both models had turned printed words into an observed event.",
+  after:
+    "Burned-in text is everywhere in real footage, so a scene gate in the same call removed the whole class at no extra cost. Finding things like that is most of what I actually do.",
 };
 
 /* The madder plate. First person, specific, and the origin of everything

@@ -1,60 +1,64 @@
 import Image from "next/image";
-import { statement, bio, links } from "@/lib/data";
+import { statement, forklift, bio, links } from "@/lib/data";
 
 export const metadata = { alternates: { canonical: "/" } };
 
-/* VERTICAL SLICE — three plates only, for review before the rest is built.
-   Work, record and archive follow once the colour and scale are agreed. */
+/* VERTICAL SLICE — four plates, for review before the rest is built.
+   Work, record and archive follow once the structure is agreed. */
 export default function Home() {
   return (
     <main id="main" tabIndex={-1}>
       <Masthead />
+      <Forklift />
       <Bio />
-      <Farewatch />
+      <NotWork />
     </main>
   );
 }
 
-/* --- Plate one: indigo ----------------------------------------------------
-   The name at architectural scale, because on a broadsheet the masthead IS
-   the name — and then the scene immediately underneath, so the first thing a
-   visitor reads is something that happened rather than a claim about who he
-   is. */
+/* --- Plate one: indigo --------------------------------------------------- */
 function Masthead() {
   return (
     <section className="field bg-indigo">
-      <Trim tone="bone">{statement.trim}</Trim>
-
-      <h1 className="mt-auto">
-        <span
-          className="display press block text-bone"
-          style={{ fontSize: "var(--text-hero)", lineHeight: "var(--leading-hero)" }}
-        >
-          {statement.first}
-        </span>
-        {/* Indented to roughly the width of the line above — a register
-            offset borrowed from block printing, and the only ornament in
-            the system. */}
-        <span
-          className="display press press-2 block text-bone"
-          style={{
-            fontSize: "var(--text-hero)",
-            lineHeight: "var(--leading-hero)",
-            paddingLeft: "0.42em",
-          }}
-        >
-          {statement.last}
-        </span>
-      </h1>
-
-      <div className="mb-auto mt-10 max-w-[40rem]">
-        <p className="pretty text-bone/90" style={{ fontSize: "var(--text-lede)", lineHeight: 1.42 }}>
-          {statement.lede}
-        </p>
-        <p className="pretty mt-4 text-bone/70">{statement.ledeAfter}</p>
+      <div className="hold">
+        <Trim tone="bone">{statement.trim}</Trim>
       </div>
 
-      <div className="flex items-center justify-between pb-6">
+      <div className="hold mt-auto pt-14">
+        <h1>
+          <span
+            className="display display-hold press block text-bone"
+            style={{ fontSize: "var(--text-hero)", lineHeight: "var(--leading-hero)" }}
+          >
+            {statement.first}
+          </span>
+          {/* Indented to roughly the width of the line above — a register
+              offset borrowed from block printing, and the only ornament in
+              the system. */}
+          <span
+            className="display display-hold press press-2 block text-bone"
+            style={{
+              fontSize: "var(--text-hero)",
+              lineHeight: "var(--leading-hero)",
+              paddingLeft: "0.42em",
+            }}
+          >
+            {statement.last}
+          </span>
+        </h1>
+
+        <div className="mt-8 max-w-[36rem]">
+          <p
+            className="pretty text-bone/90"
+            style={{ fontSize: "var(--text-lede)", lineHeight: 1.44 }}
+          >
+            {statement.lede}
+          </p>
+          <p className="pretty mt-3 text-bone/65">{statement.ledeAfter}</p>
+        </div>
+      </div>
+
+      <div className="hold mt-auto flex items-center justify-between pt-12">
         <a href={`mailto:${links.email}`} className="trim text-bone/80">
           {links.email}
         </a>
@@ -65,82 +69,122 @@ function Masthead() {
   );
 }
 
-/* --- Plate two: madder ----------------------------------------------------
-   A hard cut. No rule, no whitespace, no transition — one field's padding
-   ends and the next begins, and the colour changes on a single edge. */
-function Bio() {
+/* --- Plate two: bone ------------------------------------------------------
+   The page goes light exactly once. A reversal in a run of saturated colour
+   is a surprise you can only spend a single time, so it is spent on the best
+   thing in the material. */
+function Forklift() {
   return (
-    <section className="plate bg-madder">
-      <Trim tone="bone">Who</Trim>
-      <div className="mt-10 grid items-start gap-10 md:grid-cols-[minmax(0,600px)_1fr] md:gap-16">
-        <figure className="max-w-[600px]">
-          <Image
-            src={bio.portrait.src}
-            alt={bio.portrait.alt}
-            width={bio.portrait.w}
-            height={bio.portrait.h}
-            sizes="(max-width: 768px) 100vw, 600px"
-            priority
-            className="block h-auto w-full"
-            style={{ boxShadow: "18px 18px 0 var(--color-madder-deep)" }}
-          />
-        </figure>
+    <section className="plate bg-bone text-iron">
+      <div className="hold">
+        <Trim tone="iron">The one that changed the design</Trim>
 
-        <div className="max-w-[32rem]">
-          {bio.paragraphs.map((p, i) => (
-            <p key={i} className="pretty mb-5 text-bone last:mb-0">
-              {p}
-            </p>
+        {/* No max-width here. `ch` would resolve against this paragraph's own
+            font size rather than the display spans inside it, clamping 100px
+            type to a ~180px column and breaking every authored line. The
+            lines are short by construction; let them set. */}
+        <p className="mt-7">
+          {forklift.lines.map((line) => (
+            <span
+              key={line}
+              className="display block"
+              style={{ fontSize: "var(--text-field)", lineHeight: "var(--leading-field)" }}
+            >
+              {line}
+            </span>
           ))}
-          <p className="trim mt-10 text-bone/70">{bio.trim}</p>
+        </p>
+
+        <p className="trim mt-6 text-iron/55">{forklift.attribution}</p>
+
+        <div className="mt-10 grid gap-6 md:grid-cols-2 md:gap-14">
+          <p className="pretty text-iron/85">{forklift.body}</p>
+          <p className="pretty text-iron/85">{forklift.after}</p>
         </div>
       </div>
     </section>
   );
 }
 
-/* --- Plate three: iron ----------------------------------------------------
-   Hobbies get display-scale typography. Giving the thing nobody asked for
-   the same weight as the employment is the argument, and it is quietly
-   funny without saying anything about itself. */
-function Farewatch() {
+/* --- Plate three: madder ------------------------------------------------- */
+function Bio() {
   return (
-    <section className="plate bg-iron">
-      <Trim tone="ash">Not work</Trim>
+    <section className="plate bg-madder">
+      <div className="hold">
+        <Trim tone="bone">Who</Trim>
 
-      <div className="mt-12 grid items-end gap-8 md:grid-cols-[auto_minmax(0,32rem)] md:gap-16">
-        <p
-          className="display tabular text-turmeric"
-          style={{ fontSize: "var(--text-figure)", lineHeight: 0.86 }}
-        >
-          213,965
-        </p>
-        <p className="pretty text-ash">
-          flight prices, checked every few minutes since July. I have booked two of them. I look at
-          the graph most mornings, which I understand is not normal.
-        </p>
+        {/* Both tracks are capped, so the pair sits as one block rather than
+            a small photo marooned beside a narrow column of text. */}
+        <div className="mt-8 grid items-start gap-8 md:grid-cols-[minmax(0,22rem)_minmax(0,30rem)] md:gap-14">
+          <Image
+            src={bio.portrait.src}
+            alt={bio.portrait.alt}
+            width={bio.portrait.w}
+            height={bio.portrait.h}
+            sizes="(max-width: 768px) 100vw, 22rem"
+            priority
+            className="block h-auto w-full max-w-[22rem]"
+            style={{ boxShadow: "14px 14px 0 var(--color-madder-deep)" }}
+          />
+
+          <div>
+            {bio.paragraphs.map((p, i) => (
+              <p key={i} className="pretty mb-4 text-bone last:mb-0">
+                {p}
+              </p>
+            ))}
+            <p className="trim mt-8 text-bone/70">{bio.trim}</p>
+          </div>
+        </div>
       </div>
-
-      {/* Drawn straight from the database this paragraph is about. */}
-      <figure className="mt-14">
-        <Image
-          src="/farewatch.svg"
-          alt="Minimum observed fare over time across the six most watched routes out of New York"
-          width={2400}
-          height={900}
-          className="h-auto w-full"
-        />
-        <figcaption className="trim mt-4 text-ash">
-          Six routes out of New York. The gold line is whichever is cheapest — currently LaGuardia
-          to Houston, which started being watched later than the rest.
-        </figcaption>
-      </figure>
     </section>
   );
 }
 
-function Trim({ children, tone }: { children: React.ReactNode; tone: "bone" | "ash" }) {
+/* --- Plate four: iron -----------------------------------------------------
+   Hobbies get display-scale typography. Giving the thing nobody asked for
+   the same weight as the employment is the argument, and it makes it without
+   saying anything about itself. */
+function NotWork() {
   return (
-    <p className={`trim uppercase ${tone === "bone" ? "text-bone/60" : "text-ash"}`}>{children}</p>
+    <section className="plate bg-iron">
+      <div className="hold">
+        <Trim tone="ash">Not work</Trim>
+
+        <div className="mt-8 grid items-baseline gap-3 md:grid-cols-[auto_minmax(0,28rem)] md:gap-12">
+          <p
+            className="display tabular text-turmeric"
+            style={{ fontSize: "var(--text-figure)", lineHeight: 0.9 }}
+          >
+            213,965
+          </p>
+          <p className="pretty text-ash">
+            flight prices, checked every few minutes since July. I have booked two of them. I look
+            at the graph most mornings, which I understand is not normal.
+          </p>
+        </div>
+
+        {/* Drawn straight from the database this paragraph is about. */}
+        <figure className="mt-10">
+          <Image
+            src="/farewatch.svg"
+            alt="Minimum observed fare over time across the six most watched routes out of New York"
+            width={2400}
+            height={900}
+            className="h-auto w-full"
+          />
+          <figcaption className="trim mt-3 text-ash">
+            Six routes out of New York. The gold line is whichever is cheapest — currently
+            LaGuardia to Houston, which started being watched later than the rest.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
   );
+}
+
+function Trim({ children, tone }: { children: React.ReactNode; tone: "bone" | "ash" | "iron" }) {
+  const color =
+    tone === "bone" ? "text-bone/60" : tone === "iron" ? "text-iron/55" : "text-ash";
+  return <p className={`trim uppercase ${color}`}>{children}</p>;
 }

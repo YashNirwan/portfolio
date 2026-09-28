@@ -1,13 +1,10 @@
 /* ===========================================================================
-   Content model for The Margin.
+   Content model.
 
    Every claim in this file is traceable to a source on disk or on the web.
    Numbers were verified on 2026-09-28 against the repos themselves, not
-   against a résumé. Where a figure moves (farewatch is still running), it
+   against a resume. Where a figure moves (farewatch is still running), it
    carries the date it was read.
-
-   The shape is deliberately paired: most things that make a claim also carry
-   a `note`, because the margin is where this site does its arguing.
    =========================================================================== */
 
 export const profile = {
@@ -143,30 +140,27 @@ export const argument = {
   },
 };
 
-/* --- Work ----------------------------------------------------------------- */
+/* --- Work ----------------------------------------------------------------
 
-export type Note = {
-  label?: string;
-  body: string;
-  tone?: "default" | "cost";
-};
+   No mandatory `cost` field. The previous version of this site required every
+   project to state what was wrong with it, which is a schema enforcing
+   self-deprecation rather than a person choosing honesty. Instead each entry
+   has a `turn`: the thing that surprised me, cost me something, or that I
+   would rather not have to say. Sometimes that is a lost metric. Sometimes it
+   is a disclosure. It is never an apology.
+   --------------------------------------------------------------------------- */
 
 export type Work = {
   slug: string;
   title: string;
   year: string;
   role: string;
-  /* lead gets the full spread; minor gets a compressed one; note is a single
-     margin paragraph with no spread of its own. */
-  weight: "lead" | "major" | "minor" | "note";
   claim: string;
-  evidence: string;
-  cost?: string;
-  also?: string;
+  detail: string;
+  turn: string;
   stack: string[];
   links: { label: string; href: string }[];
-  image?: { src: string; alt: string; w: number; h: number };
-  note?: Note;
+  image?: { src: string; alt: string; w: number; h: number; light?: boolean };
   hasStudy?: boolean;
 };
 
@@ -176,30 +170,17 @@ export const work: Work[] = [
     title: "Foreman",
     year: "2026",
     role: "Agentic vision, NVIDIA NIM",
-    weight: "lead",
-    claim:
-      "A second model that can only remove things roughly doubled precision on hazard detection.",
-    evidence:
-      "49 hand-labelled windows, seven ablation arms, three repeats. Precision 0.15 → 0.35 on a single run, 0.34 averaged.",
-    cost: "Recall fell from 0.80 to 0.60. That’s a real trade, not a free lunch.",
-    also:
-      "The cheaper text-only verifier scored below doing nothing at all. I shipped that result too.",
-    stack: ["Python", "NVIDIA NIM", "Nemotron VL", "MCP", "Streamlit", "ffmpeg"],
+    claim: "I built the eval before I trusted the demo.",
+    detail:
+      "A perception pass over-reports hazards on purpose; a second model re-opens the same frames and can only remove. 49 hand-labelled windows, seven ablation arms, three repeats. Frame-level verification roughly doubled precision, 0.15 to 0.35.",
+    turn:
+      "Recall fell from 0.80 to 0.60 paying for it, and the cheaper text-only verifier scored below doing nothing at all. I shipped both numbers.",
+    stack: ["Python", "NVIDIA NIM", "Nemotron VL", "MCP", "Streamlit"],
     links: [
       { label: "Live demo", href: "https://foreman-safety.streamlit.app" },
       { label: "GitHub", href: "https://github.com/YashNirwan/foreman" },
       { label: "Full eval", href: "https://github.com/YashNirwan/foreman/blob/main/evals/RESULTS.md" },
     ],
-    image: {
-      src: "/foreman.jpg",
-      alt: "Foreman review console showing verified warehouse safety alerts with evidence clips",
-      w: 1500,
-      h: 1000,
-    },
-    note: {
-      label: "The one that changed the design",
-      body: "Both models once described a pedestrian walking in front of a moving forklift. The frame was a black title card reading PASSING IN FRONT OF A FORKLIFT. Burned-in text is everywhere in real footage; a scene gate in the same call removed the whole class at no extra cost.",
-    },
     hasStudy: true,
   },
   {
@@ -207,60 +188,42 @@ export const work: Work[] = [
     title: "interface-cua",
     year: "2026",
     role: "Computer-use agent, TypeScript",
-    weight: "major",
-    claim:
-      "The model plans the run once. Replay executes it with no model in the loop at all.",
-    evidence:
-      "14,373 lines of TypeScript over Playwright and zod, including a legacy target app I built myself with injectable faults.",
-    cost:
-      "A plan that goes stale fails loudly rather than improvising. That’s the intended behaviour, but it means the agent is brittle by design.",
+    claim: "The model plans the run once. Replay executes it with no model in the loop.",
+    detail:
+      "14,373 lines of TypeScript. A lookup for a member who does not exist returns MEMBER_NOT_FOUND with exit code 0, not a checkpoint failure \u2014 because \u201cno such member\u201d is an answer, and the calling agent should not have to string-match an error to find that out.",
+    turn:
+      "Public demo sites do not break on command, so I wrote the legacy bank that does. It injects interstitials, session expiry, HTTP 500s and latency, which is what makes the error-path evidence reproducible rather than anecdotal.",
     stack: ["TypeScript", "Playwright", "zod", "Node.js"],
     links: [],
-    note: {
-      label: "Why build the target",
-      body: "Public demo sites don’t break on command. To test how an agent handles a legacy CRM that half-fails, I had to write the legacy CRM that half-fails — so the error paths would reproduce identically on every run.",
+    image: {
+      src: "/meridian.png",
+      alt: "Meridian Core, a deliberately hostile 2000s bank back-office app, showing a member search that returned no records",
+      w: 3840,
+      h: 660,
+      light: true,
     },
     hasStudy: true,
   },
   {
     slug: "raivana",
     title: "Raivana",
-    year: "2024 – now",
+    year: "2024 \u2014 now",
     role: "Founder, full-stack commerce",
-    weight: "minor",
-    claim: "A live storefront that takes real money, which is a different standard than a demo.",
-    evidence:
-      "242 commits. HMAC-verified webhook handler and an idempotency key store with a 30-day TTL, so a payment lands exactly once. 156 products, 8 currencies.",
-    cost:
-      "Vanilla JS, no framework, no test suite. That was the right call for one person and 156 products, and it is the first thing I would undo before a second person touched it.",
-    stack: ["Node.js", "Netlify Functions", "Razorpay", "Shiprocket", "Vanilla JS"],
+    claim: "A storefront that takes real money, which is a different standard than a demo.",
+    detail:
+      "242 commits. An HMAC-verified webhook handler and an idempotency key store with a 30-day TTL, so a payment lands exactly once. 156 products, 8 currencies, geolocation-routed.",
+    turn:
+      "Vanilla JS, no framework, no test suite. Right for one person and 156 products, and the first thing I would undo before a second person touched it.",
+    stack: ["Node.js", "Netlify Functions", "Razorpay", "Shiprocket"],
     links: [
       { label: "Live", href: "https://raivana.in/" },
       { label: "GitHub", href: "https://github.com/yashnirwan/Raivana" },
     ],
     image: {
       src: "/raivana.jpg",
-      alt: "Raivana storefront showing handcrafted Rajasthani homeware",
+      alt: "The Raivana storefront showing handcrafted Rajasthani homeware",
       w: 1500,
       h: 754,
-    },
-    note: {
-      body: "Takes about 15 seconds to cold start. It’s a real store with real orders, not a demo, so I didn’t pay for always-on.",
-    },
-  },
-  {
-    slug: "farewatch",
-    title: "farewatch",
-    year: "2026",
-    role: "Personal infrastructure",
-    weight: "note",
-    claim: "Nobody asked for this one.",
-    evidence:
-      "A flight-price watcher running unattended on four launchd agents. 213,257 observations and 441 alerts as of 28 September 2026, when I last looked. It alerted that morning.",
-    stack: ["Python", "SQLite", "launchd"],
-    links: [],
-    note: {
-      body: "Four swappable data sources behind one interface, a statistical baseline rather than a fixed threshold, and a small unit-test suite over the pure functions. It has an audience of one.",
     },
   },
   {
@@ -268,25 +231,19 @@ export const work: Work[] = [
     title: "FireSight NYC",
     year: "2026",
     role: "Civic data analysis",
-    weight: "minor",
     claim:
       "Using only data that existed before the fire, the model ranked Twin Parks #1,003 of 89,496 Bronx parcels.",
-    evidence:
-      "Four siloed NYC Open Data sources joined into one ontology, with a transparent 0–100 risk score weighting self-closing-door violations, complaint history and building age.",
-    cost:
-      "Which also means 1,002 buildings ranked ahead of it. Top 1.1% is a real signal, not a bullseye.",
+    detail:
+      "Four siloed NYC Open Data sources joined into one ontology, then scored 0\u2013100 on self-closing-door violations, complaint history and building age. Every input stays visible and weighted, because an inspection queue a supervisor cannot argue with is one they will not use.",
+    turn:
+      "Which also means 1,002 buildings ranked ahead of it. And most of the implementation was written by Claude Code driving a browser rather than by me typing \u2014 I am listing this for the analysis, not the engineering.",
     stack: ["Python", "Palantir Foundry", "AIP Logic", "NYC Open Data"],
     links: [{ label: "GitHub", href: "https://github.com/yashnirwan/firesight-nyc" }],
     image: {
       src: "/firesight.jpg",
-      alt: "FireSight NYC inspection command centre showing ranked Bronx parcels in Palantir Foundry",
+      alt: "FireSight inspection command centre showing ranked Bronx parcels on a risk map",
       w: 1600,
       h: 821,
-    },
-    note: {
-      label: "How this was built",
-      tone: "cost",
-      body: "Most of this was written by Claude Code driving a browser, not by me typing. I’m listing it for the analysis, not the engineering. Saying so costs me the impressive version and keeps the claim checkable, which is the trade this whole site is about.",
     },
     hasStudy: true,
   },

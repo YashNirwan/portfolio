@@ -1,18 +1,146 @@
 import Image from "next/image";
-import { statement, forklift, bio, notWork, links } from "@/lib/data";
+import Link from "next/link";
+import { statement, forklift, bio, work, notWork, links } from "@/lib/data";
 
 export const metadata = { alternates: { canonical: "/" } };
 
-/* VERTICAL SLICE — four plates, for review before the rest is built.
-   Work, record and archive follow once the structure is agreed. */
+/* Six plates. Colour is the only section device: indigo, bone, madder, iron,
+   iron, indigo — closing on the colour it opened with. */
 export default function Home() {
   return (
     <main id="main" tabIndex={-1}>
       <Masthead />
       <Forklift />
       <Bio />
+      <Work />
       <NotWork />
+      <Contact />
     </main>
+  );
+}
+
+/* --- Plate five: iron ------------------------------------------------------
+   Four projects, each in the same grammar: a claim, the detail that supports
+   it, and a turn — the thing that surprised me, cost me something, or that I
+   would rather not have to say. The turn is set in turmeric-free ash and
+   never labelled "cost", because labelling it makes the page apologise. */
+function Work() {
+  return (
+    <section className="plate bg-iron">
+      <div className="hold">
+        <Trim tone="ash">Work</Trim>
+
+        <div className="mt-10 flex flex-col gap-16 md:gap-24">
+          {work.map((item) => (
+            <article key={item.slug} id={item.slug} className="scroll-mt-8">
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+                <h2
+                  className="display widen text-bone"
+                  style={{ fontSize: "var(--text-project)", lineHeight: 0.95 }}
+                >
+                  {item.title}
+                </h2>
+                <p className="trim uppercase text-ash">
+                  {item.role} · {item.year}
+                </p>
+              </div>
+
+              <p
+                className="pretty mt-5 max-w-[34rem] text-bone"
+                style={{ fontSize: "var(--text-lede)", lineHeight: 1.4 }}
+              >
+                {item.claim}
+              </p>
+
+              <div className="mt-6 grid gap-5 md:grid-cols-2 md:gap-14">
+                <p className="pretty text-ash">{item.detail}</p>
+                <p className="pretty text-ash">{item.turn}</p>
+              </div>
+
+              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+                {item.hasStudy ? (
+                  <Link href={`/work/${item.slug}`} className="trim text-bone">
+                    Read the full study
+                  </Link>
+                ) : null}
+                {item.links.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="trim text-ash"
+                  >
+                    {l.label}
+                  </a>
+                ))}
+              </div>
+
+              <p className="trim mt-4 text-ash/70">{item.stack.join(" · ")}</p>
+
+              {item.image ? (
+                <figure className="mt-8">
+                  {/* Light UI screenshots get a bone mount. A pale screenshot
+                      dropped straight onto iron reads as a hole punched in the
+                      page rather than as a print on it. */}
+                  <div className={item.image.light ? "bg-bone p-4 md:p-8" : ""}>
+                    <Image
+                      src={item.image.src}
+                      alt={item.image.alt}
+                      width={item.image.w}
+                      height={item.image.h}
+                      sizes="(max-width: 768px) 100vw, 72rem"
+                      className="block h-auto w-full"
+                    />
+                  </div>
+                </figure>
+              ) : null}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --- Plate seven: indigo ---------------------------------------------------
+   Returns to the colour it opened on, so the page closes rather than stops. */
+function Contact() {
+  return (
+    <section className="plate bg-indigo">
+      <div className="hold">
+        <Trim tone="bone">Currently — {statement.currentlyDate}</Trim>
+
+        <p className="pretty mt-6 max-w-[34rem] text-bone/90">{statement.currently}</p>
+
+        <p className="mt-10">
+          <a
+            href={`mailto:${links.email}`}
+            className="display text-bone"
+            style={{ fontSize: "var(--text-row)", lineHeight: 1 }}
+          >
+            {links.email}
+          </a>
+        </p>
+        <p className="mt-3 text-bone/65">I reply to specific emails fastest.</p>
+
+        <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2">
+          <a href={links.github} target="_blank" rel="noreferrer" className="trim text-bone/80">
+            GitHub
+          </a>
+          <a href={links.linkedin} target="_blank" rel="noreferrer" className="trim text-bone/80">
+            LinkedIn
+          </a>
+          <a href={links.resume} className="trim text-bone/80">
+            Résumé — PDF, one page, current as of September 2026
+          </a>
+        </div>
+
+        <p className="trim mt-16 text-bone/45">
+          No analytics on this page. If you were here, I would rather you just told me.
+        </p>
+      </div>
+    </section>
   );
 }
 

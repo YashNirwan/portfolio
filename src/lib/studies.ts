@@ -1,4 +1,10 @@
-import type { Note } from "./data";
+/* Owned here now. data.ts used to export this for the margin-note system on
+   the old design; studies are the only thing still using the shape. */
+export type Note = {
+  label?: string;
+  body: string;
+  tone?: "default" | "cost";
+};
 
 /* ===========================================================================
    Long-form case studies.

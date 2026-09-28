@@ -25,7 +25,10 @@ export function Spread({
       className={`grid grid-cols-1 items-start gap-4 md:grid-cols-[minmax(0,1fr)_17rem] md:gap-12 ${className}`}
     >
       <div className="min-w-0 max-w-[41rem]">{children}</div>
-      {note ? <div className="md:pt-1">{note}</div> : <div aria-hidden="true" />}
+      {/* No placeholder when there is no note. An empty grid child is
+          invisible on desktop but becomes a real row on mobile, where the
+          single-column grid gives it a gap it did not earn. */}
+      {note ? <div className="md:pt-1">{note}</div> : null}
     </div>
   );
 }

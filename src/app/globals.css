@@ -27,7 +27,7 @@
   /* --- Ink --------------------------------------------------------------- */
   --color-ink: #1a1c19; /* a black with green in it, not blue-black */
   --color-graphite: #5d625b; /* margin apparatus, captions, secondary text */
-  --color-rule: #c3c7be; /* hairlines */
+  --color-rule: #b3b8ad; /* hairlines — dark enough to read as structure */
 
   /* --- The two accents, which carry meaning rather than decoration -------
      Indigo marks an annotation — something the author added in the margin.

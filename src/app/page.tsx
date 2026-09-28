@@ -79,7 +79,7 @@ function Masthead() {
 
 function Statement() {
   return (
-    <section className="pb-16 pt-[14vh] md:pb-24 md:pt-[22vh]">
+    <section className="pb-16 pt-[11vh] md:pb-24 md:pt-[15vh]">
       <Spread
         note={
           <div

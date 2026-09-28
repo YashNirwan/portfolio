@@ -10,8 +10,13 @@ import { useEffect, useState } from "react";
    client-side JavaScript on the homepage, and it exists because a section's
    position relative to the reading zone is not something CSS can name.
 
-   Hidden below lg — on a phone it would be a 44px strip stealing width from
-   a 41rem measure, which is a bad trade. Mobile gets the running head instead.
+   It appears only above 1340px, and that number is arithmetic rather than
+   taste: the content column is capped at 72rem (1152px), so below roughly
+   1340px the centred column reaches far enough left that a fixed rail lands
+   on top of the text. Anything narrower gets no rail at all.
+
+   The section label is hover-only for the same reason — a persistent label
+   is wide enough to collide with the headline even at 1440px.
    =========================================================================== */
 
 export function ForeEdge({ sections }: { sections: { id: string; label: string }[] }) {
@@ -43,7 +48,7 @@ export function ForeEdge({ sections }: { sections: { id: string; label: string }
   return (
     <nav
       aria-label="Sections"
-      className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 lg:block"
+      className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 [@media(min-width:1340px)]:block"
     >
       <ul className="flex flex-col gap-3">
         {sections.map((s) => {
@@ -62,9 +67,7 @@ export function ForeEdge({ sections }: { sections: { id: string; label: string }
                   }`}
                 />
                 <span
-                  className={`font-util uppercase text-ink transition-opacity duration-150 ${
-                    on ? "opacity-70" : "opacity-0 group-hover:opacity-50"
-                  }`}
+                  className="font-util uppercase text-ink opacity-0 transition-opacity duration-150 group-hover:opacity-60 group-focus-visible:opacity-60"
                   style={{ fontSize: "0.7rem", letterSpacing: "var(--tracking-label)" }}
                 >
                   {s.label}

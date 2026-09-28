@@ -42,7 +42,7 @@ export const studies: Study[] = [
         text: "So I treated it as an architecture problem instead. The perception pass is allowed to over-report. Behind it sits a second model that can only remove things: it re-opens the same frames and decides whether the evidence actually meets the bar for the class that was claimed.",
         note: {
           label: "Why it must see pixels",
-          body: "The cheap version of this is a reasoning LLM reading the perception pass's text. That arm scored F1 0.19 — below doing nothing at all. Written evidence is too thin to adjudicate on.",
+          body: "The cheap version of this is a reasoning LLM reading the perception pass’s text. That arm scored F1 0.19 — below doing nothing at all. Written evidence is too thin to adjudicate on.",
         },
       },
       { kind: "h", text: "What I built" },
@@ -55,7 +55,7 @@ export const studies: Study[] = [
         text: "Then I hand-labelled 49 windows of real footage and built an eval harness with seven ablation arms — and measured run-to-run variance across repeats rather than quoting a single lucky number.",
         note: {
           label: "The unglamorous part",
-          body: "Three weeks of that project was labelling. There is no shortcut, and an eval built on someone else's labels would not have caught the failure below.",
+          body: "Three weeks of that project was labelling. There is no shortcut, and an eval built on someone else’s labels would not have caught the failure below.",
         },
       },
       { kind: "h", text: "What the numbers say" },
@@ -65,7 +65,7 @@ export const studies: Study[] = [
         note: {
           label: "Cost",
           tone: "cost",
-          body: "On a real floor you would tune the verifier's bar per class. Missing a pedestrian in a forklift path costs more than a missed PPE violation, so they should not share a threshold.",
+          body: "On a real floor you would tune the verifier’s bar per class. Missing a pedestrian in a forklift path costs more than a missed PPE violation, so they should not share a threshold.",
         },
       },
       {
@@ -148,7 +148,7 @@ export const studies: Study[] = [
       },
       {
         kind: "p",
-        text: "Control transfer to a human is a fenced lease, not a pause flag. Every transfer bumps an epoch, and an in-flight automation action that completes after a human took over is rejected rather than applied. A pause flag cannot give you that, and the failure it prevents is a click landing in the middle of an operator's typing.",
+        text: "Control transfer to a human is a fenced lease, not a pause flag. Every transfer bumps an epoch, and an in-flight automation action that completes after a human took over is rejected rather than applied. A pause flag cannot give you that, and the failure it prevents is a click landing in the middle of an operator’s typing.",
       },
       { kind: "h", text: "The bug that sharpened the rule" },
       {
@@ -174,7 +174,7 @@ export const studies: Study[] = [
         text: "apps/meridian is a deliberately hostile stand-in for a bank back-office app: a real frameset, table-based layout, ASP.NET-style ids, no test ids, no ARIA, no label-for. Form fields are labelled only by the adjacent table cell. It injects runtime faults on demand — interstitials, session expiry, HTTP 500, latency.",
         note: {
           label: "Why not a public demo site",
-          body: "Public demo sites don't break on command. To show how the engine handles a legacy app that half-fails, the error-path evidence had to be reproducible rather than anecdotal. All member data is synthetic.",
+          body: "Public demo sites don’t break on command. To show how the engine handles a legacy app that half-fails, the error-path evidence had to be reproducible rather than anecdotal. All member data is synthetic.",
         },
       },
     ],

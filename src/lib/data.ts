@@ -27,7 +27,7 @@ export const links = {
 /* --- The statement -------------------------------------------------------- */
 
 export const statement = {
-  line: "I don't trust the first answer. Usually not even my own.",
+  line: "I don’t trust the first answer. Usually not even my own.",
   stand:
     "So I build the thing that checks it — the eval, the validator, the second pass that can only remove. That work has taken me through insurance data, a live storefront and a computer-use agent, which is less of a detour than it sounds.",
   provenance: "New York · ex-Accenture, ex-Amoga · NYU MS 2026",
@@ -42,12 +42,12 @@ export const argument = {
   heading: "Why this is one job and not four",
   paragraphs: [
     "At Accenture I spent a year on commercial property data that arrived from brokers in whatever shape they felt like sending. Some of it was wrong in ways that mattered — a $4M building entered as $40M. You cannot review a hundred thousand rows by hand, so you write the cross-field checks that catch the row worth looking at.",
-    "Every AI system I've built since is that same move, pointed at a model instead of a spreadsheet. Ask a vision model whether footage contains a hazard and it will almost always say yes. Ask an LLM for a tracklist and it will invent songs that don't exist. The interesting part was never the generation. It's what you put downstream of it.",
-    "That work doesn't stay in one discipline. Something has to propose, something has to verify, someone has to see what the check caught, and someone has to explain to a person with a budget what it means. Those are four layers of one problem, not four jobs.",
+    "Every AI system I’ve built since is that same move, pointed at a model instead of a spreadsheet. Ask a vision model whether footage contains a hazard and it will almost always say yes. Ask an LLM for a tracklist and it will invent songs that don’t exist. The interesting part was never the generation. It’s what you put downstream of it.",
+    "That work doesn’t stay in one discipline. Something has to propose, something has to verify, someone has to see what the check caught, and someone has to explain to a person with a budget what it means. Those are four layers of one problem, not four jobs.",
   ],
   note: {
     label: "A related lesson",
-    body: "I once built a five-call orchestration for my own job applications and told myself it cost 15k tokens. Measured, it cost 161k — about 14k of fixed harness overhead, five times over. I deleted the architecture. Measuring your own work is the same instinct as verifying a model's.",
+    body: "I once built a five-call orchestration for my own job applications and told myself it cost 15k tokens. Measured, it cost 161k — about 14k of fixed harness overhead, five times over. I deleted the architecture. Measuring your own work is the same instinct as verifying a model’s.",
   },
 };
 
@@ -89,7 +89,7 @@ export const work: Work[] = [
       "A second model that can only remove things roughly doubled precision on hazard detection.",
     evidence:
       "49 hand-labelled windows, seven ablation arms, three repeats. Precision 0.15 → 0.35 on a single run, 0.34 averaged.",
-    cost: "Recall fell from 0.80 to 0.60. That's a real trade, not a free lunch.",
+    cost: "Recall fell from 0.80 to 0.60. That’s a real trade, not a free lunch.",
     also:
       "The cheaper text-only verifier scored below doing nothing at all. I shipped that result too.",
     stack: ["Python", "NVIDIA NIM", "Nemotron VL", "MCP", "Streamlit", "ffmpeg"],
@@ -121,12 +121,12 @@ export const work: Work[] = [
     evidence:
       "14,373 lines of TypeScript over Playwright and zod, including a legacy target app I built myself with injectable faults.",
     cost:
-      "A plan that goes stale fails loudly rather than improvising. That's the intended behaviour, but it means the agent is brittle by design.",
+      "A plan that goes stale fails loudly rather than improvising. That’s the intended behaviour, but it means the agent is brittle by design.",
     stack: ["TypeScript", "Playwright", "zod", "Node.js"],
     links: [],
     note: {
       label: "Why build the target",
-      body: "Public demo sites don't break on command. To test how an agent handles a legacy CRM that half-fails, I had to write the legacy CRM that half-fails — so the error paths would reproduce identically on every run.",
+      body: "Public demo sites don’t break on command. To test how an agent handles a legacy CRM that half-fails, I had to write the legacy CRM that half-fails — so the error paths would reproduce identically on every run.",
     },
     hasStudy: true,
   },
@@ -139,6 +139,8 @@ export const work: Work[] = [
     claim: "A live storefront that takes real money, which is a different standard than a demo.",
     evidence:
       "242 commits. HMAC-verified webhook handler and an idempotency key store with a 30-day TTL, so a payment lands exactly once. 156 products, 8 currencies.",
+    cost:
+      "Vanilla JS, no framework, no test suite. That was the right call for one person and 156 products, and it is the first thing I would undo before a second person touched it.",
     stack: ["Node.js", "Netlify Functions", "Razorpay", "Shiprocket", "Vanilla JS"],
     links: [
       { label: "Live", href: "https://raivana.in/" },
@@ -151,7 +153,7 @@ export const work: Work[] = [
       h: 754,
     },
     note: {
-      body: "Takes about 15 seconds to cold start. It's a real store with real orders, not a demo, so I didn't pay for always-on.",
+      body: "Takes about 15 seconds to cold start. It’s a real store with real orders, not a demo, so I didn’t pay for always-on.",
     },
   },
   {
@@ -192,7 +194,7 @@ export const work: Work[] = [
     note: {
       label: "How this was built",
       tone: "cost",
-      body: "Most of this was written by Claude Code driving a browser, not by me typing. I'm listing it for the analysis, not the engineering. Saying so costs me the impressive version and keeps the claim checkable, which is the trade this whole site is about.",
+      body: "Most of this was written by Claude Code driving a browser, not by me typing. I’m listing it for the analysis, not the engineering. Saying so costs me the impressive version and keeps the claim checkable, which is the trade this whole site is about.",
     },
     hasStudy: true,
   },
@@ -270,7 +272,7 @@ export const archive: {
     title: "Coupon acceptance",
     year: "2025",
     kind: "coursework",
-    line: "An assignment. I treated it like a client brief because that's more interesting than a grade.",
+    line: "An assignment. I treated it like a client brief because that’s more interesting than a grade.",
     href: "https://github.com/yashnirwan/coupon-acceptance-prediction",
   },
   {

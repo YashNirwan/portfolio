@@ -1,130 +1,176 @@
 @import "tailwindcss";
 
-/* ---- Design tokens ------------------------------------------------------ */
+/* ===========================================================================
+   THE MARGIN — design tokens
+
+   The site is set like a technical book with the author's marginalia still in
+   it: the main column makes the claim, the margin volunteers the doubt.
+
+   Two deliberate choices worth stating, because both look like mistakes:
+
+   1. The ground is cool oat, not warm cream. Warm cream + display serif +
+      terracotta accent is currently the single most common generated-design
+      signature on the web. The green cast in the paper and the ink is what
+      keeps this off that shelf.
+
+   2. There is no dark theme. This is a document, and a dark broadsheet is an
+      incoherent object. Committing to one ground is the same kind of decision
+      as committing to one typeface — it reads as a choice, not an omission.
+   =========================================================================== */
+
 @theme {
-  /* Cool slate ink base, warm off-white text, persimmon accent. */
-  --color-ink: #0e1014;
-  --color-ink-soft: #14171d;
-  --color-surface: #181c23;
-  --color-surface-2: #1f242c;
-  --color-line: #272d36;
-  --color-line-soft: #1d222a;
-  --color-text: #ece7de;
-  --color-text-dim: #b6bcc6;
-  --color-text-muted: #828b98;
+  /* --- Ground ------------------------------------------------------------ */
+  --color-paper: #e7e9e4; /* cool oat — the field everything prints on */
+  --color-lift: #f2f3ef; /* the reading column, one step up from the field */
+  --color-sink: #dcdfd9; /* recessed panels, table zebra, archive rows */
 
-  /* Accent is swapped per active lens via the --accent variable. */
-  --color-accent: var(--accent, #3b9eff);
-  --color-accent-soft: color-mix(in oklab, var(--accent, #3b9eff) 24%, transparent);
+  /* --- Ink --------------------------------------------------------------- */
+  --color-ink: #1a1c19; /* a black with green in it, not blue-black */
+  --color-graphite: #5d625b; /* margin apparatus, captions, secondary text */
+  --color-rule: #c3c7be; /* hairlines */
 
-  --font-display: var(--font-display-face);
-  --font-sans: var(--font-hanken);
-  --font-mono: var(--font-jetbrains);
+  /* --- The two accents, which carry meaning rather than decoration -------
+     Indigo marks an annotation — something the author added in the margin.
+     Red marks something that got worse: a cost, a retraction, a lost metric.
+     Nothing else in the site is allowed to be coloured. */
+  --color-pencil: #3d2ecc;
+  --color-strike: #9b1b30;
+  --color-confirm: #1b5e3f; /* verification checks only, never decorative */
 
-  --shadow-glow: 0 0 0 1px color-mix(in oklab, var(--accent, #3b9eff) 30%, transparent),
-    0 18px 60px -24px color-mix(in oklab, var(--accent, #3b9eff) 45%, transparent);
+  /* --- Type -------------------------------------------------------------- */
+  --font-display: var(--font-newsreader);
+  --font-body: var(--font-source-serif);
+  --font-util: var(--font-archivo-narrow);
+
+  /* --- Measure ----------------------------------------------------------- */
+  --spacing-reading: 41rem; /* ~66ch at body size */
+  --spacing-margin-col: 17rem;
+  --spacing-track-gap: 3rem;
 }
 
+/* ---------------------------------------------------------------------------
+   Fluid type scale. Every clamp has a min() floor so the page still reflows
+   at 320px / 200% zoom, which oversized display type otherwise breaks.
+   --------------------------------------------------------------------------- */
 :root {
-  --accent: #3b9eff;
+  --text-display: clamp(2.6rem, 7vw, 5.2rem);
+  --leading-display: 0.98;
+  --tracking-display: -0.028em;
+
+  --text-title: clamp(1.75rem, 3.8vw, 2.9rem);
+  --leading-title: 1.02;
+  --tracking-title: -0.022em;
+
+  --text-sub: 1.42rem;
+  --leading-sub: 1.16;
+  --tracking-sub: -0.012em;
+
+  --text-body: 1.125rem;
+  --leading-body: 1.54;
+
+  --text-note: 0.855rem;
+  --leading-note: 1.42;
+
+  --text-label: 0.76rem;
+  --tracking-label: 0.09em;
 }
 
-/* ---- Lenis (official, required for correct scroll height) --------------- */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
 }
 
-/* ---- Base --------------------------------------------------------------- */
-/* No CSS scroll-behavior here: Lenis owns smooth scrolling and the two conflict. */
 body {
-  background-color: var(--color-ink);
-  color: var(--color-text);
-  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-/* Viewport-fixed background wash as a single composited layer, so it never
-   repaints during scroll (unlike background-attachment: fixed, which does). */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: radial-gradient(
-      120% 80% at 50% -10%,
-      color-mix(in oklab, var(--accent) 6%, transparent) 0%,
-      transparent 42%
-    ),
-    radial-gradient(85% 55% at 100% 100%, #161a22 0%, transparent 55%);
+  /* Oldstyle figures in running prose; the metrics get lining figures back
+     via .tabular where they need to align. */
+  font-variant-numeric: oldstyle-nums;
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--accent) 35%, transparent);
-  color: #fff;
+  background: color-mix(in oklab, var(--color-pencil) 18%, transparent);
 }
 
-/* Visible keyboard focus everywhere. */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-pencil);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
-/* Accent transitions smoothly as the active lens changes. */
-.accent-root,
-.accent-root * {
-  transition-property: color, background-color, border-color, fill, stroke;
-  transition-duration: 420ms;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+/* ---------------------------------------------------------------------------
+   Utilities
+   --------------------------------------------------------------------------- */
+.tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.balance {
+  text-wrap: balance;
+}
+
+.pretty {
+  text-wrap: pretty;
+}
+
+/* A drop cap opens the one paragraph that carries the argument. The values are
+   tuned to Newsreader specifically and will need re-tuning if the face changes.
+   ::first-letter also swallows an opening quote mark, so never open that
+   paragraph with one. */
+.lede::first-letter {
+  font-family: var(--font-display);
+  float: left;
+  font-size: 3.4em;
+  line-height: 0.82;
+  font-weight: 400;
+  padding-right: 0.08em;
+  padding-top: 0.02em;
+}
+
+/* Hanging punctuation is Safari-only. Used as pure enhancement: Safari readers
+   get the better setting, nobody else can tell it is missing. */
+.hang {
+  hanging-punctuation: first last;
+}
+
+/* ---------------------------------------------------------------------------
+   Motion
+
+   Written opt-in, so the reduced-motion path is the default rather than an
+   override. Nothing animates on load — the page is typeset, it arrives
+   finished. The only ambient motion in the entire site is a margin note
+   setting as it enters the reading zone, once, and never again.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .note-sets {
+      animation: note-set linear both;
+      animation-timeline: view();
+      animation-range: entry 8% entry 42%;
+    }
+  }
+}
+
+@keyframes note-set {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .accent-root,
-  .accent-root * {
-    transition-duration: 1ms !important;
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
-  }
-}
-
-/* ---- Utilities ---------------------------------------------------------- */
-.text-balance {
-  text-wrap: balance;
-}
-
-/* No mix-blend-mode: it recomposites the whole viewport every scroll frame.
-   A static fixed layer is composited once and stays cheap. */
-.grain {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.022;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-.grid-fade {
-  background-image: linear-gradient(to right, var(--color-line-soft) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-line-soft) 1px, transparent 1px);
-  background-size: 64px 64px;
-  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 30%, transparent 75%);
 }

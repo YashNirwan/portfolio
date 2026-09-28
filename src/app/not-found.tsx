@@ -1,27 +1,40 @@
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { Spread, Note } from "@/components/spread";
 
 export default function NotFound() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      <p className="font-mono text-sm uppercase tracking-[0.25em] text-accent">Error 404</p>
-      <h1 className="mt-6 font-display text-6xl font-semibold tracking-tight text-text sm:text-8xl">
-        Shipped to the
-        <br />
-        wrong environment.
-      </h1>
-      <p className="mt-6 max-w-md text-lg text-text-dim">
-        This page doesn&rsquo;t exist, or it&rsquo;s still in my backlog. Either way, the work is
-        back home.
-      </p>
-      <Link
-        href="/"
-        className="mt-9 inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium text-ink transition-transform hover:-translate-y-0.5"
-        style={{ backgroundColor: "var(--color-accent)" }}
-      >
-        <ArrowLeft className="size-4" />
-        Back to the portfolio
-      </Link>
-    </main>
+    <div className="mx-auto max-w-[72rem] px-5 pb-32 sm:px-8">
+      <header className="border-b border-ink py-4">
+        <Link
+          href="/"
+          className="font-util uppercase no-underline"
+          style={{ fontSize: "var(--text-label)", letterSpacing: "var(--tracking-label)" }}
+        >
+          ← Yash Nirwan
+        </Link>
+      </header>
+
+      <main id="main" className="pt-[18vh]">
+        <Spread
+          note={
+            <Note body="Everything that exists is linked from the homepage. There is no hidden section." />
+          }
+        >
+          <h1
+            className="balance font-display font-normal"
+            style={{
+              fontSize: "clamp(2.2rem, 5vw, 3.4rem)",
+              lineHeight: "1.02",
+              letterSpacing: "var(--tracking-display)",
+            }}
+          >
+            This page isn&rsquo;t in the record.
+          </h1>
+          <p className="mt-6">
+            <Link href="/">Back to the beginning</Link>
+          </p>
+        </Spread>
+      </main>
+    </div>
   );
 }

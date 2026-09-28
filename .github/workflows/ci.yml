@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main, overhaul-margin]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+
+      # A budget nobody measures is a wish. This fails the build if the
+      # gzipped JS on a route crosses the ceiling.
+      #
+      # 170 KB is set just above the Next 16.2 App Router framework floor,
+      # which measured 155 KB gz on a route with zero client components.
+      # It is NOT a target — it is a tripwire for accidentally adding a
+      # heavy dependency. If the floor drops on a future Next, lower this.
+      - name: JS budget
+        run: |
+          LIMIT=174080
+          TOTAL=0
+          for f in .next/static/chunks/*.js; do
+            case "$(basename "$f")" in
+              *polyfill*) continue ;;
+            esac
+            SIZE=$(gzip -c "$f" | wc -c)
+            TOTAL=$((TOTAL + SIZE))
+          done
+          echo "Total gzipped JS: $TOTAL bytes (limit $LIMIT)"
+          if [ "$TOTAL" -gt "$LIMIT" ]; then
+            echo "::error::JS budget exceeded: $TOTAL > $LIMIT"
+            exit 1
+          fi

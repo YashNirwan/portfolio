@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# yashnirwan.com
 
-## Getting Started
+A personal site set like a technical book with the marginalia left in: the main
+column makes the claim, the margin volunteers the doubt.
 
-First, run the development server:
+## Running it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # localhost:3000
+npm run build
+npm run lint
+npx tsc --noEmit
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Where things live
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Path | What |
+| --- | --- |
+| `src/lib/data.ts` | Everything on the homepage — statement, argument, work, record, archive |
+| `src/lib/studies.ts` | Long-form case studies as typed blocks |
+| `src/components/spread.tsx` | The two-track measure, margin notes, and the Claim/Evidence/Cost grammar |
+| `src/components/fore-edge.tsx` | The left rail index. The only client component in the app |
+| `src/app/globals.css` | Design tokens. Read the comments before changing colours |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## House rules
 
-## Learn More
+These exist because the site argues a specific thing, and breaking them makes
+it argue something else.
 
-To learn more about Next.js, take a look at the following resources:
+**Every piece of work states its cost.** The `cost` field is not decorative.
+A win presented without what it cost is the kind of claim this site is
+supposed to be against. If a project has no honest cost line, that is a signal
+the project does not belong on the homepage.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Numbers must be traceable.** Every figure in `data.ts` and `studies.ts` came
+from a repo, a database or a file on disk — not from a résumé. If a number
+moves over time (farewatch is still running), it carries the date it was read.
+Do not round a number up because it reads better.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Two accents, both load-bearing.** Indigo (`--color-pencil`) marks an
+annotation. Red (`--color-strike`) marks something that got worse — a cost, a
+retraction, a disclosure. Nothing else on the site is allowed to be coloured.
+Adding a third accent breaks the encoding.
 
-## Deploy on Vercel
+**Nothing animates on load.** The page is typeset; it arrives finished. The
+only motion in the site is a margin note setting as it enters view, and it is
+gated behind both `prefers-reduced-motion: no-preference` and
+`@supports (animation-timeline: view())`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**The margin must be readable alone.** Someone skimming only the margin column
+should get the whole story in about forty seconds. If a note needs the main
+column to make sense, it is a footnote, not a margin note.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Adding a project
+
+Add an entry to `work` in `src/lib/data.ts`. Set `weight` to control how much
+room it gets (`lead` > `major` > `minor` > `note`). If it deserves a long-form
+study, set `hasStudy: true` and add a matching entry to `studies` in
+`src/lib/studies.ts` — the route and sitemap pick it up automatically.
+
+Content is typed TS rather than MDX on purpose: same expressiveness where it
+matters, no loader configuration against Turbopack, and zero client-side
+JavaScript for the prose.
+
+## Stack
+
+Next 16 App Router, React 19, Tailwind v4 (CSS-first, tokens in `@theme`),
+TypeScript strict. Fully static — every route is prerendered at build. The only
+dependencies are `next`, `react` and `react-dom`; keep it that way unless
+something genuinely earns its bytes.
+
+Deployed on Vercel from `main`.

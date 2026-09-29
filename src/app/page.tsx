@@ -120,7 +120,7 @@ function WorkStrip({
   );
 }
 
-function WorkCard({ item }: { item: (typeof work)[number] }) {
+function WorkCard({ item, wide = true }: { item: (typeof work)[number]; wide?: boolean }) {
   return (
     <article className="par-slow relative flex flex-col">
       <figure className="mb-3" style={{ boxShadow: "var(--shadow-sm)" }}>
@@ -131,13 +131,13 @@ function WorkCard({ item }: { item: (typeof work)[number] }) {
             width={item.image.w}
             height={item.image.h}
             sizes="(max-width: 768px) 100vw, 33vw"
-            className="block aspect-[16/9] h-auto w-full object-cover"
+            className={`block h-auto w-full object-cover ${wide ? "aspect-[16/9]" : "aspect-[5/4]"}`}
             style={{ objectPosition: item.image.position ?? "center" }}
           />
         ) : (
           /* PLACEHOLDER — the reference runs commissioned artwork here. Drop
              an image into the data file and this slot takes it. */
-          <div className="flex aspect-[16/9] items-center justify-center bg-bone">
+          <div className={`flex items-center justify-center bg-bone ${wide ? "aspect-[16/9]" : "aspect-[5/4]"}`}>
             <span className="byline">Artwork to come</span>
           </div>
         )}
@@ -184,8 +184,12 @@ function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
   /* Sized so the word's natural width slightly exceeds the box, which means
      lengthAdjust only ever tightens. Hardcoding a size instead is what made
      MEASURED collide with itself. */
-  const size = BOX / (0.54 * text.length);
-  const height = size * 0.86;
+  /* Gloock carries a tall cap height and long ascenders for its em, so a
+     viewBox sized at 0.86em clipped the letters top and bottom. Sized from
+     the cap box instead, with the type scaled down to keep the same optical
+     weight inside a taller block. */
+  const size = BOX / (0.62 * text.length);
+  const height = size * 1.02;
 
   /* The letters are KNOCKED OUT of the ink, not painted on top of it. That is
      why the reference's banner type carries the paper texture: you are seeing
@@ -206,7 +210,7 @@ function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
       <svg viewBox={`0 0 ${BOX} ${height}`} className="block w-full" role="img" aria-label={word}>
         <text
           x={BOX / 2}
-          y={size * 0.74}
+          y={size * 0.82}
           textAnchor="middle"
           textLength={BOX * 0.985}
           lengthAdjust="spacing"
@@ -226,7 +230,7 @@ function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
 function Identity() {
   return (
     <section className="sheet border-b border-ink pb-10">
-      <div className="ruled grid gap-x-7 gap-y-9 md:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]">
+      <div className="ruled grid gap-x-7 gap-y-9 md:grid-cols-[39fr_61fr]">
         <div>
           <h1 className="heavy text-[clamp(2.4rem,4.6vw,3.6rem)]">{lede.kicker}</h1>
           <p className="pretty mt-5 leading-[1.32]">
@@ -273,9 +277,9 @@ function Identity() {
 function Second() {
   return (
     <section className="sheet py-9">
-      <div className="grid items-end gap-7 md:grid-cols-[minmax(0,1fr)_13rem]">
+      <div className="grid items-end gap-7 md:grid-cols-[78fr_22fr]">
         <Banner word="Measured" bare />
-        <Stamp className="par-slow w-[13rem]" />
+        <Stamp className="par-slow w-full max-w-[15rem] justify-self-end" />
       </div>
     </section>
   );
@@ -360,7 +364,7 @@ function BackPage() {
   return (
     <section className="sheet border-b border-ink py-10">
       <p className="lede pretty max-w-[52ch]">{backPage.standfirst}</p>
-      <dl className="mt-8 grid gap-x-9 gap-y-10 md:grid-cols-2">
+      <dl className="mt-8 grid gap-x-9 gap-y-10 md:grid-cols-[46fr_54fr]">
         {backPage.items.map((item) => (
           <div key={item.term} className="par-slow">
             {item.image ? (
@@ -473,7 +477,7 @@ function RecordSection() {
   return (
     <section className="sheet border-b border-ink py-10">
       <h2 className="heavy text-[32px]">The record</h2>
-      <div className="ruled mt-7 grid gap-x-7 gap-y-8 md:grid-cols-2">
+      <div className="ruled mt-7 grid gap-x-7 gap-y-8 md:grid-cols-[55fr_45fr]">
         {record.roles.map((r) => (
           <div key={r.org}>
             <div className="flex flex-wrap items-baseline justify-between gap-x-4">

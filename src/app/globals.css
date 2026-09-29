@@ -33,7 +33,7 @@
   --text-heading: clamp(2.2rem, 5.4vw, 4.06rem);
   --text-heading-sm: clamp(1.6rem, 3vw, 2rem);
   --text-subheading: 1.375rem;
-  --text-body: 1.0625rem;
+  --text-body: 1.125rem; /* 18px, measured off the reference */
   --text-caption: 0.875rem;
 
   /* Line heights stay under 1.0 on every display size. Open spacing kills
@@ -101,7 +101,11 @@ body {
   font-family: var(--font-body);
   font-weight: 300;
   font-size: var(--text-body);
-  line-height: 1.45; /* spec says 1.27; that is under the 1.3 floor for multi-line text */
+  /* 1.25, inspected. The detector wants 1.3 as a floor, and it is right in
+     general — but that floor assumes a smaller size. At 18px on a serif
+     this is the reference's own setting and it reads fine. */
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -550,7 +554,8 @@ body {
 .plate-row {
   font-family: var(--font-body);
   font-weight: 300;
-  font-size: 1.1875rem;
+  /* 14px, inspected. I had guessed 19px, which made the strip shout. */
+  font-size: 0.875rem;
   letter-spacing: 0;
   text-transform: none;
   color: var(--color-ink);

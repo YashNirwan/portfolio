@@ -35,10 +35,14 @@ const display = Gloock({
    fairly high contrast for a text face, open apertures, slightly odd. Of
    the free faces Newsreader is by far the closest, and it carries real
    optical sizes so it holds together from 15px to 40px. */
+/* No explicit weight array. Newsreader is variable, and asking for a list
+   of weights alongside italic makes the loader emit several font queries,
+   which Turbopack's resolver rejects outright with "next/font/google queries
+   have exactly one entry". Left variable, the full 200-800 range is
+   available and the CSS picks weights from it. */
 const body = Newsreader({
   variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
   style: ["normal", "italic"],
   display: "swap",
 });

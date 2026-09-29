@@ -28,6 +28,14 @@ export const links = {
 
 export const lede = {
   banner: "Nirwan",
+  kicker: "Software engineer!",
+  roles: [
+    "Builds the check,",
+    "not just the thing.",
+    "Based in New York.",
+  ],
+  creed:
+    "A demo tells you something can work once. A measurement tells you how often it works, and what it costs when it does. I would rather hand you the second one, even when the number is worse than the story.",
   headline: "I build the part that decides whether to believe the answer.",
   standfirst:
     "Software engineer in New York. Most of what I make checks something else, and I would rather show you the measurement than the demo.",
@@ -326,3 +334,16 @@ export const portrait = {
   h: 1000,
   caption: "Edinburgh, on the hill with the unfinished Parthenon on it.",
 };
+
+/* --- Stats ----------------------------------------------------------------
+   The reference runs awards here. These are measurements instead, and every
+   one can be checked: the eval is in the repo, the commit count is on
+   GitHub, the rating is on Lichess, the observation count is in a database
+   on my laptop. */
+
+export const stats = [
+  { label: "Hand-labelled", unit: "Clips", value: "49" },
+  { label: "Shipped and still running", unit: "Commits", value: "242" },
+  { label: "Flight prices, since July", unit: "Readings", value: "214,882" },
+  { label: "Same opening, every time", unit: "Games", value: "2,669" },
+];

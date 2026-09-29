@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Playfair_Display, Source_Serif_4 } from "next/font/google";
+import { Bodoni_Moda, Playfair_Display, Source_Serif_4, Pirata_One } from "next/font/google";
 import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 
@@ -22,6 +22,17 @@ const display = Bodoni_Moda({
 const mid = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
+  weight: ["500", "700", "900"],
+  display: "swap",
+});
+
+/* Germgoth substitute. The real site sets its centre nameplate in blackletter
+   — a detail no token file mentions, and one of the things that makes it read
+   as an old paper rather than a modern serif site. Used exactly twice. */
+const gothic = Pirata_One({
+  variable: "--font-pirata",
+  subsets: ["latin"],
+  weight: ["400"],
   display: "swap",
 });
 
@@ -88,7 +99,7 @@ const personSchema = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${mid.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${mid.variable} ${gothic.variable} ${body.variable}`}>
       {/* Browser extensions write attributes onto <body> before React
           hydrates — Grammarly adds data-gr-ext-installed and
           data-new-gr-c-s-check-loaded — which React then reports as a

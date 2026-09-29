@@ -29,6 +29,8 @@ export const links = {
 export const lede = {
   banner: "Nirwan",
   headline: "I build the part that decides whether to believe the answer.",
+  standfirst:
+    "Software engineer in New York. Most of what I make checks something else, and I would rather show you the measurement than the demo.",
   /* Opens the drop-cap column. Plain enough to be understood on one read,
      which the previous version was not. */
   paragraphs: [

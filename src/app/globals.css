@@ -18,6 +18,7 @@
 
   --font-display: var(--font-bodoni);
   --font-mid: var(--font-playfair);
+  --font-gothic: var(--font-pirata);
   --font-body: var(--font-source-serif);
 }
 
@@ -60,6 +61,25 @@
 html {
   scroll-behavior: smooth;
   overflow-x: clip;
+}
+
+/* Paper grain. The real site's parchment is not a flat fill — there is a
+   visible stock texture under everything, and its absence is most of why a
+   correct palette can still read as a web page rather than a printed sheet.
+   One fixed layer, composited once, never repainted on scroll. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 body {
@@ -164,13 +184,59 @@ a:hover {
   padding-inline: var(--gutter);
 }
 
-/* Full-bleed ink banner. width:100% against an overflow-clipped root, never
-   100vw — 100vw includes the scrollbar gutter and causes horizontal scroll. */
+/* The ink banner is INSET, not full-bleed — parchment shows down both sides,
+   and there is a hairline rectangle drawn inside the black. Getting this
+   edge-to-edge was one of the reasons the earlier attempt read as a dark
+   band rather than as a block printed onto a sheet. */
 .ink {
   width: 100%;
   background: var(--color-ink);
   color: var(--color-parchment);
   overflow: hidden;
+  padding: 6px;
+}
+
+.ink > * {
+  border: 1px solid rgba(226, 222, 219, 0.5);
+}
+
+/* Blackletter, used twice: the centre nameplate and the drop cap. */
+.gothic {
+  font-family: var(--font-gothic);
+  font-weight: 400;
+}
+
+/* The real site's drop cap sits in a ruled box rather than floating. */
+.capbox {
+  float: left;
+  margin: 4px 12px 2px 0;
+  width: 58px;
+  height: 58px;
+  border: 1.5px solid var(--color-ink);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-gothic);
+  font-size: 38px;
+  line-height: 1;
+}
+
+/* Vertical hairlines between columns, the way a paper separates stories. */
+.ruled > * + * {
+  border-left: 1px solid rgba(29, 29, 27, 0.32);
+  padding-left: var(--spacing-29, 29px);
+}
+
+/* Heavy condensed caps — the register the real site uses for every section
+   head and project title. Playfair at 900 is the closest free face to
+   Canopee's weight; it is set tight and never below 32px. */
+.heavy {
+  font-family: var(--font-mid);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.028em;
+  line-height: 0.92;
+  transform: scaleX(0.94);
+  transform-origin: left center;
 }
 
 .rule {

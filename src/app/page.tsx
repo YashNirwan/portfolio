@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { profile, links, lede, dispatch, work, backPage, record, archive, portrait } from "@/lib/data";
-import { FIGURES } from "@/components/plates";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -32,7 +31,7 @@ function Masthead() {
     <header className="border-b border-ink">
       <div className="sheet flex items-baseline justify-between gap-4 py-3.5">
         <span className="byline">{profile.location}</span>
-        <span className="byline hidden sm:block">The Yash Nirwan Portfolio</span>
+        <span className="gothic hidden text-[19px] sm:block">The Paper Portfolio</span>
         <a href={`mailto:${links.email}`} className="byline no-underline hover:underline">
           Get in touch
         </a>
@@ -46,45 +45,44 @@ function Masthead() {
    cap is the only flourish permitted in running text. */
 function Lede() {
   return (
-    <section className="sheet pb-10 pt-12 md:pb-14 md:pt-20">
-      <div className="grid gap-x-11 gap-y-8 md:grid-cols-[1.05fr_1fr]">
+    <section className="sheet pb-10 pt-9 md:pb-12 md:pt-11">
+      {/* Three columns with hairlines between them, the way a paper sets its
+          front page. The previous version was two columns with a dead third,
+          which is most of why it read as airy where the reference reads as
+          dense. */}
+      <div className="ruled grid gap-x-7 gap-y-9 md:grid-cols-[minmax(0,17rem)_minmax(0,1fr)_minmax(0,22rem)]">
+        <figure>
+          <Image
+            src={portrait.src}
+            alt={portrait.alt}
+            width={portrait.w}
+            height={portrait.h}
+            sizes="(max-width: 768px) 100vw, 17rem"
+            priority
+            className="block h-auto w-full"
+            style={{ boxShadow: "var(--shadow-sm-2)" }}
+          />
+          <figcaption className="byline mt-2.5">{portrait.caption}</figcaption>
+        </figure>
+
         <div>
-          <h1 className="headline press max-w-[13ch] text-balance">{lede.headline}</h1>
-          <figure className="mt-8 hidden max-w-[19rem] md:block">
-            <Image
-              src={portrait.plate}
-              alt={portrait.alt}
-              width={portrait.w}
-              height={portrait.h}
-              sizes="19rem"
-              priority
-              className="block h-auto w-full"
-              style={{ boxShadow: "rgba(29, 29, 27, 0.2) -5px 3px 6px 0px" }}
-            />
-            <figcaption className="byline mt-2.5">{portrait.caption}</figcaption>
-          </figure>
+          <h1 className="heavy press text-[clamp(2.4rem,5.4vw,4.1rem)]">{lede.headline}</h1>
+          <p className="lede pretty mt-5 max-w-[30ch]">{lede.standfirst}</p>
         </div>
 
-        <div className="max-w-[46ch]">
-          <figure className="mb-6 md:hidden">
-            <Image
-              src={portrait.plate}
-              alt={portrait.alt}
-              width={portrait.w}
-              height={portrait.h}
-              sizes="100vw"
-              priority
-              className="block h-auto w-full"
-            />
-            <figcaption className="byline mt-2">{portrait.caption}</figcaption>
-          </figure>
-          <p className="dropcap pretty mb-4 leading-[1.36]">{lede.paragraphs[0]}</p>
+        <div>
+          <p className="pretty mb-3.5 leading-[1.32]">
+            <span className="capbox" aria-hidden="true">
+              {lede.paragraphs[0].charAt(0)}
+            </span>
+            {lede.paragraphs[0].slice(1)}
+          </p>
           {lede.paragraphs.slice(1).map((p, i) => (
-            <p key={i} className="pretty mb-4 leading-[1.36] last:mb-0">
+            <p key={i} className="pretty mb-3.5 leading-[1.32] last:mb-0">
               {p}
             </p>
           ))}
-          <p className="byline mt-7">{lede.meta}</p>
+          <p className="byline mt-6">{lede.meta}</p>
         </div>
       </div>
     </section>
@@ -110,7 +108,9 @@ function Banner({ word }: { word: string }) {
      tightening produces the near-collision the look depends on. */
   const BOX = 1000;
   const size = BOX / (0.54 * text.length);
-  const height = size * 0.8;
+  /* Room for the full cap height plus the overshoot on round letters. At
+     0.8 the serifs were being sliced off top and bottom. */
+  const height = size * 0.9;
 
   return (
     <div className="ink">
@@ -123,7 +123,7 @@ function Banner({ word }: { word: string }) {
       >
         <text
           x={BOX / 2}
-          y={size * 0.72}
+          y={size * 0.78}
           textAnchor="middle"
           textLength={BOX}
           lengthAdjust="spacing"
@@ -149,7 +149,7 @@ function Work() {
   return (
     <section className="sheet py-11 md:py-14">
       <div className="rule flex flex-wrap items-baseline justify-between gap-3 pt-3">
-        <h2 className="subhead">Selected work</h2>
+        <h2 className="heavy text-[34px]">All work!</h2>
         <p className="byline">Six of them · 2024–2026</p>
       </div>
 
@@ -163,20 +163,36 @@ function Work() {
             id={item.slug}
             className={`relative flex flex-col ${i === 0 ? "lg:col-span-2" : ""}`}
           >
-            {(() => {
-              const Figure = FIGURES[item.slug];
-              return Figure ? (
-                <figure
-                  className="mb-4"
-                  style={{ boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px" }}
+            <figure className="mb-4" style={{ boxShadow: "var(--shadow-sm)" }}>
+              {item.image ? (
+                <Image
+                  src={item.image.src}
+                  alt={item.image.alt}
+                  width={item.image.w}
+                  height={item.image.h}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className={`block h-auto w-full object-cover ${
+                    i === 0 ? "aspect-[16/8]" : "aspect-[4/3]"
+                  }`}
+                  style={{ objectPosition: item.image.position ?? "center" }}
+                />
+              ) : (
+                /* PLACEHOLDER. The reference site runs commissioned digital
+                   paintings here and they are most of why it feels rich. I am
+                   not drawing them — swap in artwork or a photograph and this
+                   slot takes it at any aspect. */
+                <div
+                  className={`flex items-center justify-center bg-bone ${
+                    i === 0 ? "aspect-[16/8]" : "aspect-[4/3]"
+                  }`}
                 >
-                  <Figure />
-                </figure>
-              ) : null;
-            })()}
+                  <span className="byline">Artwork to come</span>
+                </div>
+              )}
+            </figure>
 
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-              <h3 className="subhead">
+              <h3 className="heavy text-[26px]">
                 {item.hasStudy ? (
                   /* The whole card is the link. The heading anchor is
                      stretched over the article so a click lands anywhere on
@@ -297,7 +313,7 @@ function RecordSection() {
   return (
     <section className="sheet py-11 md:py-14">
       <div className="rule flex flex-wrap items-baseline justify-between gap-3 pt-3">
-        <h2 className="subhead">The record</h2>
+        <h2 className="heavy text-[34px]">The record</h2>
         <p className="byline">Where I have actually worked</p>
       </div>
 
@@ -344,7 +360,7 @@ function ArchiveSection() {
   return (
     <section className="sheet pb-14">
       <div className="rule flex flex-wrap items-baseline justify-between gap-3 pt-3">
-        <h2 className="subhead">Also on the shelf</h2>
+        <h2 className="heavy text-[34px]">Also on the shelf</h2>
         <p className="byline">Coursework · 2025</p>
       </div>
 

@@ -54,7 +54,7 @@ export function Lateral({ children }: { children: React.ReactNode }) {
       aria-label="Project catalogue, scrolls sideways"
       className="h-svh overflow-x-auto overflow-y-hidden"
     >
-      <div className="flex h-full w-max items-stretch">{children}</div>
+      <div className="shelf flex h-full w-max items-stretch">{children}</div>
     </div>
   );
 }

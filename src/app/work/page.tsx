@@ -27,7 +27,7 @@ export default function WorkIndex() {
             className="gothic self-center text-[17px]"
             style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
           >
-            The Paper Portfolio
+            The Second Opinion
           </span>
           <span
             className="byline byline-caps"
@@ -45,7 +45,7 @@ export default function WorkIndex() {
           <Link href="/" className="byline no-underline hover:underline">
             ← The front page
           </Link>
-          <span className="gothic text-[17px]">The Paper Portfolio</span>
+          <span className="gothic text-[17px]">The Second Opinion</span>
         </div>
       </header>
 
@@ -132,7 +132,7 @@ function Spine({ item }: { item: (typeof work)[number] }) {
      is what lets it fall open into the project page rather than cutting. */
   return (
     <ViewTransition name={`folder-${item.slug}`}>
-      <article className="group relative h-full w-[11rem] shrink-0 overflow-hidden border-r border-ink sm:w-[13.5rem]">
+      <article className="leaf group relative h-full w-[11rem] shrink-0 overflow-hidden border-r border-ink bg-parchment sm:w-[13.5rem]">
         <div className="absolute inset-0 opacity-0 transition-opacity duration-500 ease-out group-focus-within:opacity-100 group-hover:opacity-100">
           {item.image ? (
             <Image

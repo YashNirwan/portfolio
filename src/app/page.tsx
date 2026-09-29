@@ -15,6 +15,7 @@ import {
 } from "@/lib/data";
 import { Stamp } from "@/components/stamp";
 import { Perforated } from "@/components/perforated";
+import { Spinner } from "@/components/spinner";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -25,6 +26,7 @@ export const metadata = { alternates: { canonical: "/" } };
 export default function Home() {
   return (
     <>
+      <Spinner masthead="The Second Opinion" />
       <Masthead />
       <main id="main" tabIndex={-1}>
         <WorkStrip
@@ -59,7 +61,7 @@ function Masthead() {
     <header className="border-b border-ink">
       <div className="sheet flex items-baseline justify-between gap-4 py-3.5">
         <span className="byline byline-caps">{profile.location}</span>
-        <span className="gothic hidden text-[19px] sm:block">The Paper Portfolio</span>
+        <span className="gothic hidden text-[19px] sm:block">The Second Opinion</span>
         <Link href="/work" className="byline no-underline hover:underline">
           All work
         </Link>

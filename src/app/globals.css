@@ -61,6 +61,9 @@
 html {
   scroll-behavior: smooth;
   overflow-x: clip;
+  /* The stock colour lives on html, not body, so the grain layer can sit
+     behind body content at a negative z-index and still be visible. */
+  background-color: var(--color-parchment);
 }
 
 /* Paper grain. The real site's parchment is not a flat fill — there is a
@@ -71,7 +74,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
   opacity: 1;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.9'/%3E%3C/svg%3E");
@@ -80,13 +83,18 @@ body::before {
   mix-blend-mode: multiply;
 }
 
-body > * {
-  position: relative;
-  z-index: 1;
-}
+/* NO `body > *` rule here.
+
+   Lifting body's children with `position: relative` is the obvious way to
+   get them above a grain layer, and it is a trap: that rule is un-layered,
+   and un-layered CSS beats anything inside @layer utilities no matter the
+   specificity. It silently overrode `position: fixed` on the catalogue rail,
+   which became a 305px block in normal flow and pushed the whole shelf 330px
+   down the page. The grain sits at z-index -1 against html's background
+   instead, so nothing needs lifting. */
 
 body {
-  background-color: var(--color-parchment);
+  background-color: transparent;
   color: var(--color-ink);
   font-family: var(--font-body);
   font-weight: 300;
@@ -186,10 +194,12 @@ a:hover {
 /* ---------------------------------------------------------------------------
    Structure
    --------------------------------------------------------------------------- */
+/* Full bleed. Measured against the reference at a 1920 viewport: its
+   display banner is 1920px wide with zero margin. The token file's
+   "max-width: 1440px" is wrong about its own subject, the same way its
+   "theme: light" is. Only the gutter holds content off the edge. */
 .sheet {
   width: 100%;
-  max-width: var(--page-max);
-  margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
@@ -216,16 +226,20 @@ a:hover {
 }
 
 /* The real site's drop cap sits in a ruled box rather than floating. */
+/* Reversed out of a solid block: ink square, parchment letter. The earlier
+   version was an outlined box with a dark letter inside, which is a
+   different thing entirely and read as a form field. */
 .capbox {
   float: left;
-  margin: 4px 12px 2px 0;
-  width: 58px;
-  height: 58px;
-  border: 1.5px solid var(--color-ink);
+  margin: 5px 14px 2px 0;
+  width: 62px;
+  height: 62px;
+  background: var(--color-ink);
+  color: var(--color-parchment);
   display: grid;
   place-items: center;
   font-family: var(--font-gothic);
-  font-size: 38px;
+  font-size: 42px;
   line-height: 1;
 }
 
@@ -423,4 +437,75 @@ a:hover {
 
 @keyframes ticker {
   to { transform: translateX(-50%); }
+}
+
+/* ---------------------------------------------------------------------------
+   The open
+
+   A paper spins in from a point, unwinds and settles — the newspaper montage
+   shot. Two nested animations: the stage fades out at the end so the page
+   underneath is simply there, and the paper itself does the spinning, so the
+   fade never fights the rotation.
+   --------------------------------------------------------------------------- */
+.spin-stage {
+  animation: spin-stage 1750ms ease-out both;
+  perspective: 1200px;
+}
+
+.spin-paper {
+  animation: spin-paper 1400ms cubic-bezier(0.2, 0.82, 0.24, 1) both;
+  transform-origin: center;
+}
+
+@keyframes spin-paper {
+  0% {
+    transform: scale(0.06) rotate(-760deg);
+    filter: blur(1px);
+  }
+  70% {
+    transform: scale(1.04) rotate(8deg);
+    filter: blur(0);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes spin-stage {
+  0%,
+  72% {
+    opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The page turn
+
+   A spine on the shelf lifts like a page being turned: it hinges on its
+   left edge, so the right side comes toward you. Small angle on purpose —
+   a full flip reads as a card trick, not as paper.
+   --------------------------------------------------------------------------- */
+.shelf {
+  perspective: 1600px;
+}
+
+.leaf {
+  transform-origin: left center;
+  transition:
+    transform 560ms cubic-bezier(0.2, 0.82, 0.24, 1),
+    box-shadow 560ms ease;
+  will-change: transform;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .leaf:hover,
+  .leaf:focus-within {
+    transform: rotateY(-13deg) translateZ(30px);
+    box-shadow: -24px 0 46px -18px rgba(29, 29, 27, 0.5);
+  }
 }

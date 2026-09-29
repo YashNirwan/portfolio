@@ -112,7 +112,7 @@ export const work: Work[] = [
     image: {
       /* PLACEHOLDER. On-palette and labelled with the subject so it is
          obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+warehouse+floor",
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+warehouse+floor",
       alt: "Placeholder marking where artwork of a warehouse floor belongs",
       w: 1200,
       h: 675,
@@ -135,7 +135,7 @@ export const work: Work[] = [
     image: {
       /* PLACEHOLDER. On-palette and labelled with the subject so it is
          obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+legacy+terminal",
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+legacy+terminal",
       alt: "Placeholder marking where artwork of an old computer terminal belongs",
       w: 1200,
       h: 675,
@@ -159,7 +159,7 @@ export const work: Work[] = [
     image: {
       /* PLACEHOLDER. On-palette and labelled with the subject so it is
          obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=Rajasthani+homeware",
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=Rajasthani+homeware",
       alt: "Placeholder marking where artwork of handmade Rajasthani homeware belongs",
       w: 1200,
       h: 675,
@@ -183,7 +183,7 @@ export const work: Work[] = [
     image: {
       /* PLACEHOLDER. On-palette and labelled with the subject so it is
          obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+record+that+may+not+exist",
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+record+that+may+not+exist",
       alt: "Placeholder marking where artwork about music belongs",
       w: 1200,
       h: 675,
@@ -204,7 +204,7 @@ export const work: Work[] = [
     image: {
       /* PLACEHOLDER. On-palette and labelled with the subject so it is
          obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+fare+that+will+not+settle",
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+fare+that+will+not+settle",
       alt: "Placeholder marking where artwork about air travel belongs",
       w: 1200,
       h: 675,
@@ -226,7 +226,7 @@ export const work: Work[] = [
     image: {
       /* PLACEHOLDER. On-palette and labelled with the subject so it is
          obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+Bronx+tenement",
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+Bronx+tenement",
       alt: "Placeholder marking where artwork of a Bronx apartment building belongs",
       w: 1200,
       h: 675,
@@ -248,7 +248,7 @@ export const backPage = {
       unit: "mostly the nineties",
       image: {
         /* PLACEHOLDER. Replace src with real artwork. */
-        src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+cinema+marquee",
+        src: "https://placehold.co/900x600/cdc6be/1d1d1b.png?font=playfair-display&text=A+cinema+marquee",
         alt: "Placeholder marking where artwork about Hong Kong cinema belongs",
         w: 900,
         h: 600,
@@ -260,7 +260,7 @@ export const backPage = {
       unit: "exhibit A: Stay, 2005",
       image: {
         /* PLACEHOLDER. Replace src with real artwork. */
-        src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+ticket+stub",
+        src: "https://placehold.co/900x600/cdc6be/1d1d1b.png?font=playfair-display&text=A+ticket+stub",
         alt: "Placeholder marking where artwork about a film ticket belongs",
         w: 900,
         h: 600,
@@ -273,7 +273,7 @@ export const backPage = {
       href: "https://lichess.org/@/YashNirwan",
       image: {
         /* PLACEHOLDER. Replace src with real artwork. */
-        src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+board,+move+four",
+        src: "https://placehold.co/900x600/cdc6be/1d1d1b.png?font=playfair-display&text=A+board,+move+four",
         alt: "Placeholder marking where artwork of a chessboard belongs",
         w: 900,
         h: 600,
@@ -285,7 +285,7 @@ export const backPage = {
       unit: "which is why farewatch exists",
       image: {
         /* PLACEHOLDER. Replace src with real artwork. */
-        src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+departure+board",
+        src: "https://placehold.co/900x600/cdc6be/1d1d1b.png?font=playfair-display&text=A+departure+board",
         alt: "Placeholder marking where artwork of a departure board belongs",
         w: 900,
         h: 600,

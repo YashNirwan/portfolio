@@ -89,7 +89,16 @@ const personSchema = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${display.variable} ${mid.variable} ${body.variable}`}>
-      <body className="min-h-svh">
+      {/* Browser extensions write attributes onto <body> before React
+          hydrates — Grammarly adds data-gr-ext-installed and
+          data-new-gr-c-s-check-loaded — which React then reports as a
+          hydration mismatch the app cannot fix.
+
+          This is narrower than it looks: suppressHydrationWarning only
+          applies one level deep, to this element's own attributes and text.
+          It does not reach any child, so it cannot hide a real hydration bug
+          inside the tree. */}
+      <body className="min-h-svh" suppressHydrationWarning>
         <a
           href="#main"
           className="byline sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-parchment"

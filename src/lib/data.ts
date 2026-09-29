@@ -281,8 +281,8 @@ export const backPage = {
       line: "I never learned any theory. I have opened with the London 2,669 times and worked out everything after move four as it happened, which has got me this far and will presumably stop working at some point.",
     },
     {
-      term: "Flight prices",
-      unit: "the one that got out of hand",
+      term: "Going places cheaply",
+      unit: "which is why farewatch exists",
       image: {
         /* PLACEHOLDER. Replace src with real artwork. */
         src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+departure+board",
@@ -290,7 +290,7 @@ export const backPage = {
         w: 900,
         h: 600,
       },
-      line: "I wrote something to watch six routes out of New York and never turned it off. It has taken 214,882 readings since July and sent me 442 alerts. I have booked two flights off it and I check the graph most mornings, which I am aware is not normal.",
+      line: "I like going places and I graduated broke, which is a bad combination. So I wrote something to watch six routes out of New York and tell me when a fare drops far enough below its own baseline to be worth taking. 214,882 readings since July. I have booked two of them.",
     },
   ],
 };

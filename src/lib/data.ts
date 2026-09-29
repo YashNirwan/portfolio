@@ -313,6 +313,11 @@ export const archive: { title: string; year: string; line: string; href: string 
    downloading pixels it throws away. */
 
 export const portrait = {
+  /* The halftone, not the photograph. A dot screen in one ink is how a
+     broadsheet actually printed a photo, and it puts the portrait in the
+     same palette as everything else instead of being the one colour object
+     on a monochrome page. The original stays in the repo. */
+  plate: "/plate-portrait.png",
   src: "/portrait-4x5.jpg",
   alt: "Yash Nirwan on Calton Hill in Edinburgh, in a sherpa jacket and beanie, with the National Monument behind him",
   w: 800,

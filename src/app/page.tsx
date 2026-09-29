@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { profile, links, lede, dispatch, work, backPage, record, archive, portrait } from "@/lib/data";
+import { FIGURES } from "@/components/plates";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -51,7 +52,7 @@ function Lede() {
           <h1 className="headline press max-w-[13ch] text-balance">{lede.headline}</h1>
           <figure className="mt-8 hidden max-w-[19rem] md:block">
             <Image
-              src={portrait.src}
+              src={portrait.plate}
               alt={portrait.alt}
               width={portrait.w}
               height={portrait.h}
@@ -67,7 +68,7 @@ function Lede() {
         <div className="max-w-[46ch]">
           <figure className="mb-6 md:hidden">
             <Image
-              src={portrait.src}
+              src={portrait.plate}
               alt={portrait.alt}
               width={portrait.w}
               height={portrait.h}
@@ -162,24 +163,17 @@ function Work() {
             id={item.slug}
             className={`relative flex flex-col ${i === 0 ? "lg:col-span-2" : ""}`}
           >
-            {item.image ? (
-              <figure className="mb-4 bg-bone">
-                <Image
-                  src={item.image.src}
-                  alt={item.image.alt}
-                  width={item.image.w}
-                  height={item.image.h}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className={`block h-auto w-full object-cover ${
-                    i === 0 ? "aspect-[16/7]" : "aspect-[4/3]"
-                  }`}
-                  style={{
-                    boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px",
-                    objectPosition: item.image.position ?? "center",
-                  }}
-                />
-              </figure>
-            ) : null}
+            {(() => {
+              const Figure = FIGURES[item.slug];
+              return Figure ? (
+                <figure
+                  className="mb-4"
+                  style={{ boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px" }}
+                >
+                  <Figure />
+                </figure>
+              ) : null;
+            })()}
 
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
               <h3 className="subhead">
@@ -200,8 +194,18 @@ function Work() {
               </h3>
               {item.isNew ? (
                 <span
-                  className="byline bg-ember px-1.5 py-0.5 text-parchment"
-                  style={{ borderRadius: "2.88px" }}
+                  className="px-1.5 py-0.5"
+                  style={{
+                    borderRadius: "2.88px",
+                    background: "var(--color-ember)",
+                    /* Set here rather than via the byline class, whose
+                       charcoal colour was winning and leaving the badge
+                       text nearly invisible on its own background. */
+                    color: "var(--color-parchment)",
+                    fontSize: "11px",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
                 >
                   New
                 </span>

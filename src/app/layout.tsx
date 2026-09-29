@@ -1,29 +1,37 @@
 import type { Metadata } from "next";
-import { Archivo, Literata } from "next/font/google";
+import { Bodoni_Moda, Playfair_Display, Source_Serif_4 } from "next/font/google";
 import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 
-/* The `wdth` axis has to be requested explicitly — next/font ships only
-   `wght` by default to keep the file small. Without it the expanded setting
-   this whole design rests on silently does nothing, which is exactly the kind
-   of failure that looks like a taste problem rather than a config one.
+/* Canopee substitute. A didone's hairline-to-stem contrast is invisible at
+   17px and spectacular at 300px, which is the only reason display type this
+   large has a reason to exist. `opsz` is requested explicitly so the face
+   actually redraws for size rather than being scaled up.
 
-   `display: optional` because Archivo renders the LCP line on every route,
-   and a headline that repaints mid-view is worse than one first visit in the
-   fallback. */
-const display = Archivo({
-  variable: "--font-archivo",
+   `display: optional` because this sets the LCP banner, and a banner that
+   repaints mid-view is worse than one first visit in the fallback. */
+const display = Bodoni_Moda({
+  variable: "--font-bodoni",
   subsets: ["latin"],
-  axes: ["wdth"],
+  axes: ["opsz"],
   display: "optional",
 });
 
-/* Drawn for Google Books: warm, sturdy, low-contrast, and engineered for long
-   reading at low contrast — which is precisely what body copy sitting on a
-   crimson field has to survive. */
-const body = Literata({
-  variable: "--font-literata",
+/* Domaine substitute — the bridge between the banner's drama and the body's
+   restraint. Used for headlines and card titles, never for running text. */
+const mid = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  display: "swap",
+});
+
+/* Editorial New substitute. Weight 300 only, per the spec: heavier weights
+   break the editorial restraint that holds the whole page together. */
+const body = Source_Serif_4({
+  variable: "--font-source-serif",
+  subsets: ["latin"],
+  weight: ["300", "400"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -80,11 +88,11 @@ const personSchema = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${mid.variable} ${body.variable}`}>
       <body className="min-h-svh">
         <a
           href="#main"
-          className="trim sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-bone focus:px-4 focus:py-2 focus:text-iron"
+          className="byline sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-parchment"
         >
           Skip to content
         </a>

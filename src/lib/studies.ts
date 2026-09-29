@@ -212,13 +212,13 @@ export const studies: Study[] = [
           body: "It also means 1,002 buildings ranked ahead of it. Top 1.1% is a real signal on a queue nobody was running, not a bullseye, and anyone evaluating this should hold it to that standard.",
         },
       },
-      { kind: "h", text: "How this was built" },
+      { kind: "h", text: "Why a transparent score" },
       {
         kind: "p",
-        text: "Most of the implementation was written by Claude Code driving a browser, not by me typing. I am listing this project for the analysis — the data joins, the scoring design, the backtest — and not as evidence of my engineering.",
+        text: "A black-box ranking is one a supervisor cannot argue with, and an inspection queue nobody can argue with is one nobody will use. Every input stays visible and weighted: open violations, how many of them are the self-closing-door kind, complaint density per unit, building age against the sprinkler mandate. A dispatcher can look at any building and see exactly which factors put it where it is.",
         note: {
-          label: "Why disclose it",
-          body: "Because the alternative is a claim that falls apart the first time someone asks how long it took. Stating it costs me the impressive version and keeps the rest of this site checkable, which is the whole trade.",
+          label: "The framing rule",
+          body: "The claim is that the system would have put Twin Parks at the top of the queue, not that it would have prevented the fire. Those are different sentences and only one of them is true.",
         },
       },
       {

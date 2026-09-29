@@ -1,81 +1,56 @@
 @import "tailwindcss";
 
 /* ===========================================================================
-   THE FIELD
+   Broadsheet — built to DESIGN.md.
 
-   There is no background colour on this site — only foregrounds. Every
-   section seizes a full screen of saturated ink, and sections meet on a hard
-   horizontal edge with no transition, the way two plates meet on a press.
-
-   Two choices that look like mistakes and are not:
-
-   1. No neutral ground anywhere. Bone exists as type and as small trimmed
-      inserts, never as a page background. Its rarity is the point.
-
-   2. The cuts do not animate. A crossfade between colour fields would turn
-      printed plates back into a scrolling web page, which is the one thing
-      this system is built to avoid.
+   Warm parchment stock, near-black ink, one ember accent. Serif throughout;
+   the serif mix is load-bearing and no sans appears anywhere. Depth comes
+   from contrast, never shadow. Full-width ink banners at display sizes are
+   the system's signature and the page is built around them.
    =========================================================================== */
 
 @theme {
-  /* --- The fields ------------------------------------------------------- */
-  /* Vat indigo: violet-leaning, not navy, and deliberately not the blue every
-     framework ships as its primary. */
-  --color-indigo: #232c63;
-  /* Madder red: a COLD, blue-shifted crimson. Terracotta is warm and orange
-     and is the single most common generated-design accent in circulation.
-     Putting a blue-red where that palette puts an orange-red is the most
-     legible anti-default move available here. */
-  --color-madder: #a3242f;
-  --color-madder-deep: #7a1a23; /* the one hard shadow, madder's own darker tone */
-  /* Warm near-black. Gives light UI screenshots a mount so they stop reading
-     as holes punched in the page. */
-  --color-iron: #1a1715;
+  --color-parchment: #e2dedb;
+  --color-bone: #cdc6be;
+  --color-ink: #1d1d1b;
+  --color-charcoal: #69645f;
+  --color-ember: #c03f13;
 
-  /* --- Type and trim ----------------------------------------------------- */
-  --color-bone: #efe9de;
-  /* The hot note. Five appearances site-wide, no more. Gold, not clay. */
-  --color-turmeric: #e0a82e;
-  /* The only neutral in the system. Legible on iron, never on madder. */
-  --color-ash: #9a9287;
-
-  --font-display: var(--font-archivo);
-  --font-body: var(--font-literata);
+  --font-display: var(--font-bodoni);
+  --font-mid: var(--font-playfair);
+  --font-body: var(--font-source-serif);
 }
 
 :root {
-  /* Display sizes scale with the viewport rather than collapsing to a body
-     size on small screens. At 390px, 15vw is 58px — still 3× the body. The
-     failure mode for broadsheet type on mobile is letting it become an h1. */
-  --text-hero: clamp(3rem, 11vw, 9.5rem);
-  --text-field: clamp(2.4rem, 8vw, 6.5rem);
-  --text-project: clamp(1.9rem, 4vw, 3.4rem);
-  --text-figure: clamp(2.8rem, 6vw, 5rem);
-  /* List rows, not hero moments. Six of these at figure scale overflow their
-     column and shout; this is the step that still reads as display type
-     against 17px body without taking the whole plate. */
-  --text-row: clamp(1.8rem, 3.2vw, 2.75rem);
-
-  --leading-hero: 0.82;
-  --leading-field: 0.86;
-
-  /* Tracking in em, never px, so it holds identically at 58px and 208px. */
-  --tracking-display: -0.03em;
-
-  --text-lede: 1.3rem;
+  /* Display sizes. Banner type has to clear 122px or the system loses the
+     thing that defines it, so the clamp floor is set by what a 390px screen
+     can hold rather than by caution. */
+  --text-banner: clamp(4.5rem, 26vw, 27rem);
+  --text-display: clamp(3rem, 12vw, 7.6rem);
+  --text-heading: clamp(2.2rem, 5.4vw, 4.06rem);
+  --text-heading-sm: clamp(1.6rem, 3vw, 2rem);
+  --text-subheading: 1.375rem;
   --text-body: 1.0625rem;
-  --text-trim: 0.8125rem;
+  --text-caption: 0.875rem;
 
+  /* Line heights stay under 1.0 on every display size. Open spacing kills
+     the compressed woodblock feel that the whole look depends on. */
+  --leading-banner: 0.73;
+  --leading-display: 0.79;
+  --leading-heading: 0.91;
+
+  --tracking-banner: -0.05em;
+  --tracking-display: -0.042em;
+  --tracking-heading: -0.032em;
+
+  --page-max: 90rem; /* 1440px */
+  --section-gap: 2.6875rem; /* 43px */
   --gutter: 1.25rem;
-  /* Content stops before the viewport does. Without this the columns sit
-     hard left on a wide screen with a third of the page empty to the right,
-     which reads as unbalanced rather than as deliberate. */
-  --hold: 76rem;
 }
 
 @media (min-width: 768px) {
   :root {
-    --gutter: 3.5rem;
+    --gutter: 2.6875rem;
   }
 }
 
@@ -84,125 +59,132 @@
    --------------------------------------------------------------------------- */
 html {
   scroll-behavior: smooth;
-  /* clip, not hidden: hidden silently breaks position:sticky on ancestors.
-     Full-bleed uses width:100% against this, never 100vw, because 100vw
-     includes the scrollbar gutter and causes horizontal scroll on desktop. */
   overflow-x: clip;
 }
 
 body {
-  background-color: var(--color-iron);
-  color: var(--color-bone);
+  background-color: var(--color-parchment);
+  color: var(--color-ink);
   font-family: var(--font-body);
+  font-weight: 300;
   font-size: var(--text-body);
-  line-height: 1.65;
+  line-height: 1.27;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background: var(--color-turmeric);
-  color: var(--color-iron);
+  background: var(--color-ember);
+  color: var(--color-parchment);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-turmeric);
+  outline: 2px solid var(--color-ember);
   outline-offset: 3px;
 }
 
-/* ---------------------------------------------------------------------------
-   Display type
+/* Editorial hyperlinks stay as text: no fill, no button shape. */
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+a:hover {
+  color: #000;
+}
 
-   Archivo is set EXPANDED. Almost everyone reaching for newspaper drama
-   reaches for condensed; expanded does something condensed cannot, which is
-   fill a colour field edge to edge so the type and the field read as one
-   object.
+/* ---------------------------------------------------------------------------
+   Type roles
    --------------------------------------------------------------------------- */
 .display {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-variation-settings: "wdth" 120;
+  font-weight: 400;
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
-  /* Deliberately NOT nowrap. Expanded Archivo at 100px is wide enough that a
-     five-word line overruns any viewport, and nowrap turns that into
-     horizontal scroll rather than a wrap. Display lines are authored short
-     and broken by hand; this is the safety net for when they are not.
-     hyphens stay off — a hyphenated masthead is fatal. */
-  hyphens: none;
-  overflow-wrap: normal;
 }
 
-/* The hero is short enough to hold a line, and must never break. */
-.display-hold {
-  text-wrap: nowrap;
+.headline {
+  font-family: var(--font-mid);
+  font-weight: 500;
+  font-size: var(--text-heading);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
 }
 
-/* At 390px, wdth 120 gives about four characters per line. Dropping the width
-   axis keeps the face recognisably wide while staying readable — which is the
-   entire reason a variable width axis was worth specifying. */
-@media (max-width: 640px) {
-  .display {
-    font-variation-settings: "wdth" 104;
-  }
+.subhead {
+  font-family: var(--font-mid);
+  font-weight: 500;
+  font-size: var(--text-heading-sm);
+  line-height: 1.11;
+  letter-spacing: -0.03em;
 }
 
-.trim {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: var(--text-trim);
-  letter-spacing: 0.02em;
+/* Small caps metadata rows — the byline voice. */
+.byline {
+  font-size: var(--text-caption);
+  line-height: 1.18;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-charcoal);
 }
 
-.tabular {
-  font-variant-numeric: tabular-nums lining-nums;
+.lede {
+  font-size: var(--text-subheading);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
 }
 
 .pretty {
   text-wrap: pretty;
 }
 
+.tabular {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* The drop cap is the only typographic flourish permitted in body text. */
+.dropcap::first-letter {
+  font-family: var(--font-display);
+  float: left;
+  font-size: 5.1em;
+  line-height: 0.76;
+  padding-right: 0.06em;
+  padding-top: 0.04em;
+  font-weight: 400;
+}
+
 /* ---------------------------------------------------------------------------
-   Fields and cuts
+   Structure
    --------------------------------------------------------------------------- */
-/* svh, not vh: vh includes the collapsing mobile toolbar, which produces a
-   visible jump mid-scroll and ruins a hard colour cut. */
-.field {
+.sheet {
   width: 100%;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-block: clamp(3rem, 7vh, 5rem);
-}
-
-.plate {
-  width: 100%;
-  padding-block: clamp(3rem, 7vh, 5.5rem);
-}
-
-/* Every plate holds its content to the same measure and the same left edge,
-   so the hard colour cuts are the only thing that changes between them. */
-.hold {
-  width: 100%;
-  max-width: var(--hold);
+  max-width: var(--page-max);
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
-/* ---------------------------------------------------------------------------
-   Motion
+/* Full-bleed ink banner. width:100% against an overflow-clipped root, never
+   100vw — 100vw includes the scrollbar gutter and causes horizontal scroll. */
+.ink {
+  width: 100%;
+  background: var(--color-ink);
+  color: var(--color-parchment);
+  overflow: hidden;
+}
 
-   One orchestrated load, then stillness. Written opt-in so that the reduced
-   path is the default rather than an override.
+.rule {
+  border-top: 1px solid var(--color-ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — one press on load, nothing else. No gradients, no blur, no
+   scroll-triggered reveals. This is an 1890s broadsheet.
    --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
   .press {
-    animation: press 520ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
-    /* A wipe rather than a fade: the line arrives like a stamp being pressed
-       rather than a thing being faded in. */
+    animation: press 600ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
     clip-path: inset(0 100% 0 0);
-  }
-  .press-2 {
-    animation-delay: 300ms;
   }
 }
 
@@ -215,16 +197,5 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-}
-
-/* The one recurring interaction: a project title physically widens into its
-   field on hover. Variable-axis, user-triggered, zero bytes. */
-.widen {
-  transition: font-variation-settings 200ms ease;
-}
-@media (hover: hover) {
-  .widen:hover {
-    font-variation-settings: "wdth" 125;
   }
 }

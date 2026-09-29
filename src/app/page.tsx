@@ -1,101 +1,208 @@
 import Image from "next/image";
 import Link from "next/link";
-import { statement, forklift, bio, work, notWork, links } from "@/lib/data";
+import { profile, links, lede, dispatch, work, backPage } from "@/lib/data";
 
 export const metadata = { alternates: { canonical: "/" } };
 
-/* Six plates. Colour is the only section device: indigo, bone, madder, iron,
-   iron, indigo — closing on the colour it opened with. */
 export default function Home() {
   return (
-    <main id="main" tabIndex={-1}>
+    <>
       <Masthead />
-      <Forklift />
-      <Bio />
-      <Work />
-      <NotWork />
-      <Contact />
-    </main>
+      <main id="main" tabIndex={-1}>
+        <Lede />
+        <Banner word={lede.banner} />
+        <Work />
+        <Dispatch />
+        <Banner word="Back page" />
+        <BackPage />
+      </main>
+      <Colophon />
+    </>
   );
 }
 
-/* --- Plate five: iron ------------------------------------------------------
-   Four projects, each in the same grammar: a claim, the detail that supports
-   it, and a turn — the thing that surprised me, cost me something, or that I
-   would rather not have to say. The turn is set in turmeric-free ash and
-   never labelled "cost", because labelling it makes the page apologise. */
+/* --- Editorial header bar -------------------------------------------------
+   Location left, title centred, contact right, hairline underneath. The
+   newspaper's nameplate strip. */
+function Masthead() {
+  return (
+    <header className="border-b border-ink">
+      <div className="sheet flex items-baseline justify-between gap-4 py-3.5">
+        <span className="byline">{profile.location}</span>
+        <span className="byline hidden sm:block">The Yash Nirwan Portfolio</span>
+        <a href={`mailto:${links.email}`} className="byline no-underline hover:underline">
+          Get in touch
+        </a>
+      </div>
+    </header>
+  );
+}
+
+/* --- The lede -------------------------------------------------------------
+   Two columns: a Playfair headline left, drop-capped body right. The drop
+   cap is the only flourish permitted in running text. */
+function Lede() {
+  return (
+    <section className="sheet pb-10 pt-12 md:pb-14 md:pt-20">
+      <div className="grid gap-x-11 gap-y-8 md:grid-cols-[1.05fr_1fr]">
+        <h1 className="headline press max-w-[13ch] text-balance">{lede.headline}</h1>
+
+        <div className="max-w-[46ch]">
+          <p className="dropcap pretty mb-4 leading-[1.36]">{lede.paragraphs[0]}</p>
+          {lede.paragraphs.slice(1).map((p, i) => (
+            <p key={i} className="pretty mb-4 leading-[1.36] last:mb-0">
+              {p}
+            </p>
+          ))}
+          <p className="byline mt-7">{lede.meta}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --- Full-bleed ink banner ------------------------------------------------
+   The system's most recognisable pattern, and the thing the previous attempt
+   never built. One word, ink ground, parchment type, letters nearly
+   touching. Sized in vw so it always spans the page, rather than being a
+   large heading that happens to sit on a dark box. */
+function Banner({ word }: { word: string }) {
+  const text = word.toUpperCase();
+
+  /* Sizing a banner in vw cannot work: vw knows the viewport width but not
+     how wide the word is, so a six-letter word fits and a nine-letter word
+     gets its ends sliced off. SVG textLength pins the type to exactly the
+     box width at any viewport instead.
+
+     The size is set so the word's natural width slightly EXCEEDS the box,
+     which means lengthAdjust only ever tightens. That matters: spreading
+     letters apart would be positive tracking, which the spec forbids, while
+     tightening produces the near-collision the look depends on. */
+  const BOX = 1000;
+  const size = BOX / (0.54 * text.length);
+  const height = size * 0.8;
+
+  return (
+    <div className="ink">
+      <svg
+        viewBox={`0 0 ${BOX} ${height}`}
+        className="block w-full"
+        role="img"
+        aria-label={word}
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <text
+          x={BOX / 2}
+          y={size * 0.72}
+          textAnchor="middle"
+          textLength={BOX}
+          lengthAdjust="spacing"
+          fill="currentColor"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: `${size}px`,
+            fontWeight: 400,
+          }}
+        >
+          {text}
+        </text>
+      </svg>
+    </div>
+  );
+}
+
+/* --- Work -----------------------------------------------------------------
+   Three columns at the top tier. Each card: image at 0px radius, title, a
+   NEW badge in the one accent colour, then the plain explanation. Separation
+   is whitespace and hairlines, never borders. */
 function Work() {
   return (
-    <section className="plate bg-iron">
-      <div className="hold">
-        <Trim tone="ash">Work</Trim>
+    <section className="sheet py-11 md:py-14">
+      <div className="rule flex flex-wrap items-baseline justify-between gap-3 pt-3">
+        <h2 className="subhead">Selected work</h2>
+        <p className="byline">Four of them · 2024–2026</p>
+      </div>
 
-        <div className="mt-10 flex flex-col gap-16 md:gap-24">
-          {work.map((item) => (
-            <article key={item.slug} id={item.slug} className="scroll-mt-8">
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <h2
-                  className="display widen text-bone"
-                  style={{ fontSize: "var(--text-project)", lineHeight: 0.95 }}
+      {/* Four stories in three columns leaves an orphan on a second row. The
+          first runs as the lead across two columns with a wider crop, the
+          way a front page carries one story above the others. */}
+      <div className="mt-9 grid gap-x-11 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
+        {work.map((item, i) => (
+          <article
+            key={item.slug}
+            id={item.slug}
+            className={`flex flex-col ${i === 0 ? "lg:col-span-2" : ""}`}
+          >
+            {item.image ? (
+              <figure className="mb-4 bg-bone">
+                <Image
+                  src={item.image.src}
+                  alt={item.image.alt}
+                  width={item.image.w}
+                  height={item.image.h}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className={`block h-auto w-full object-cover ${
+                    i === 0 ? "aspect-[16/7]" : "aspect-[4/3]"
+                  }`}
+                  style={{
+                    boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px",
+                    objectPosition: item.image.position ?? "center",
+                  }}
+                />
+              </figure>
+            ) : null}
+
+            <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+              <h3 className="subhead">{item.title}</h3>
+              {item.isNew ? (
+                <span
+                  className="byline bg-ember px-1.5 py-0.5 text-parchment"
+                  style={{ borderRadius: "2.88px" }}
                 >
-                  {item.title}
-                </h2>
-                <p className="trim uppercase text-ash">
-                  {item.role} · {item.year}
-                </p>
-              </div>
+                  New
+                </span>
+              ) : null}
+            </div>
 
-              <p
-                className="pretty mt-5 max-w-[34rem] text-bone"
-                style={{ fontSize: "var(--text-lede)", lineHeight: 1.4 }}
-              >
-                {item.claim}
-              </p>
+            <p className="byline mt-1.5">{item.kicker}</p>
 
-              <div className="mt-6 grid gap-5 md:grid-cols-2 md:gap-14">
-                <p className="pretty text-ash">{item.detail}</p>
-                <p className="pretty text-ash">{item.turn}</p>
-              </div>
+            <p className="pretty mt-3 italic leading-[1.32]">{item.standfirst}</p>
+            <p className="pretty mt-3 leading-[1.32]">{item.body}</p>
+            <p className="pretty mt-3 leading-[1.32] text-charcoal">{item.turn}</p>
 
-              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
-                {item.hasStudy ? (
-                  <Link href={`/work/${item.slug}`} className="trim text-bone">
-                    Read the full study
-                  </Link>
-                ) : null}
+            <div className="mt-auto pt-5">
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                {item.hasStudy ? <Link href={`/work/${item.slug}`}>Read more</Link> : null}
                 {item.links.map((l) => (
-                  <a
-                    key={l.href}
-                    href={l.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="trim text-ash"
-                  >
+                  <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
                     {l.label}
                   </a>
                 ))}
               </div>
+              <p className="byline mt-2.5">{item.stack.join(" · ")}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
 
-              <p className="trim mt-4 text-ash/70">{item.stack.join(" · ")}</p>
+/* --- The dispatch ---------------------------------------------------------
+   A boxed feature on bone cream, set in newspaper columns. Set up, then
+   delivered — the previous version led with the punchline. */
+function Dispatch() {
+  return (
+    <section className="sheet pb-12 md:pb-16">
+      <div className="bg-bone px-6 py-9 md:px-11 md:py-12">
+        <p className="byline">{dispatch.kicker}</p>
+        <h2 className="headline mt-3 max-w-[16ch] text-balance">{dispatch.headline}</h2>
 
-              {item.image ? (
-                <figure className="mt-8">
-                  {/* Light UI screenshots get a bone mount. A pale screenshot
-                      dropped straight onto iron reads as a hole punched in the
-                      page rather than as a print on it. */}
-                  <div className={item.image.light ? "bg-bone p-4 md:p-8" : ""}>
-                    <Image
-                      src={item.image.src}
-                      alt={item.image.alt}
-                      width={item.image.w}
-                      height={item.image.h}
-                      sizes="(max-width: 768px) 100vw, 72rem"
-                      className="block h-auto w-full"
-                    />
-                  </div>
-                </figure>
-              ) : null}
-            </article>
+        <div className="mt-7 columns-1 gap-11 md:columns-2 lg:columns-3">
+          {dispatch.paragraphs.map((p, i) => (
+            <p key={i} className="pretty mb-4 break-inside-avoid leading-[1.36]">
+              {p}
+            </p>
           ))}
         </div>
       </div>
@@ -103,226 +210,65 @@ function Work() {
   );
 }
 
-/* --- Plate seven: indigo ---------------------------------------------------
-   Returns to the colour it opened on, so the page closes rather than stops. */
-function Contact() {
+/* --- The back page -------------------------------------------------------- */
+function BackPage() {
   return (
-    <section className="plate bg-indigo">
-      <div className="hold">
-        <Trim tone="bone">Currently — {statement.currentlyDate}</Trim>
+    <section className="sheet py-11 md:py-14">
+      <p className="lede pretty max-w-[52ch]">{backPage.standfirst}</p>
 
-        <p className="pretty mt-6 max-w-[34rem] text-bone/90">{statement.currently}</p>
-
-        <p className="mt-10">
-          <a
-            href={`mailto:${links.email}`}
-            className="display text-bone"
-            style={{ fontSize: "var(--text-row)", lineHeight: 1 }}
-          >
-            {links.email}
-          </a>
-        </p>
-        <p className="mt-3 text-bone/65">I reply to specific emails fastest.</p>
-
-        <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2">
-          <a href={links.github} target="_blank" rel="noreferrer" className="trim text-bone/80">
-            GitHub
-          </a>
-          <a href={links.linkedin} target="_blank" rel="noreferrer" className="trim text-bone/80">
-            LinkedIn
-          </a>
-          <a href={links.resume} className="trim text-bone/80">
-            Résumé — PDF, one page, current as of September 2026
-          </a>
-        </div>
-
-        <p className="trim mt-16 text-bone/45">
-          No analytics on this page. If you were here, I would rather you just told me.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* --- Plate one: indigo --------------------------------------------------- */
-function Masthead() {
-  return (
-    <section className="field bg-indigo">
-      <div className="hold">
-        <Trim tone="bone">{statement.trim}</Trim>
-      </div>
-
-      <div className="hold mt-auto pt-14">
-        <h1>
-          <span
-            className="display display-hold press block text-bone"
-            style={{ fontSize: "var(--text-hero)", lineHeight: "var(--leading-hero)" }}
-          >
-            {statement.first}
-          </span>
-          {/* Indented to roughly the width of the line above — a register
-              offset borrowed from block printing, and the only ornament in
-              the system. */}
-          <span
-            className="display display-hold press press-2 block text-bone"
-            style={{
-              fontSize: "var(--text-hero)",
-              lineHeight: "var(--leading-hero)",
-              paddingLeft: "0.42em",
-            }}
-          >
-            {statement.last}
-          </span>
-        </h1>
-
-        <div className="mt-8 max-w-[36rem]">
-          <p
-            className="pretty text-bone/90"
-            style={{ fontSize: "var(--text-lede)", lineHeight: 1.44 }}
-          >
-            {statement.lede}
-          </p>
-          <p className="pretty mt-3 text-bone/65">{statement.ledeAfter}</p>
-        </div>
-      </div>
-
-      <div className="hold mt-auto flex items-center justify-between pt-12">
-        <a href={`mailto:${links.email}`} className="trim text-bone/80">
-          {links.email}
-        </a>
-        {/* The only warm pixel on the screen. */}
-        <span aria-hidden="true" className="block h-2.5 w-2.5 bg-turmeric" />
-      </div>
-    </section>
-  );
-}
-
-/* --- Plate two: bone ------------------------------------------------------
-   The page goes light exactly once. A reversal in a run of saturated colour
-   is a surprise you can only spend a single time, so it is spent on the best
-   thing in the material. */
-function Forklift() {
-  return (
-    <section className="plate bg-bone text-iron">
-      <div className="hold">
-        <Trim tone="iron">The one that changed the design</Trim>
-
-        {/* No max-width here. `ch` would resolve against this paragraph's own
-            font size rather than the display spans inside it, clamping 100px
-            type to a ~180px column and breaking every authored line. The
-            lines are short by construction; let them set. */}
-        <p className="mt-7">
-          {forklift.lines.map((line) => (
-            <span
-              key={line}
-              className="display block"
-              style={{ fontSize: "var(--text-field)", lineHeight: "var(--leading-field)" }}
-            >
-              {line}
-            </span>
-          ))}
-        </p>
-
-        <p className="trim mt-6 text-iron/55">{forklift.attribution}</p>
-
-        <div className="mt-10 grid gap-6 md:grid-cols-2 md:gap-14">
-          <p className="pretty text-iron/85">{forklift.body}</p>
-          <p className="pretty text-iron/85">{forklift.after}</p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* --- Plate three: madder ------------------------------------------------- */
-function Bio() {
-  return (
-    <section className="plate bg-madder">
-      <div className="hold">
-        <Trim tone="bone">Who</Trim>
-
-        {/* Both tracks are capped, so the pair sits as one block rather than
-            a small photo marooned beside a narrow column of text. */}
-        <div className="mt-8 grid items-start gap-8 md:grid-cols-[minmax(0,22rem)_minmax(0,30rem)] md:gap-14">
-          <Image
-            src={bio.portrait.src}
-            alt={bio.portrait.alt}
-            width={bio.portrait.w}
-            height={bio.portrait.h}
-            sizes="(max-width: 768px) 100vw, 22rem"
-            priority
-            className="block h-auto w-full max-w-[22rem]"
-            style={{ boxShadow: "14px 14px 0 var(--color-madder-deep)" }}
-          />
-
-          <div>
-            {bio.paragraphs.map((p, i) => (
-              <p key={i} className="pretty mb-4 text-bone last:mb-0">
-                {p}
-              </p>
-            ))}
-            <p className="trim mt-8 text-bone/70">{bio.trim}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* --- Plate four: iron -----------------------------------------------------
-   Hobbies get display-scale typography. Giving the thing nobody asked for
-   the same weight as the employment is the argument, and it makes it without
-   saying anything about itself. */
-function NotWork() {
-  return (
-    <section className="plate bg-iron">
-      <div className="hold">
-        <Trim tone="ash">Not work</Trim>
-
-        <dl className="mt-8">
-          {notWork.map((item) => (
-            <div
-              key={item.term}
-              className="grid items-baseline gap-x-10 gap-y-1 border-t border-bone/12 py-5 md:grid-cols-[minmax(0,17rem)_minmax(0,30rem)]"
-            >
-              <dt
-                className={`display min-w-0 ${item.hot ? "tabular text-turmeric" : "text-bone"}`}
-                style={{ fontSize: "var(--text-row)", lineHeight: 0.95 }}
+      <dl className="mt-9 grid gap-x-11 gap-y-9 md:grid-cols-2">
+        {backPage.items.map((item) => (
+          <div key={item.term} className="rule pt-3.5">
+            <dt className="flex flex-wrap items-baseline gap-x-2.5">
+              <span
+                className={`display tabular ${item.hot ? "text-ember" : ""}`}
+                style={{ fontSize: "clamp(2.4rem, 5vw, 3.4rem)", lineHeight: 0.9 }}
               >
                 {item.href ? (
-                  <a href={item.href} target="_blank" rel="noreferrer">
+                  <a href={item.href} target="_blank" rel="noreferrer" className="no-underline">
                     {item.term}
                   </a>
                 ) : (
                   item.term
                 )}
-              </dt>
-              <dd className="pretty text-ash">{item.line}</dd>
-            </div>
-          ))}
-        </dl>
-
-        {/* Drawn straight from the database the first row is about. */}
-        <figure className="mt-10">
-          <Image
-            src="/farewatch.svg"
-            alt="Minimum observed fare over time across the six most watched routes out of New York"
-            width={2400}
-            height={900}
-            className="h-auto w-full"
-          />
-          <figcaption className="trim mt-3 text-ash">
-            Six routes out of New York. The gold line is whichever is cheapest — currently
-            LaGuardia to Houston, which started being watched later than the rest.
-          </figcaption>
-        </figure>
-      </div>
+              </span>
+              <span className="byline">{item.unit}</span>
+            </dt>
+            <dd className="pretty mt-2.5 max-w-[46ch] leading-[1.32]">{item.line}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 }
 
-function Trim({ children, tone }: { children: React.ReactNode; tone: "bone" | "ash" | "iron" }) {
-  const color =
-    tone === "bone" ? "text-bone/60" : tone === "iron" ? "text-iron/55" : "text-ash";
-  return <p className={`trim uppercase ${color}`}>{children}</p>;
+/* --- Footer, two-column plain text ---------------------------------------- */
+function Colophon() {
+  return (
+    <footer className="rule">
+      <div className="sheet grid gap-x-11 gap-y-6 py-9 md:grid-cols-2">
+        <div>
+          <p className="subhead">
+            <a href={`mailto:${links.email}`} className="no-underline hover:underline">
+              {links.email}
+            </a>
+          </p>
+          <p className="pretty mt-2 text-charcoal">I reply to specific emails fastest.</p>
+        </div>
+
+        <div className="md:text-right">
+          <div className="flex flex-wrap gap-x-5 gap-y-1 md:justify-end">
+            <a href={links.github} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a href={links.linkedin} target="_blank" rel="noreferrer">
+              LinkedIn
+            </a>
+            <a href={links.resume}>Résumé</a>
+          </div>
+          <p className="byline mt-3">Set in Bodoni, Playfair and Source Serif · New York</p>
+        </div>
+      </div>
+    </footer>
+  );
 }

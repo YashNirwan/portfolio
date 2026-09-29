@@ -73,8 +73,11 @@ body::before {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.55;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.42'/%3E%3C/svg%3E");
+  opacity: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.9'/%3E%3C/svg%3E");
+  /* multiply so the grain darkens the stock rather than sitting as a grey
+     film on top of it — the reference's paper reads as fibre, not as haze */
+  mix-blend-mode: multiply;
 }
 
 body > * {
@@ -265,3 +268,61 @@ a:hover {
     scroll-behavior: auto;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Motion
+
+   The reference runs GSAP and Locomotive for this. None of what it does
+   needs either: a wipe, a rule drawing itself, a small lift, and a
+   letter-spacing shift on hover. All four are CSS, all four are gated so the
+   reduced-motion path is the default rather than an override.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  /* Banners stamp on, left to right, like a block hitting paper. */
+  .press {
+    animation: press 760ms cubic-bezier(0.16, 0.84, 0.28, 1) both;
+    clip-path: inset(0 100% 0 0);
+  }
+  .press-2 { animation-delay: 120ms; }
+  .press-3 { animation-delay: 240ms; }
+
+  @supports (animation-timeline: view()) {
+    /* Hairlines draw themselves as they arrive. */
+    .draw {
+      animation: draw linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+    /* Everything else gets one small, unshowy lift. */
+    .rise {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 4% entry 46%;
+    }
+  }
+
+  /* Titles tighten on hover — the one interaction the reference has that is
+     worth stealing, because it shows the typeface doing something. */
+  .tighten {
+    transition: letter-spacing 300ms ease, transform 400ms ease;
+  }
+  .tighten:hover {
+    letter-spacing: -0.05em;
+  }
+}
+
+@keyframes press {
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes draw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+.draw { transform-origin: left center; }

@@ -23,11 +23,11 @@ export default function Home() {
         <Identity />
         <Second />
         <Stats />
+        <RecordSection />
         <BigType />
         <Dispatch />
         <Banner word="Back page" />
         <BackPage />
-        <RecordSection />
         <WorkStrip
           items={[work[3], work[2]]}
           sub="Handpicked from the last two years."
@@ -72,7 +72,9 @@ function WorkStrip({
 
         <div className="flex flex-col items-center justify-center text-center">
           <h2 className="heavy text-[clamp(2rem,3.6vw,3rem)]" style={{ transform: "none" }}>
-            All work!
+            <Link href="/work" className="tighten inline-block no-underline hover:underline">
+              All work!
+            </Link>
           </h2>
           <p className="lede pretty mt-3 max-w-[24ch]">{sub}</p>
           <p className="byline mt-5">
@@ -89,7 +91,7 @@ function WorkStrip({
 
 function WorkCard({ item }: { item: (typeof work)[number] }) {
   return (
-    <article className="relative flex flex-col">
+    <article className="rise relative flex flex-col">
       <figure className="mb-3" style={{ boxShadow: "var(--shadow-sm)" }}>
         {item.image ? (
           <Image
@@ -111,7 +113,7 @@ function WorkCard({ item }: { item: (typeof work)[number] }) {
       </figure>
 
       <div className="flex flex-wrap items-center gap-x-2">
-        <h3 className="heavy text-[19px]">
+        <h3 className="heavy tighten text-[19px]">
           <Link
             href={`/work/${item.slug}`}
             className="no-underline after:absolute after:inset-0 after:content-[''] hover:underline"
@@ -145,15 +147,17 @@ export function NewBadge() {
   );
 }
 
-function Banner({ word }: { word: string }) {
+function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
   const text = word.toUpperCase();
   const BOX = 1000;
+  /* Sized so the word's natural width slightly exceeds the box, which means
+     lengthAdjust only ever tightens. Hardcoding a size instead is what made
+     MEASURED collide with itself. */
   const size = BOX / (0.54 * text.length);
   const height = size * 0.9;
 
-  return (
-    <div className="sheet py-9">
-      <div className="ink">
+  const inner = (
+      <div className="ink press">
         <svg viewBox={`0 0 ${BOX} ${height}`} className="block w-full" role="img" aria-label={word}>
           <text
             x={BOX / 2}
@@ -168,8 +172,9 @@ function Banner({ word }: { word: string }) {
           </text>
         </svg>
       </div>
-    </div>
   );
+
+  return bare ? inner : <div className="sheet py-9">{inner}</div>;
 }
 
 /* --- Identity: the centre of the page ------------------------------------- */
@@ -194,15 +199,18 @@ function Identity() {
         </div>
 
         <div>
+          {/* Kept at its own 4:5 and capped at 22rem. Cropping it to 4:3
+              across a 46rem column meant asking an 800px file to cover
+              1400px on a retina screen, which is what made it soft. */}
           <Image
             src={portrait.src}
             alt={portrait.alt}
             width={portrait.w}
             height={portrait.h}
-            sizes="(max-width: 768px) 100vw, 46rem"
+            sizes="(max-width: 768px) 100vw, 22rem"
             priority
-            className="block aspect-[4/3] h-auto w-full object-cover"
-            style={{ boxShadow: "var(--shadow-sm-2)", objectPosition: "center 26%" }}
+            className="rise block h-auto w-full max-w-[22rem]"
+            style={{ boxShadow: "var(--shadow-sm-2)" }}
           />
           <h2 className="heavy mt-5 text-[clamp(1.8rem,3.4vw,2.9rem)]">
             {lede.roles.map((r) => (
@@ -220,23 +228,9 @@ function Identity() {
 function Second() {
   return (
     <section className="sheet py-9">
-      <div className="grid items-end gap-6 md:grid-cols-[minmax(0,1fr)_9rem]">
-        <div className="ink">
-          <svg viewBox="0 0 1000 300" className="block w-full" role="img" aria-label="Measured">
-            <text
-              x="500"
-              y="234"
-              textAnchor="middle"
-              textLength="1000"
-              lengthAdjust="spacing"
-              fill="currentColor"
-              style={{ fontFamily: "var(--font-display)", fontSize: "300px", fontWeight: 400 }}
-            >
-              MEASURED
-            </text>
-          </svg>
-        </div>
-        <Stamp className="w-[9rem]" />
+      <div className="grid items-end gap-7 md:grid-cols-[minmax(0,1fr)_13rem]">
+        <Banner word="Measured" bare />
+        <Stamp className="w-[13rem] rise" />
       </div>
     </section>
   );
@@ -246,13 +240,13 @@ function Second() {
    one a reader can go and check. */
 function Stats() {
   return (
-    <section className="sheet border-y border-ink py-7">
+    <section className="sheet border-y border-ink py-7"><span className="draw sr-only" aria-hidden="true" />
       <div className="ruled grid gap-x-7 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (
           <div key={s.label}>
             <p className="byline">{s.label}</p>
             <p className="flex items-baseline gap-2.5">
-              <span className="heavy text-[19px]">{s.unit}</span>
+              <span className="heavy tighten text-[19px]">{s.unit}</span>
               <span
                 className="tabular"
                 style={{
@@ -276,7 +270,7 @@ function BigType() {
   return (
     <section className="sheet py-11">
       <div className="grid gap-x-7 gap-y-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        <h2 className="heavy text-[clamp(3rem,9vw,7.4rem)]">
+        <h2 className="heavy press text-[clamp(3rem,9vw,7.4rem)]">
           Measure
           <br />
           the thing
@@ -389,7 +383,15 @@ function Colophon() {
   return (
     <footer>
       <div className="sheet grid items-center gap-5 py-11 md:grid-cols-[auto_1fr_auto]">
-        <a href={`mailto:${links.email}`} className="ink inline-block px-5 py-2.5 no-underline">
+        <a
+          href={`mailto:${links.email}`}
+          className="tighten inline-block px-5 py-2.5 no-underline"
+          style={{
+            background: "var(--color-ink)",
+            color: "var(--color-parchment)",
+            borderRadius: "var(--radius-sm)",
+          }}
+        >
           <span className="heavy text-[17px]">Email me</span>
         </a>
         <p
@@ -398,7 +400,15 @@ function Colophon() {
         >
           Let&rsquo;s build something that checks itself
         </p>
-        <a href={`mailto:${links.email}`} className="ink inline-block px-5 py-2.5 no-underline">
+        <a
+          href={`mailto:${links.email}`}
+          className="tighten inline-block px-5 py-2.5 no-underline"
+          style={{
+            background: "var(--color-ink)",
+            color: "var(--color-parchment)",
+            borderRadius: "var(--radius-sm)",
+          }}
+        >
           <span className="heavy text-[17px]">Email me</span>
         </a>
       </div>

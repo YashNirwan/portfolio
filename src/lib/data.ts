@@ -342,8 +342,8 @@ export const portrait = {
    on my laptop. */
 
 export const stats = [
-  { label: "Hand-labelled", unit: "Clips", value: "49" },
-  { label: "Shipped and still running", unit: "Commits", value: "242" },
-  { label: "Flight prices, since July", unit: "Readings", value: "214,882" },
-  { label: "Same opening, every time", unit: "Games", value: "2,669" },
+  { label: "Building things that ship", unit: "Years", value: "4" },
+  { label: "Live, taking real payments", unit: "Countries", value: "45" },
+  { label: "Hand-labelled to test my own work", unit: "Clips", value: "49" },
+  { label: "Written, reviewed, in production", unit: "Lines", value: "14k" },
 ];

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { studies, getStudy, type Block } from "@/lib/studies";
 import { work, links } from "@/lib/data";
+import { Torn } from "@/components/torn";
 
 export const dynamicParams = false;
 
@@ -58,46 +59,100 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
   const item = work.find((w) => w.slug === slug);
 
   return (
-    <>
-      <header className="border-b border-ink">
-        <div className="sheet flex items-baseline justify-between gap-4 py-3.5">
-          <Link href="/" className="byline no-underline hover:underline">
-            ← The front page
-          </Link>
-          <span className="byline">{study.meta}</span>
+    /* Project pages sit on bone cream, a darker stock than the front page.
+       That is how the reference separates a story from the paper it came
+       wrapped in. */
+    <div className="bg-bone">
+      {/* Hero: full-bleed image, a torn edge, and the title straddling it. */}
+      <section className="relative">
+        <div className="relative h-[46svh] min-h-[320px] w-full overflow-hidden md:h-[58svh]">
+          {item?.image ? (
+            <Image
+              src={item.image.src}
+              alt={item.image.alt}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              style={{ objectPosition: item.image.position ?? "center" }}
+            />
+          ) : (
+            <div className="h-full w-full bg-ink" />
+          )}
         </div>
-      </header>
 
-      <main id="main" tabIndex={-1}>
-        <section className="sheet pb-9 pt-12 md:pb-12 md:pt-16">
-          <h1 className="display max-w-[12ch]">{study.title}</h1>
-          <p className="lede pretty mt-6 max-w-[54ch]">{study.standfirst}</p>
-        </section>
+        <Link
+          href="/work"
+          className="absolute left-5 top-5 inline-flex items-center gap-2 border border-ink bg-parchment px-4 py-2 no-underline md:left-10"
+          style={{ borderRadius: "var(--radius-sm)" }}
+        >
+          <span aria-hidden="true">←</span>
+          <span className="heavy text-[13px]">Back all</span>
+        </Link>
 
-        {/* A study runs as one measure rather than in columns: newspaper
-            columns work for a 300-word box and fight a 1,500-word read. */}
-        <section className="sheet pb-16">
-          <div className="flex flex-col">
-            {study.blocks.map((block, i) => (
-              <BlockView key={i} block={block} />
+        {/* The tear, pulled up over the base of the image. */}
+        <Torn className="relative -mt-[46px] h-[48px]" />
+
+        <div className="sheet relative -mt-[6vw] pb-8 md:-mt-[5vw]">
+          <h1 className="heavy press text-[clamp(3rem,11vw,9rem)]">{study.title}</h1>
+        </div>
+      </section>
+
+      {/* Meta bar: what it was, what it is tagged, when. */}
+      <div className="sheet">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-ink py-4">
+          <p className="byline">
+            <span className="heavy mr-2 text-[13px]">Role</span>
+            {item?.kicker}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {(item?.stack ?? []).slice(0, 3).map((t) => (
+              <span
+                key={t}
+                className="inline-block px-2.5 py-1"
+                style={{
+                  background: "var(--color-ink)",
+                  color: "var(--color-parchment)",
+                  borderRadius: "var(--radius-sm)",
+                }}
+              >
+                <span className="heavy text-[12px]">{t}</span>
+              </span>
             ))}
           </div>
+          <p className="byline tabular">{item?.kicker.split("·").pop()?.trim()}</p>
+        </div>
+      </div>
 
-          {item && item.links.length > 0 ? (
-            <div className="rule mt-14 max-w-[58ch] pt-4">
-              <div className="flex flex-wrap gap-x-5 gap-y-1">
-                {item.links.map((l) => (
-                  <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
-                    {l.label}
-                  </a>
-                ))}
-                <a href={`mailto:${links.email}`}>Ask me about it</a>
-              </div>
+      <main id="main" tabIndex={-1} className="sheet pb-16 pt-10">
+        <p className="lede pretty mx-auto mb-10 max-w-[38rem]">{study.standfirst}</p>
+
+        <div className="flex flex-col">
+          {study.blocks.map((block, i) => (
+            <BlockView key={i} block={block} />
+          ))}
+        </div>
+
+        {item && item.links.length > 0 ? (
+          <div className="mx-auto mt-14 max-w-[38rem] border-t border-ink pt-4">
+            <div className="flex flex-wrap gap-x-5 gap-y-1">
+              {item.links.map((l) => (
+                <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
+                  {l.label}
+                </a>
+              ))}
+              <a href={`mailto:${links.email}`}>Ask me about it</a>
             </div>
-          ) : null}
-        </section>
+          </div>
+        ) : null}
+
+        <div className="mx-auto mt-12 max-w-[38rem]">
+          <Link href="/work" className="heavy inline-block text-[17px] no-underline hover:underline">
+            ← All work
+          </Link>
+        </div>
       </main>
-    </>
+    </div>
   );
 }
 
@@ -128,7 +183,7 @@ function BlockView({ block }: { block: Block }) {
 
   if (block.kind === "figure") {
     return (
-      <figure className="my-9">
+      <figure className="my-9 bg-parchment p-3">
         <Image
           src={block.src}
           alt={block.alt}

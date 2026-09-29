@@ -44,13 +44,13 @@ export default function Home() {
         <Dispatch />
         <Banner word="Back page" />
         <BackPage />
-        <Classified />
         <WorkStrip
           items={[work[3], work[2]]}
           sub="Handpicked from the last two years."
           tip="Or open the whole catalogue"
         />
       </main>
+      <Classified />
       <Colophon />
     </>
   );
@@ -59,11 +59,14 @@ export default function Home() {
 function Masthead() {
   return (
     <header className="border-b border-ink">
-      <div className="sheet flex items-baseline justify-between gap-4 py-3.5">
-        <span className="byline byline-caps">{profile.location}</span>
-        <span className="gothic hidden text-[19px] sm:block">The Second Opinion</span>
-        <Link href="/work" className="byline no-underline hover:underline">
-          All work
+      <div className="sheet flex items-center justify-between gap-4 py-5">
+        <span className="plate-row">{profile.location}</span>
+        <span className="gothic hidden text-[22px] sm:block">The Second Opinion</span>
+        <Link href="/work" aria-label="All work" className="group no-underline">
+          <span aria-hidden="true" className="flex w-8 flex-col gap-[5px]">
+            <span className="block h-[2px] w-full bg-ink" />
+            <span className="block h-[2px] w-full bg-ink" />
+          </span>
         </Link>
       </div>
     </header>
@@ -93,7 +96,18 @@ function WorkStrip({
               All work!
             </Link>
           </h2>
-          <p className="lede pretty mt-3 max-w-[24ch]">{sub}</p>
+          <p
+            className="pretty mt-4 max-w-[18ch]"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 300,
+              fontSize: "clamp(1.5rem,2.6vw,2.4rem)",
+              lineHeight: 1.16,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {sub}
+          </p>
           <p className="byline mt-5">
             <span className="heavy mr-1.5 text-[13px]">Tip!</span>
             {tip}
@@ -133,7 +147,7 @@ function WorkCard({ item }: { item: (typeof work)[number] }) {
         <h3 className="heavy tighten text-[19px]">
           <Link
             href={`/work/${item.slug}`}
-            className="no-underline after:absolute after:inset-0 after:content-[''] hover:underline"
+            className="no-underline after:absolute after:inset-0 after:content-['']"
           >
             {item.title}
           </Link>
@@ -171,24 +185,38 @@ function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
      lengthAdjust only ever tightens. Hardcoding a size instead is what made
      MEASURED collide with itself. */
   const size = BOX / (0.54 * text.length);
-  const height = size * 0.9;
+  const height = size * 0.86;
 
+  /* The letters are KNOCKED OUT of the ink, not painted on top of it. That is
+     why the reference's banner type carries the paper texture: you are seeing
+     the sheet through a hole in the block. Painting parchment-coloured glyphs
+     over the ink gives flat letters that sit on the page instead of in it.
+
+     Weight 700 rather than 400: at display size Bodoni's hairline strokes
+     nearly vanish, and the reference's letters are heavy enough to almost
+     touch each other. */
+  /* Painted, not knocked out. A <mask> knockout is the more faithful way to
+     get the paper texture showing through the letters, and the mask renders
+     correctly in isolation — but the composite came out solid, and chasing it
+     further was not worth the time against the change that actually matters:
+     weight. Bodoni at 400 is hairline at display size; the reference's letters
+     are heavy enough to nearly touch. */
   const inner = (
-      <div className="ink press">
-        <svg viewBox={`0 0 ${BOX} ${height}`} className="block w-full" role="img" aria-label={word}>
-          <text
-            x={BOX / 2}
-            y={size * 0.78}
-            textAnchor="middle"
-            textLength={BOX}
-            lengthAdjust="spacing"
-            fill="currentColor"
-            style={{ fontFamily: "var(--font-display)", fontSize: `${size}px`, fontWeight: 400 }}
-          >
-            {text}
-          </text>
-        </svg>
-      </div>
+    <div className="ink press">
+      <svg viewBox={`0 0 ${BOX} ${height}`} className="block w-full" role="img" aria-label={word}>
+        <text
+          x={BOX / 2}
+          y={size * 0.74}
+          textAnchor="middle"
+          textLength={BOX * 0.985}
+          lengthAdjust="spacing"
+          fill="var(--color-parchment)"
+          style={{ fontFamily: "var(--font-display)", fontSize: `${size}px`, fontWeight: 700 }}
+        >
+          {text}
+        </text>
+      </svg>
+    </div>
   );
 
   return bare ? inner : <div className="sheet py-9">{inner}</div>;
@@ -390,21 +418,38 @@ function Story() {
    slide past a clipped window so the loop is seamless with no JavaScript,
    and it pauses on hover so the text can actually be read. */
 function Classified() {
-  /* Two identical runs slide past a clipped window, so the moment the first
-     one has travelled its own width the second is exactly where it started.
+  /* The reference's version of this is not a stock ticker: it runs on
+     parchment between two hairlines, sets the line large in regular-weight
+     serif rather than small heavy caps, and repeats an ink EMAIL ME block
+     inline as part of the scroll. Mine was a black bar of shouting, which
+     is a different object entirely.
 
-     Both copies are built by the same map rather than one being wrapped in a
-     <span>: a <div> inside a <span> is invalid nesting, the parser hoists it
-     out, and the two runs end up side by side as static text instead of a
-     loop. That was the bug. */
-  const run = (key: string, hidden: boolean) => (
+     Two identical runs slide past a clipped window, so the moment the first
+     has travelled its own width the second is exactly where it started. */
+  const unit = (key: string, hidden: boolean) => (
     <div className="flex shrink-0 items-center" key={key} aria-hidden={hidden || undefined}>
       {classified.map((c) => (
         <span key={c} className="flex shrink-0 items-center">
-          <span className="heavy byline-caps px-6 text-[clamp(1rem,1.7vw,1.5rem)]">{c}</span>
-          <span aria-hidden="true" className="text-ember">
-            &#10035;
+          <span
+            className="whitespace-nowrap px-7"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 300,
+              fontSize: "clamp(1.9rem,4.2vw,3.4rem)",
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {c}
           </span>
+          <a
+            href={`mailto:${links.email}`}
+            className="shrink-0 px-4 py-1.5 no-underline"
+            style={{ background: "var(--color-ink)", color: "var(--color-parchment)" }}
+            tabIndex={hidden ? -1 : 0}
+          >
+            <span className="heavy text-[clamp(1.1rem,2.2vw,1.8rem)]">Email me</span>
+          </a>
         </span>
       ))}
     </div>
@@ -412,13 +457,12 @@ function Classified() {
 
   return (
     <section
-      className="overflow-hidden border-y border-ink py-3.5"
-      style={{ background: "var(--color-ink)", color: "var(--color-parchment)" }}
-      aria-label="Classified advertisements"
+      className="overflow-hidden border-y border-ink py-5"
+      aria-label="Let’s work together"
     >
       <div className="ticker">
-        {run("a", false)}
-        {run("b", true)}
+        {unit("a", false)}
+        {unit("b", true)}
       </div>
     </section>
   );
@@ -469,37 +513,6 @@ function RecordSection() {
 function Colophon() {
   return (
     <footer>
-      <div className="sheet grid items-center gap-5 py-11 md:grid-cols-[auto_1fr_auto]">
-        <a
-          href={`mailto:${links.email}`}
-          className="tighten inline-block px-5 py-2.5 no-underline"
-          style={{
-            background: "var(--color-ink)",
-            color: "var(--color-parchment)",
-            borderRadius: "var(--radius-sm)",
-          }}
-        >
-          <span className="heavy text-[17px]">Email me</span>
-        </a>
-        <p
-          className="heavy text-center text-[clamp(1.4rem,3vw,2.4rem)]"
-          style={{ transform: "none" }}
-        >
-          Let&rsquo;s build something that checks itself
-        </p>
-        <a
-          href={`mailto:${links.email}`}
-          className="tighten inline-block px-5 py-2.5 no-underline"
-          style={{
-            background: "var(--color-ink)",
-            color: "var(--color-parchment)",
-            borderRadius: "var(--radius-sm)",
-          }}
-        >
-          <span className="heavy text-[17px]">Email me</span>
-        </a>
-      </div>
-
       <div className="border-t border-ink">
         <div className="sheet flex flex-wrap items-baseline justify-between gap-3 py-3.5">
           <span className="gothic text-[16px]">Yash Nirwan</span>

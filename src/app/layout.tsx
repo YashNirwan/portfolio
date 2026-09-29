@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Playfair_Display, Source_Serif_4, Pirata_One } from "next/font/google";
+import { Bodoni_Moda, Newsreader, Pirata_One } from "next/font/google";
 import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 
-/* Canopee substitute. A didone's hairline-to-stem contrast is invisible at
-   17px and spectacular at 300px, which is the only reason display type this
-   large has a reason to exist. `opsz` is requested explicitly so the face
-   actually redraws for size rather than being scaled up.
+/* Canopee substitute, in both display roles.
 
-   `display: optional` because this sets the LCP banner, and a banner that
-   repaints mid-view is worse than one first visit in the fallback. */
+   Canopee is condensed with very high stroke contrast and sharp wedge
+   serifs. Playfair Display at 900 was standing in for it and is neither
+   condensed nor wedge-serifed — it is wide and slab-ish, which is why the
+   headings read as a different typeface to the reference. Bodoni Moda is
+   genuinely narrow at display optical sizes and has the contrast, so it now
+   carries the banners at 400 and the headings at 700–900.
+
+   `opsz` is requested explicitly so the face redraws for size rather than
+   being scaled, and `display: optional` because it sets the LCP line. */
 const display = Bodoni_Moda({
   variable: "--font-bodoni",
   subsets: ["latin"],
@@ -17,32 +21,26 @@ const display = Bodoni_Moda({
   display: "optional",
 });
 
-/* Domaine substitute — the bridge between the banner's drama and the body's
-   restraint. Used for headlines and card titles, never for running text. */
-const mid = Playfair_Display({
-  variable: "--font-playfair",
+/* Editorial New substitute.
+
+   Source Serif was standing in and is a neutral workhorse — low contrast,
+   even colour, no particular voice. Editorial New is the opposite: narrow,
+   fairly high contrast for a text face, open apertures, slightly odd. Of
+   the free faces Newsreader is by far the closest, and it carries real
+   optical sizes so it holds together from 15px to 40px. */
+const body = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-  weight: ["500", "700", "900"],
+  weight: ["300", "400", "500"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
-/* Germgoth substitute. The real site sets its centre nameplate in blackletter
-   — a detail no token file mentions, and one of the things that makes it read
-   as an old paper rather than a modern serif site. Used exactly twice. */
+/* Germgoth substitute — the blackletter nameplate and the drop cap. */
 const gothic = Pirata_One({
   variable: "--font-pirata",
   subsets: ["latin"],
   weight: ["400"],
-  display: "swap",
-});
-
-/* Editorial New substitute. Weight 300 only, per the spec: heavier weights
-   break the editorial restraint that holds the whole page together. */
-const body = Source_Serif_4({
-  variable: "--font-source-serif",
-  subsets: ["latin"],
-  weight: ["300", "400"],
-  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -99,7 +97,7 @@ const personSchema = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${mid.variable} ${gothic.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${gothic.variable} ${body.variable}`}>
       {/* Browser extensions write attributes onto <body> before React
           hydrates — Grammarly adds data-gr-ext-installed and
           data-new-gr-c-s-check-loaded — which React then reports as a

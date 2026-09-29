@@ -17,9 +17,11 @@
   --color-ember: #c03f13;
 
   --font-display: var(--font-bodoni);
-  --font-mid: var(--font-playfair);
+  /* Both display roles are Bodoni now; the mid slot is the same face at a
+     heavier weight rather than a third family. */
+  --font-mid: var(--font-bodoni);
   --font-gothic: var(--font-pirata);
-  --font-body: var(--font-source-serif);
+  --font-body: var(--font-newsreader);
 }
 
 :root {
@@ -76,8 +78,8 @@ body::before {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  opacity: 1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.9'/%3E%3C/svg%3E");
+  opacity: 0.6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.34' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.55'/%3E%3C/svg%3E");
   /* multiply so the grain darkens the stock rather than sitting as a grey
      film on top of it — the reference's paper reads as fibre, not as haze */
   mix-blend-mode: multiply;
@@ -113,15 +115,23 @@ body {
   outline-offset: 3px;
 }
 
-/* Editorial hyperlinks stay as text: no fill, no button shape. */
-a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-}
-a:hover {
-  color: #000;
+/* Editorial hyperlinks stay as text: no fill, no button shape.
+
+   Inside @layer base on purpose. Un-layered CSS beats everything in
+   @layer utilities regardless of specificity, so an un-layered `a` rule here
+   silently overrode every `no-underline` on the page — the same trap that
+   `body > *` sprang on position:fixed earlier. Layering it puts Tailwind
+   back in charge. */
+@layer base {
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  a:hover {
+    color: #000;
+  }
 }
 
 /* ---------------------------------------------------------------------------
@@ -137,7 +147,7 @@ a:hover {
 
 .headline {
   font-family: var(--font-mid);
-  font-weight: 500;
+  font-weight: 700;
   font-size: var(--text-heading);
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-heading);
@@ -145,7 +155,7 @@ a:hover {
 
 .subhead {
   font-family: var(--font-mid);
-  font-weight: 500;
+  font-weight: 700;
   font-size: var(--text-heading-sm);
   line-height: 1.11;
   letter-spacing: -0.03em;
@@ -212,11 +222,13 @@ a:hover {
   background: var(--color-ink);
   color: var(--color-parchment);
   overflow: hidden;
-  padding: 6px;
+  /* Tight. The reference's block hugs its type — a fat margin turns a
+     printed block into a letterboxed banner. */
+  padding: 4px;
 }
 
 .ink > * {
-  border: 1px solid rgba(226, 222, 219, 0.5);
+  border: 1px solid rgba(226, 222, 219, 0.32);
 }
 
 /* Blackletter, used twice: the centre nameplate and the drop cap. */
@@ -254,12 +266,13 @@ a:hover {
    Canopee's weight; it is set tight and never below 32px. */
 .heavy {
   font-family: var(--font-mid);
-  font-weight: 900;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: -0.028em;
-  line-height: 0.92;
-  transform: scaleX(0.94);
-  transform-origin: left center;
+  letter-spacing: -0.022em;
+  line-height: 0.94;
+  /* No scaleX. Playfair needed squeezing to fake a condensed cut; Bodoni is
+     narrow already, and squeezing a face that is correctly proportioned
+     distorts its stroke contrast. */
 }
 
 .rule {
@@ -508,4 +521,16 @@ a:hover {
     transform: rotateY(-13deg) translateZ(30px);
     box-shadow: -24px 0 46px -18px rgba(29, 29, 27, 0.5);
   }
+}
+
+/* The nameplate row. The reference sets its location and links at reading
+   size in ordinary sentence case — not as tracked-out small caps, which is
+   what made mine look like a cookie banner. */
+.plate-row {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1.1875rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-ink);
 }

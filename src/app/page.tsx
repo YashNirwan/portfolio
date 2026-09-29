@@ -101,9 +101,9 @@ function WorkStrip({
             style={{
               fontFamily: "var(--font-body)",
               fontWeight: 300,
-              fontSize: "clamp(1.5rem,2.6vw,2.4rem)",
-              lineHeight: 1.16,
-              letterSpacing: "-0.02em",
+              fontSize: "clamp(1.5rem,2.6vw,2.3125rem)",
+              lineHeight: 1.15,
+              letterSpacing: "-0.03em",
             }}
           >
             {sub}
@@ -210,8 +210,8 @@ function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
           textAnchor="middle"
           textLength={BOX * 0.985}
           lengthAdjust="spacing"
-          fill="var(--color-parchment)"
-          style={{ fontFamily: "var(--font-display)", fontSize: `${size}px`, fontWeight: 700 }}
+          fill="var(--color-bone)"
+          style={{ fontFamily: "var(--font-display)", fontSize: `${size}px`, fontWeight: 400 }}
         >
           {text}
         </text>
@@ -296,6 +296,7 @@ function Stats() {
                 className="tabular"
                 style={{
                   fontFamily: "var(--font-display)",
+                  fontWeight: 400,
                   fontSize: "42px",
                   lineHeight: 0.9,
                   letterSpacing: "-0.03em",
@@ -315,7 +316,7 @@ function BigType() {
   return (
     <section className="sheet py-11">
       <div className="grid gap-x-7 gap-y-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        <h2 className="heavy press text-[clamp(3rem,9vw,7.4rem)]">
+        <h2 className="heavy heavy-xl press text-[clamp(3rem,9vw,7.4rem)]">
           Measure
           <br />
           the thing
@@ -435,9 +436,9 @@ function Classified() {
             style={{
               fontFamily: "var(--font-body)",
               fontWeight: 300,
-              fontSize: "clamp(1.9rem,4.2vw,3.4rem)",
-              lineHeight: 1.1,
-              letterSpacing: "-0.02em",
+              fontSize: "clamp(2.2rem,5.6vw,5.375rem)",
+              lineHeight: 1.33,
+              letterSpacing: "-0.04em",
             }}
           >
             {c}

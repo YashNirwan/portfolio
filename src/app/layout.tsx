@@ -1,23 +1,30 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Newsreader, Pirata_One } from "next/font/google";
+import { Gloock, Newsreader, Pirata_One } from "next/font/google";
 import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 
-/* Canopee substitute, in both display roles.
+/* Standing in for Domaine Display Condensed Medium and Canopee.
 
-   Canopee is condensed with very high stroke contrast and sharp wedge
-   serifs. Playfair Display at 900 was standing in for it and is neither
-   condensed nor wedge-serifed — it is wide and slab-ish, which is why the
-   headings read as a different typeface to the reference. Bodoni Moda is
-   genuinely narrow at display optical sizes and has the contrast, so it now
-   carries the banners at 400 and the headings at 700–900.
+   Reading the reference's own font files settled what these actually are:
+   EditorialNew-Light for text, Canopee for the giant banners, and
+   DomaineDispCondMedium for every heading. The headings are CONDENSED at
+   weight 500 — they read heavy because they are narrow and high-contrast,
+   not because they are bold. Cranking Playfair and then Bodoni to 800 to
+   chase that was solving the wrong variable.
 
-   `opsz` is requested explicitly so the face redraws for size rather than
-   being scaled, and `display: optional` because it sets the LCP line. */
-const display = Bodoni_Moda({
-  variable: "--font-bodoni",
+   Measured "CREATIVE DEVELOPER" at 54px across seven free faces: Instrument
+   Serif is narrowest at 424px but far too light in the stem; Bodoni Moda
+   runs 622px and is not condensed at all. Gloock carries the thick stems
+   and hairline thins that give Domaine its colour, which is the dominant
+   character here.
+
+   Those three are commercial (Klim, Pangram Pangram). Their woff2 files are
+   served publicly but using them unlicensed on a site that carries a real
+   name is not a trade worth making. */
+const display = Gloock({
+  variable: "--font-gloock",
   subsets: ["latin"],
-  axes: ["opsz"],
+  weight: ["400"],
   display: "optional",
 });
 

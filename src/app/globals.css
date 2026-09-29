@@ -16,10 +16,10 @@
   --color-charcoal: #514d48; /* spec value #69645f measured 4.4:1 on parchment and 3.5:1 on bone — both under AA */
   --color-ember: #c03f13;
 
-  --font-display: var(--font-bodoni);
+  --font-display: var(--font-gloock);
   /* Both display roles are Bodoni now; the mid slot is the same face at a
      heavier weight rather than a third family. */
-  --font-mid: var(--font-bodoni);
+  --font-mid: var(--font-gloock);
   --font-gothic: var(--font-pirata);
   --font-body: var(--font-newsreader);
 }
@@ -38,13 +38,13 @@
 
   /* Line heights stay under 1.0 on every display size. Open spacing kills
      the compressed woodblock feel that the whole look depends on. */
-  --leading-banner: 0.73;
-  --leading-display: 0.79;
-  --leading-heading: 0.91;
+  --leading-banner: 0.65;
+  --leading-display: 0.67;
+  --leading-heading: 0.78;
 
   --tracking-banner: -0.05em;
-  --tracking-display: -0.042em;
-  --tracking-heading: -0.032em;
+  --tracking-display: -0.05em;
+  --tracking-heading: -0.05em;
 
   --page-max: 90rem; /* 1440px */
   --section-gap: 2.6875rem; /* 43px */
@@ -147,15 +147,20 @@ body {
 
 .headline {
   font-family: var(--font-mid);
-  font-weight: 700;
+  font-weight: 400;
   font-size: var(--text-heading);
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-heading);
 }
 
+/* Above roughly 200px the reference closes right up to 0.65-0.67. */
+.heavy-xl {
+  line-height: 0.67;
+}
+
 .subhead {
   font-family: var(--font-mid);
-  font-weight: 700;
+  font-weight: 400;
   font-size: var(--text-heading-sm);
   line-height: 1.11;
   letter-spacing: -0.03em;
@@ -188,6 +193,17 @@ body {
 
 .tabular {
   font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* Single-weight display faces must never be asked for a weight they do not
+   have; the synthesised result smears exactly the stroke contrast they were
+   picked for. */
+.display,
+.headline,
+.subhead,
+.heavy,
+.gothic {
+  font-synthesis-weight: none;
 }
 
 /* The drop cap is the only typographic flourish permitted in body text. */
@@ -235,6 +251,7 @@ body {
 .gothic {
   font-family: var(--font-gothic);
   font-weight: 400;
+  font-synthesis-weight: none;
 }
 
 /* The real site's drop cap sits in a ruled box rather than floating. */
@@ -242,6 +259,7 @@ body {
    version was an outlined box with a dark letter inside, which is a
    different thing entirely and read as a form field. */
 .capbox {
+  font-weight: 400;
   float: left;
   margin: 5px 14px 2px 0;
   width: 62px;
@@ -266,10 +284,13 @@ body {
    Canopee's weight; it is set tight and never below 32px. */
 .heavy {
   font-family: var(--font-mid);
-  font-weight: 800;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: -0.022em;
-  line-height: 0.94;
+  /* Measured, not guessed: -0.05em across every display size on the
+     reference. Line-height tightens with size, so the big cuts get their
+     own value rather than inheriting a flat one. */
+  letter-spacing: -0.05em;
+  line-height: 0.78;
   /* No scaleX. Playfair needed squeezing to fake a condensed cut; Bodoni is
      narrow already, and squeezing a face that is correctly proportioned
      distorts its stroke contrast. */

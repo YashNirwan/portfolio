@@ -1,7 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { profile, links, lede, dispatch, work, backPage, record, stats, portrait } from "@/lib/data";
+import {
+  profile,
+  links,
+  lede,
+  dispatch,
+  work,
+  backPage,
+  record,
+  stats,
+  story,
+  classified,
+  portrait,
+} from "@/lib/data";
 import { Stamp } from "@/components/stamp";
+import { Perforated } from "@/components/perforated";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -23,11 +36,13 @@ export default function Home() {
         <Identity />
         <Second />
         <Stats />
+        <Story />
         <RecordSection />
         <BigType />
         <Dispatch />
         <Banner word="Back page" />
         <BackPage />
+        <Classified />
         <WorkStrip
           items={[work[3], work[2]]}
           sub="Handpicked from the last two years."
@@ -43,7 +58,7 @@ function Masthead() {
   return (
     <header className="border-b border-ink">
       <div className="sheet flex items-baseline justify-between gap-4 py-3.5">
-        <span className="byline">{profile.location}</span>
+        <span className="byline byline-caps">{profile.location}</span>
         <span className="gothic hidden text-[19px] sm:block">The Paper Portfolio</span>
         <Link href="/work" className="byline no-underline hover:underline">
           All work
@@ -91,7 +106,7 @@ function WorkStrip({
 
 function WorkCard({ item }: { item: (typeof work)[number] }) {
   return (
-    <article className="rise relative flex flex-col">
+    <article className="par-slow relative flex flex-col">
       <figure className="mb-3" style={{ boxShadow: "var(--shadow-sm)" }}>
         {item.image ? (
           <Image
@@ -136,7 +151,7 @@ export function NewBadge() {
       style={{
         borderRadius: "var(--radius-sm)",
         background: "var(--color-ember)",
-        color: "var(--color-parchment)",
+        color: "#fff",
         fontSize: "11px",
         letterSpacing: "0.08em",
         textTransform: "uppercase",
@@ -209,7 +224,7 @@ function Identity() {
             height={portrait.h}
             sizes="(max-width: 768px) 100vw, 22rem"
             priority
-            className="rise block h-auto w-full max-w-[22rem]"
+            className="par-slow block h-auto w-full max-w-[22rem]"
             style={{ boxShadow: "var(--shadow-sm-2)" }}
           />
           <h2 className="heavy mt-5 text-[clamp(1.8rem,3.4vw,2.9rem)]">
@@ -230,7 +245,7 @@ function Second() {
     <section className="sheet py-9">
       <div className="grid items-end gap-7 md:grid-cols-[minmax(0,1fr)_13rem]">
         <Banner word="Measured" bare />
-        <Stamp className="w-[13rem] rise" />
+        <Stamp className="par-slow w-[13rem]" />
       </div>
     </section>
   );
@@ -244,7 +259,7 @@ function Stats() {
       <div className="ruled grid gap-x-7 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (
           <div key={s.label}>
-            <p className="byline">{s.label}</p>
+            <p className="byline byline-caps">{s.label}</p>
             <p className="flex items-baseline gap-2.5">
               <span className="heavy tighten text-[19px]">{s.unit}</span>
               <span
@@ -314,9 +329,20 @@ function BackPage() {
   return (
     <section className="sheet border-b border-ink py-10">
       <p className="lede pretty max-w-[52ch]">{backPage.standfirst}</p>
-      <dl className="ruled mt-8 grid gap-x-7 gap-y-8 md:grid-cols-2">
+      <dl className="mt-8 grid gap-x-9 gap-y-10 md:grid-cols-2">
         {backPage.items.map((item) => (
-          <div key={item.term}>
+          <div key={item.term} className="par-slow">
+            {item.image ? (
+              <Image
+                src={item.image.src}
+                alt={item.image.alt}
+                width={item.image.w}
+                height={item.image.h}
+                sizes="(max-width: 768px) 100vw, 34rem"
+                className="mb-4 block aspect-[3/2] h-auto w-full object-cover"
+                style={{ boxShadow: "var(--shadow-sm)" }}
+              />
+            ) : null}
             <dt className="flex flex-wrap items-baseline gap-x-2.5">
               <span className="heavy text-[25px]">
                 {item.href ? (
@@ -327,12 +353,71 @@ function BackPage() {
                   item.term
                 )}
               </span>
-              <span className="byline">{item.unit}</span>
+              <span className="byline byline-caps">{item.unit}</span>
             </dt>
             <dd className="pretty mt-2 max-w-[46ch] leading-[1.3]">{item.line}</dd>
           </div>
         ))}
       </dl>
+    </section>
+  );
+}
+
+/* --- The story, in a perforated panel ------------------------------------- */
+function Story() {
+  return (
+    <section className="sheet py-12">
+      <Perforated className="mx-auto max-w-[62rem]">
+        <p className="byline byline-caps">{story.kicker}</p>
+        <h2 className="heavy mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)]">{story.headline}</h2>
+        <div className="mt-7 columns-1 gap-9 md:columns-2">
+          {story.paragraphs.map((p, i) => (
+            <p key={i} className="pretty mb-4 break-inside-avoid leading-[1.45]">
+              {p}
+            </p>
+          ))}
+        </div>
+        <p className="mt-5 text-right italic">{story.signoff}</p>
+      </Perforated>
+    </section>
+  );
+}
+
+/* --- The classified strip -------------------------------------------------
+   A paper runs adverts; this one advertises the author. Two identical runs
+   slide past a clipped window so the loop is seamless with no JavaScript,
+   and it pauses on hover so the text can actually be read. */
+function Classified() {
+  /* Two identical runs slide past a clipped window, so the moment the first
+     one has travelled its own width the second is exactly where it started.
+
+     Both copies are built by the same map rather than one being wrapped in a
+     <span>: a <div> inside a <span> is invalid nesting, the parser hoists it
+     out, and the two runs end up side by side as static text instead of a
+     loop. That was the bug. */
+  const run = (key: string, hidden: boolean) => (
+    <div className="flex shrink-0 items-center" key={key} aria-hidden={hidden || undefined}>
+      {classified.map((c) => (
+        <span key={c} className="flex shrink-0 items-center">
+          <span className="heavy byline-caps px-6 text-[clamp(1rem,1.7vw,1.5rem)]">{c}</span>
+          <span aria-hidden="true" className="text-ember">
+            &#10035;
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+
+  return (
+    <section
+      className="overflow-hidden border-y border-ink py-3.5"
+      style={{ background: "var(--color-ink)", color: "var(--color-parchment)" }}
+      aria-label="Classified advertisements"
+    >
+      <div className="ticker">
+        {run("a", false)}
+        {run("b", true)}
+      </div>
     </section>
   );
 }
@@ -346,7 +431,7 @@ function RecordSection() {
           <div key={r.org}>
             <div className="flex flex-wrap items-baseline justify-between gap-x-4">
               <h3 className="heavy text-[21px]">{r.org}</h3>
-              <span className="byline tabular">{r.period}</span>
+              <span className="byline byline-caps tabular">{r.period}</span>
             </div>
             <p className="byline mt-1">{r.title}</p>
             <ul className="mt-2.5 max-w-[46ch]">
@@ -370,7 +455,7 @@ function RecordSection() {
               <dt>
                 {e.school} — <span className="text-charcoal">{e.detail}</span>
               </dt>
-              <dd className="byline tabular">{e.period}</dd>
+              <dd className="byline byline-caps tabular">{e.period}</dd>
             </div>
           ))}
         </dl>

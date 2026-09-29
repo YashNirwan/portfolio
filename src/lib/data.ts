@@ -28,7 +28,11 @@ export const links = {
 
 export const lede = {
   banner: "Nirwan",
-  kicker: "Software engineer!",
+  /* NOT a job title. The reference puts "INTERACTIVE ARTIST!" here and I
+     filled the slot with one out of habit, which is the exact shoehorning
+     this site is built to avoid — and "software engineer" is not even
+     accurate: neither paid role carried that title. A stance instead. */
+  kicker: "Prove it!",
   roles: [
     "Builds the check,",
     "not just the thing.",
@@ -38,7 +42,7 @@ export const lede = {
     "A demo tells you something can work once. A measurement tells you how often it works, and what it costs when it does. I would rather hand you the second one, even when the number is worse than the story.",
   headline: "I build the part that decides whether to believe the answer.",
   standfirst:
-    "Software engineer in New York. Most of what I make checks something else, and I would rather show you the measurement than the demo.",
+    "Most of what I make checks something else. I would rather hand you the measurement than the demo.",
   /* Opens the drop-cap column. Plain enough to be understood on one read,
      which the previous version was not. */
   paragraphs: [
@@ -103,14 +107,16 @@ export const work: Work[] = [
         href: "https://github.com/YashNirwan/foreman/blob/main/evals/RESULTS.md",
       },
     ],
-    image: {
-      src: "/foreman.jpg",
-      alt: "The Foreman review console, showing verified safety alerts beside the video evidence for each one",
-      w: 1500,
-      h: 1000,
-    },
     hasStudy: true,
     isNew: true,
+    image: {
+      /* PLACEHOLDER. On-palette and labelled with the subject so it is
+         obvious what belongs here. Replace src with real artwork. */
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+warehouse+floor",
+      alt: "Placeholder marking where artwork of a warehouse floor belongs",
+      w: 1200,
+      h: 675,
+    },
   },
   {
     slug: "interface-cua",
@@ -124,15 +130,16 @@ export const work: Work[] = [
       "Real systems fail in ways demos never do, so I also built the thing it practises on: a fake bank back-office that breaks on purpose. It drops sessions, throws errors and stalls on command, which is what makes the failures worth measuring.",
     stack: ["TypeScript", "Playwright", "zod"],
     links: [],
-    image: {
-      src: "/meridian.png",
-      alt: "Meridian Core, the deliberately broken bank system built to test against, showing a member search that returned nothing",
-      w: 3840,
-      h: 660,
-      position: "left top",
-    },
     hasStudy: true,
     isNew: true,
+    image: {
+      /* PLACEHOLDER. On-palette and labelled with the subject so it is
+         obvious what belongs here. Replace src with real artwork. */
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+legacy+terminal",
+      alt: "Placeholder marking where artwork of an old computer terminal belongs",
+      w: 1200,
+      h: 675,
+    },
   },
   {
     slug: "raivana",
@@ -150,10 +157,12 @@ export const work: Work[] = [
       { label: "GitHub", href: "https://github.com/yashnirwan/Raivana" },
     ],
     image: {
-      src: "/raivana.jpg",
-      alt: "The Raivana storefront, showing handcrafted Rajasthani homeware",
-      w: 1500,
-      h: 754,
+      /* PLACEHOLDER. On-palette and labelled with the subject so it is
+         obvious what belongs here. Replace src with real artwork. */
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=Rajasthani+homeware",
+      alt: "Placeholder marking where artwork of handmade Rajasthani homeware belongs",
+      w: 1200,
+      h: 675,
     },
   },
   {
@@ -171,6 +180,14 @@ export const work: Work[] = [
       { label: "Try it", href: "https://newvibecheck.streamlit.app" },
       { label: "GitHub", href: "https://github.com/yashnirwan/VibeCheck" },
     ],
+    image: {
+      /* PLACEHOLDER. On-palette and labelled with the subject so it is
+         obvious what belongs here. Replace src with real artwork. */
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+record+that+may+not+exist",
+      alt: "Placeholder marking where artwork about music belongs",
+      w: 1200,
+      h: 675,
+    },
   },
   {
     slug: "farewatch",
@@ -185,10 +202,12 @@ export const work: Work[] = [
     stack: ["Python", "SQLite", "launchd"],
     links: [{ label: "GitHub", href: "https://github.com/YashNirwan/farewatch" }],
     image: {
-      src: "/farewatch.svg",
-      alt: "Cheapest observed fare over time across six routes out of New York, drawn from farewatch's own database",
-      w: 2400,
-      h: 900,
+      /* PLACEHOLDER. On-palette and labelled with the subject so it is
+         obvious what belongs here. Replace src with real artwork. */
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+fare+that+will+not+settle",
+      alt: "Placeholder marking where artwork about air travel belongs",
+      w: 1200,
+      h: 675,
     },
   },
   {
@@ -203,13 +222,15 @@ export const work: Work[] = [
       "Using only records that existed before the fire, Twin Parks came out 1,003rd of 89,496 buildings. That is the top 1.1% of a queue nobody was running — and it also means a thousand buildings ranked ahead of it.",
     stack: ["Python", "Palantir Foundry", "NYC Open Data"],
     links: [{ label: "GitHub", href: "https://github.com/yashnirwan/firesight-nyc" }],
-    image: {
-      src: "/firesight.jpg",
-      alt: "The FireSight inspection view, showing Bronx buildings ranked by fire risk on a map",
-      w: 1600,
-      h: 821,
-    },
     hasStudy: true,
+    image: {
+      /* PLACEHOLDER. On-palette and labelled with the subject so it is
+         obvious what belongs here. Replace src with real artwork. */
+      src: "https://placehold.co/1200x675/1d1d1b/e2dedb?font=playfair-display&text=A+Bronx+tenement",
+      alt: "Placeholder marking where artwork of a Bronx apartment building belongs",
+      w: 1200,
+      h: 675,
+    },
   },
 ];
 
@@ -225,22 +246,50 @@ export const backPage = {
     {
       term: "Hong Kong cinema",
       unit: "mostly the nineties",
+      image: {
+        /* PLACEHOLDER. Replace src with real artwork. */
+        src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+cinema+marquee",
+        alt: "Placeholder marking where artwork about Hong Kong cinema belongs",
+        w: 900,
+        h: 600,
+      },
       line: "Stephen Chow first, then the action films, then Wong Kar-wai when I want to feel something. Mo lei tau — the nonsense-comedy style Chow works in — is the thing I will talk your ear off about. King of Comedy was hard enough to find that I ended up watching it on YouTube with subtitles from somewhere else entirely.",
     },
     {
       term: "Films the ratings got wrong",
       unit: "exhibit A: Stay, 2005",
+      image: {
+        /* PLACEHOLDER. Replace src with real artwork. */
+        src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+ticket+stub",
+        alt: "Placeholder marking where artwork about a film ticket belongs",
+        w: 900,
+        h: 600,
+      },
       line: "A film almost everyone scored badly and I think is good. That disagreement is roughly why I do not keep a Letterboxd: I would rather come to something cold than through someone else's score.",
     },
     {
       term: "Chess",
       unit: "1709 rapid on Lichess",
       href: "https://lichess.org/@/YashNirwan",
+      image: {
+        /* PLACEHOLDER. Replace src with real artwork. */
+        src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+board,+move+four",
+        alt: "Placeholder marking where artwork of a chessboard belongs",
+        w: 900,
+        h: 600,
+      },
       line: "I never learned any theory. I have opened with the London 2,669 times and worked out everything after move four as it happened, which has got me this far and will presumably stop working at some point.",
     },
     {
       term: "Flight prices",
       unit: "the one that got out of hand",
+      image: {
+        /* PLACEHOLDER. Replace src with real artwork. */
+        src: "https://placehold.co/900x600/cdc6be/1d1d1b?font=playfair-display&text=A+departure+board",
+        alt: "Placeholder marking where artwork of a departure board belongs",
+        w: 900,
+        h: 600,
+      },
       line: "I wrote something to watch six routes out of New York and never turned it off. It has taken 214,882 readings since July and sent me 442 alerts. I have booked two flights off it and I check the graph most mornings, which I am aware is not normal.",
     },
   ],
@@ -346,4 +395,32 @@ export const stats = [
   { label: "Live, taking real payments", unit: "Countries", value: "45" },
   { label: "Hand-labelled to test my own work", unit: "Clips", value: "49" },
   { label: "Written, reviewed, in production", unit: "Lines", value: "14k" },
+];
+
+/* --- The story ------------------------------------------------------------
+   Not invented. This is the arc that is already in the material: a year of
+   catching wrong numbers in insurance records, and then the same move
+   pointed at models that are wrong in the same confident way. Every fact
+   here appears elsewhere on the site with its source. */
+
+export const story = {
+  kicker: "The short version",
+  headline: "It started with a spreadsheet that lied.",
+  paragraphs: [
+    "A $4 million building had been keyed into an insurance record as $40 million. It had been sitting there for a while. Nobody had noticed, because nobody reads a hundred thousand rows — they read the summary, and the summary was wrong in a way that looked completely normal.",
+    "What fixed it was not attention. It was a set of cross-field checks that could say: this number disagrees with that number, go and look. I spent a year building those, and watching people trust the output more once they could see what it had caught.",
+    "Models are wrong in exactly the same way. Confidently, plausibly, in the shape you were expecting. So I build the same thing for them — the eval, the second pass, the number you can go and check yourself. That is the whole job, and it is why every project here ships with what it cost as well as what it did.",
+  ],
+  signoff: "— Y.N., New York",
+};
+
+/* --- The classified -------------------------------------------------------
+   A paper runs adverts. This one advertises the author. */
+
+export const classified = [
+  "Wanted: problems where the obvious answer is probably wrong",
+  "Will trade one measurement for one coffee",
+  "Available now",
+  "Enquiries: yn2328@nyu.edu",
+  "No agencies, no crypto, no dashboards nobody opens",
 ];

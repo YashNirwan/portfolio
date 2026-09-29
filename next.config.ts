@@ -1,7 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /* A closed spine on the catalogue morphs into the open project page.
+     Needs React canary, which this project is now on. */
+  experimental: { viewTransition: true },
+
   images: {
+    /* Placeholder services, used until real artwork exists. */
+    remotePatterns: [
+      { protocol: "https", hostname: "picsum.photos" },
+      { protocol: "https", hostname: "fastly.picsum.photos" },
+      { protocol: "https", hostname: "placehold.co" },
+    ],
     /* AVIF is opt-in — the default is webp only. Measured on foreman.jpg at
        w=1920: 71,496 B as JPEG, 51,470 B as WebP. AVIF lands roughly 20%
        under WebP again, which matters once images run full-bleed. */

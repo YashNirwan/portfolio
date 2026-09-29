@@ -1,0 +1,60 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+/* The catalogue reads sideways.
+
+   Two things make a lateral page feel right rather than awkward. The first
+   is that an ordinary vertical wheel gesture has to drive it, because nobody
+   reaches for shift-scroll. The second is that it must not swallow a
+   trackpad's genuine horizontal swipe, or back-navigation gestures stop
+   working.
+
+   So: vertical wheel deltas are converted to horizontal, horizontal deltas
+   are left alone, and once the shelf is at either end the event is released
+   back to the page. Keyboard and touch are untouched — a touch drag already
+   scrolls a horizontal container natively, and arrow keys still work because
+   the container is focusable. */
+export function Lateral({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    // Respect the OS setting: no wheel remapping for reduced-motion users.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const onWheel = (e: WheelEvent) => {
+      // A real horizontal gesture is left to the browser.
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+
+      const max = el.scrollWidth - el.clientWidth;
+      if (max <= 0) return;
+
+      const atStart = el.scrollLeft <= 0 && e.deltaY < 0;
+      const atEnd = el.scrollLeft >= max - 1 && e.deltaY > 0;
+      // Let the page have the event back at the ends, so the shelf does not
+      // trap the scroll.
+      if (atStart || atEnd) return;
+
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      // tabIndex so arrow keys and Home/End reach the container.
+      tabIndex={0}
+      aria-label="Project catalogue, scrolls sideways"
+      className="h-svh overflow-x-auto overflow-y-hidden"
+    >
+      <div className="flex h-full w-max items-stretch">{children}</div>
+    </div>
+  );
+}

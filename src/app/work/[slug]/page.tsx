@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -65,7 +66,8 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
     <div className="bg-bone">
       {/* Hero: full-bleed image, a torn edge, and the title straddling it. */}
       <section className="relative">
-        <div className="relative h-[46svh] min-h-[320px] w-full overflow-hidden md:h-[58svh]">
+        <ViewTransition name={`folder-${slug}`}>
+        <div className="unfold relative h-[46svh] min-h-[320px] w-full overflow-hidden md:h-[58svh]">
           {item?.image ? (
             <Image
               src={item.image.src}
@@ -80,6 +82,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
             <div className="h-full w-full bg-ink" />
           )}
         </div>
+        </ViewTransition>
 
         <Link
           href="/work"

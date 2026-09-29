@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "next": "16.2.9",
-    "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react": "^19.3.0-canary-d083ec1d-20260922",
+    "react-dom": "^19.3.0-canary-d083ec1d-20260922"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

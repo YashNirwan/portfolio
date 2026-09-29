@@ -13,7 +13,7 @@
   --color-parchment: #e2dedb;
   --color-bone: #cdc6be;
   --color-ink: #1d1d1b;
-  --color-charcoal: #69645f;
+  --color-charcoal: #514d48; /* spec value #69645f measured 4.4:1 on parchment and 3.5:1 on bone — both under AA */
   --color-ember: #c03f13;
 
   --font-display: var(--font-bodoni);
@@ -91,7 +91,7 @@ body {
   font-family: var(--font-body);
   font-weight: 300;
   font-size: var(--text-body);
-  line-height: 1.27;
+  line-height: 1.45; /* spec says 1.27; that is under the 1.3 floor for multi-line text */
   -webkit-font-smoothing: antialiased;
 }
 
@@ -144,12 +144,18 @@ a:hover {
 }
 
 /* Small caps metadata rows — the byline voice. */
+/* Small metadata. Uppercase only via .byline-caps, and only on short
+   labels: long passages in caps lose the word-shape cues people read by. */
 .byline {
   font-size: var(--text-caption);
-  line-height: 1.18;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  line-height: 1.38;
+  letter-spacing: 0.02em;
   color: var(--color-charcoal);
+}
+
+.byline-caps {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .lede {
@@ -293,11 +299,14 @@ a:hover {
       animation-timeline: view();
       animation-range: entry 0% entry 55%;
     }
-    /* Everything else gets one small, unshowy lift. */
+    /* A small lift, and NOTHING that can leave content invisible. The
+       previous version animated opacity from 0 with fill-mode both, so any
+       element whose view-timeline range never fired simply never appeared —
+       which is what happened to the portrait. */
     .rise {
       animation: rise linear both;
       animation-timeline: view();
-      animation-range: entry 4% entry 46%;
+      animation-range: entry 2% entry 40%;
     }
   }
 
@@ -321,8 +330,97 @@ a:hover {
 }
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; }
+  from { transform: translateY(10px); }
+  to { transform: none; }
 }
 
 .draw { transform-origin: left center; }
+
+/* ---------------------------------------------------------------------------
+   The folder
+
+   Shared-element view transitions would be the ideal mechanism, but they
+   need React canary and this is on stable, so the folder opens on arrival
+   instead: the hero unfolds from its top edge like a flap being lifted,
+   and the title is pressed on behind it.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  .unfold {
+    transform-origin: top center;
+    animation: unfold 820ms cubic-bezier(0.22, 0.86, 0.26, 1) both;
+    perspective: 1400px;
+  }
+}
+
+@keyframes unfold {
+  from {
+    transform: perspective(1400px) rotateX(-46deg) scaleY(0.82);
+    opacity: 0.35;
+  }
+  to {
+    transform: perspective(1400px) rotateX(0deg) scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Parallax
+
+   Scroll-driven, so it runs off the main thread and costs no JavaScript.
+   The figures drift slower than the page, which is what makes the sheet
+   feel like it has layers. Small numbers on purpose: a heavy parallax on a
+   printed-paper design reads as a slideshow.
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .par-slow {
+      animation: par-slow linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    .par-fast {
+      animation: par-fast linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
+
+@keyframes par-slow {
+  from { transform: translateY(26px); }
+  to { transform: translateY(-26px); }
+}
+
+@keyframes par-fast {
+  from { transform: translateY(46px); }
+  to { transform: translateY(-46px); }
+}
+
+/* ---------------------------------------------------------------------------
+   The classified strip
+
+   A newspaper runs adverts; this one advertises the author. Two copies of
+   the same run of text slide past a clipped window, so the loop is seamless
+   with no JavaScript and no measurement.
+   --------------------------------------------------------------------------- */
+.ticker {
+  display: flex;
+  width: max-content;
+  /* translateX(-50%) of a two-run strip lands exactly one run along, which
+     is what makes the loop seamless. will-change keeps it off the main
+     thread on long pages. */
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ticker {
+    animation: ticker 38s linear infinite;
+  }
+  .ticker:hover {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes ticker {
+  to { transform: translateX(-50%); }
+}

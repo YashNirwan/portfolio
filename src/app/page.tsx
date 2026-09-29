@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { profile, links, lede, dispatch, work, backPage } from "@/lib/data";
+import { profile, links, lede, dispatch, work, backPage, record, archive, portrait } from "@/lib/data";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -15,6 +15,8 @@ export default function Home() {
         <Dispatch />
         <Banner word="Back page" />
         <BackPage />
+        <RecordSection />
+        <ArchiveSection />
       </main>
       <Colophon />
     </>
@@ -45,9 +47,36 @@ function Lede() {
   return (
     <section className="sheet pb-10 pt-12 md:pb-14 md:pt-20">
       <div className="grid gap-x-11 gap-y-8 md:grid-cols-[1.05fr_1fr]">
-        <h1 className="headline press max-w-[13ch] text-balance">{lede.headline}</h1>
+        <div>
+          <h1 className="headline press max-w-[13ch] text-balance">{lede.headline}</h1>
+          <figure className="mt-8 hidden max-w-[19rem] md:block">
+            <Image
+              src={portrait.src}
+              alt={portrait.alt}
+              width={portrait.w}
+              height={portrait.h}
+              sizes="19rem"
+              priority
+              className="block h-auto w-full"
+              style={{ boxShadow: "rgba(29, 29, 27, 0.2) -5px 3px 6px 0px" }}
+            />
+            <figcaption className="byline mt-2.5">{portrait.caption}</figcaption>
+          </figure>
+        </div>
 
         <div className="max-w-[46ch]">
+          <figure className="mb-6 md:hidden">
+            <Image
+              src={portrait.src}
+              alt={portrait.alt}
+              width={portrait.w}
+              height={portrait.h}
+              sizes="100vw"
+              priority
+              className="block h-auto w-full"
+            />
+            <figcaption className="byline mt-2">{portrait.caption}</figcaption>
+          </figure>
           <p className="dropcap pretty mb-4 leading-[1.36]">{lede.paragraphs[0]}</p>
           {lede.paragraphs.slice(1).map((p, i) => (
             <p key={i} className="pretty mb-4 leading-[1.36] last:mb-0">
@@ -120,7 +149,7 @@ function Work() {
     <section className="sheet py-11 md:py-14">
       <div className="rule flex flex-wrap items-baseline justify-between gap-3 pt-3">
         <h2 className="subhead">Selected work</h2>
-        <p className="byline">Four of them · 2024–2026</p>
+        <p className="byline">Six of them · 2024–2026</p>
       </div>
 
       {/* Four stories in three columns leaves an orphan on a second row. The
@@ -131,7 +160,7 @@ function Work() {
           <article
             key={item.slug}
             id={item.slug}
-            className={`flex flex-col ${i === 0 ? "lg:col-span-2" : ""}`}
+            className={`relative flex flex-col ${i === 0 ? "lg:col-span-2" : ""}`}
           >
             {item.image ? (
               <figure className="mb-4 bg-bone">
@@ -153,7 +182,22 @@ function Work() {
             ) : null}
 
             <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-              <h3 className="subhead">{item.title}</h3>
+              <h3 className="subhead">
+                {item.hasStudy ? (
+                  /* The whole card is the link. The heading anchor is
+                     stretched over the article so a click lands anywhere on
+                     it, while the anchor text stays the accessible name
+                     rather than becoming "read more" repeated four times. */
+                  <Link
+                    href={`/work/${item.slug}`}
+                    className="no-underline after:absolute after:inset-0 after:content-[''] hover:underline"
+                  >
+                    {item.title}
+                  </Link>
+                ) : (
+                  item.title
+                )}
+              </h3>
               {item.isNew ? (
                 <span
                   className="byline bg-ember px-1.5 py-0.5 text-parchment"
@@ -171,8 +215,7 @@ function Work() {
             <p className="pretty mt-3 leading-[1.32] text-charcoal">{item.turn}</p>
 
             <div className="mt-auto pt-5">
-              <div className="flex flex-wrap gap-x-4 gap-y-1">
-                {item.hasStudy ? <Link href={`/work/${item.slug}`}>Read more</Link> : null}
+              <div className="relative z-10 flex flex-wrap gap-x-4 gap-y-1">
                 {item.links.map((l) => (
                   <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
                     {l.label}
@@ -221,7 +264,7 @@ function BackPage() {
           <div key={item.term} className="rule pt-3.5">
             <dt className="flex flex-wrap items-baseline gap-x-2.5">
               <span
-                className={`display tabular ${item.hot ? "text-ember" : ""}`}
+                className="subhead"
                 style={{ fontSize: "clamp(2.4rem, 5vw, 3.4rem)", lineHeight: 0.9 }}
               >
                 {item.href ? (
@@ -238,6 +281,80 @@ function BackPage() {
           </div>
         ))}
       </dl>
+    </section>
+  );
+}
+
+/* --- The record -----------------------------------------------------------
+   Plain, complete, and deliberately unstyled. Somebody scanning for dates
+   and titles should be able to reconstruct a CV here without reading a word
+   of the prose above. */
+function RecordSection() {
+  return (
+    <section className="sheet py-11 md:py-14">
+      <div className="rule flex flex-wrap items-baseline justify-between gap-3 pt-3">
+        <h2 className="subhead">The record</h2>
+        <p className="byline">Where I have actually worked</p>
+      </div>
+
+      <div className="mt-8 grid gap-x-11 gap-y-9 md:grid-cols-2">
+        {record.roles.map((r) => (
+          <div key={r.org}>
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+              <h3 className="subhead">{r.org}</h3>
+              <span className="byline tabular">{r.period}</span>
+            </div>
+            <p className="byline mt-1">{r.title}</p>
+            <ul className="mt-3 max-w-[46ch] list-none">
+              {r.lines.map((l, i) => (
+                <li key={i} className="pretty mb-2 leading-[1.32]">
+                  {l}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-9 max-w-[46ch]">
+        <p className="byline">Education</p>
+        <dl className="mt-2.5">
+          {record.education.map((e) => (
+            <div key={e.school} className="flex flex-wrap items-baseline justify-between gap-x-4">
+              <dt>
+                {e.school} — <span className="text-charcoal">{e.detail}</span>
+              </dt>
+              <dd className="byline tabular">{e.period}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
+/* --- The archive ----------------------------------------------------------
+   Coursework, labelled as coursework, one line each. Volume is evidence of
+   practice; it is not the argument, which is why it lives down here. */
+function ArchiveSection() {
+  return (
+    <section className="sheet pb-14">
+      <div className="rule flex flex-wrap items-baseline justify-between gap-3 pt-3">
+        <h2 className="subhead">Also on the shelf</h2>
+        <p className="byline">Coursework · 2025</p>
+      </div>
+
+      <ul className="mt-6 grid gap-x-11 gap-y-5 md:grid-cols-2">
+        {archive.map((a) => (
+          <li key={a.title} className="max-w-[46ch]">
+            <a href={a.href} target="_blank" rel="noreferrer" className="no-underline">
+              <span className="underline">{a.title}</span>{" "}
+              <span className="byline">{a.year}</span>
+            </a>
+            <p className="pretty mt-1 leading-[1.32] text-charcoal">{a.line}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

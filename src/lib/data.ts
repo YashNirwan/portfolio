@@ -147,6 +147,41 @@ export const work: Work[] = [
     },
   },
   {
+    slug: "vibecheck",
+    title: "VibeCheck",
+    kicker: "Music · 2025",
+    standfirst:
+      "Ask a language model for a playlist and it will confidently invent songs that do not exist.",
+    body:
+      "So the model never gets the last word. It proposes tracks, and then the app checks every single one against YouTube Music before showing you anything — forty at a time, in parallel. Anything it cannot find gets dropped rather than displayed with a broken link.",
+    turn:
+      "It is the smallest version of the idea I keep coming back to: let the model be creative, then put something boring and literal downstream of it.",
+    stack: ["Python", "Llama 3.3", "Groq", "Streamlit"],
+    links: [
+      { label: "Try it", href: "https://newvibecheck.streamlit.app" },
+      { label: "GitHub", href: "https://github.com/yashnirwan/VibeCheck" },
+    ],
+  },
+  {
+    slug: "farewatch",
+    title: "farewatch",
+    kicker: "Nobody asked · 2026",
+    standfirst:
+      "A thing I built for myself that has been running unattended on my laptop since July.",
+    body:
+      "It checks the price of six flight routes out of New York every few minutes, keeps every observation, and tells me when a fare drops far enough below its own recent baseline to be worth a look. Not a fixed threshold — a route that is always cheap should not alert every morning.",
+    turn:
+      "214,882 observations and 442 alerts so far. I have booked two flights off it. Nobody asked for it and it has never been switched off.",
+    stack: ["Python", "SQLite", "launchd"],
+    links: [{ label: "GitHub", href: "https://github.com/YashNirwan/farewatch" }],
+    image: {
+      src: "/farewatch.svg",
+      alt: "Cheapest observed fare over time across six routes out of New York, drawn from farewatch's own database",
+      w: 2400,
+      h: 900,
+    },
+  },
+  {
     slug: "firesight",
     title: "FireSight",
     kicker: "Civic data · 2026",
@@ -175,30 +210,112 @@ export const work: Work[] = [
 
 export const backPage = {
   standfirst:
-    "Every paper keeps a back page. Here is mine — including one thing that started as a joke and has not stopped running.",
+    "What I am actually into, when nobody is paying me to be into anything. One of these got out of hand and is still running.",
   items: [
     {
-      term: "213,965",
-      unit: "flight prices",
-      line: "I have checked six routes out of New York every few minutes since July. I have booked two of them. I look at the graph most mornings, which I am aware is not normal.",
-      hot: true,
+      term: "Hong Kong cinema",
+      unit: "mostly the nineties",
+      line: "Stephen Chow first, then the action films, then Wong Kar-wai when I want to feel something. Mo lei tau — the nonsense-comedy style Chow works in — is the thing I will talk your ear off about. King of Comedy was hard enough to find that I ended up watching it on YouTube with subtitles from somewhere else entirely.",
     },
     {
-      term: "1709",
-      unit: "rapid, on Lichess",
+      term: "Films the ratings got wrong",
+      unit: "exhibit A: Stay, 2005",
+      line: "A film almost everyone scored badly and I think is good. That disagreement is roughly why I do not keep a Letterboxd: I would rather come to something cold than through someone else's score.",
+    },
+    {
+      term: "Chess",
+      unit: "1709 rapid on Lichess",
       href: "https://lichess.org/@/YashNirwan",
-      line: "I never learned any theory. I have played the same opening 2,669 times and worked the rest out as it happened, which will presumably stop working at some point.",
-      hot: true,
+      line: "I never learned any theory. I have opened with the London 2,669 times and worked out everything after move four as it happened, which has got me this far and will presumably stop working at some point.",
     },
     {
-      term: "Hong Kong",
-      unit: "cinema, 1990s",
-      line: "Stephen Chow, the action films, Wong Kar-wai. It is most of what I watch. King of Comedy was hard enough to find that I ended up on YouTube with subtitles from somewhere else entirely.",
-    },
-    {
-      term: "Stay",
-      unit: "2005",
-      line: "Better than its reviews suggested, which is roughly why I do not keep a Letterboxd. I would rather come to a film cold than through someone else's score.",
+      term: "Flight prices",
+      unit: "the one that got out of hand",
+      line: "I wrote something to watch six routes out of New York and never turned it off. It has taken 214,882 readings since July and sent me 442 alerts. I have booked two flights off it and I check the graph most mornings, which I am aware is not normal.",
     },
   ],
+};
+
+/* --- The record -----------------------------------------------------------
+   Deliberately plain and complete. A recruiter needs to reconstruct a CV in
+   thirty seconds without reading any of the prose above, and giving them a
+   boring block low on the page is what frees the top of the site from having
+   to do that job. */
+
+export const record = {
+  roles: [
+    {
+      org: "Accenture",
+      title: "Product & Strategy Associate, Financial Services",
+      period: "Jul 2023 – Jul 2024",
+      lines: [
+        "Commercial-insurance data covering 1,000+ properties, inside a team of about ten.",
+        "Built the cross-field checks that caught a $4 million property entered as $40 million, and wrote the brief that got it corrected.",
+        "Took AI-assisted validation from 40% to 95% adoption in eight weeks, using a log of what the checks caught to win people over.",
+        "Cut correction cycles by 20 percentage points across compliance, actuarial and data engineering.",
+      ],
+    },
+    {
+      org: "Amoga",
+      title: "Product Manager, B2B SaaS",
+      period: "Dec 2022 – Jun 2023",
+      lines: [
+        "Owned a CRM product end to end at a startup: research, stories, backlog, sprints, and the go-to-market around it.",
+        "Grew web traffic 7% and lead conversion 10% through outbound campaigns and funnel dashboards in Superset and Google Analytics.",
+        "Wrote the buyer-facing copy and sales kits, because there was nobody else to write them.",
+      ],
+    },
+  ],
+  education: [
+    { school: "New York University", detail: "MS, Management of Technology", period: "2024 – 2026" },
+    {
+      school: "Ramaiah Institute of Technology",
+      detail: "BE, Computer Science",
+      period: "2019 – 2023",
+    },
+  ],
+};
+
+/* --- The archive ----------------------------------------------------------
+   Coursework, labelled as coursework. It belongs on the site because volume
+   is evidence of practice, and it belongs down here because it is not the
+   argument. */
+
+export const archive: { title: string; year: string; line: string; href: string }[] = [
+  {
+    title: "Retail stockout prediction",
+    year: "2025",
+    line: "Team of four; I led the analysis, not the model. Found that stockouts and healthy stock had near-identical inventory buffers, which broke the obvious threshold rule everyone starts with.",
+    href: "https://github.com/yashnirwan/walmart-stockout-prediction",
+  },
+  {
+    title: "Coupon acceptance",
+    year: "2025",
+    line: "57 engineered features predicting which drivers take a coupon, turned into a recommendation about which amenities a highway should actually build.",
+    href: "https://github.com/yashnirwan/coupon-acceptance-prediction",
+  },
+  {
+    title: "Spotify review mining",
+    year: "2025",
+    line: "Twenty thousand app reviews sorted into themes, then mapped onto what a product team should fix first.",
+    href: "https://github.com/yashnirwan/Spotify-Product-Analytics-NLP",
+  },
+  {
+    title: "RFM segmentation",
+    year: "2025",
+    line: "Recency, frequency and spend, in SQL, visualised in Tableau. The plainest possible version of turning a table into a decision.",
+    href: "https://github.com/yashnirwan/RFM-Analysis",
+  },
+];
+
+/* --- Portrait -------------------------------------------------------------
+   Pre-cropped to 4:5 rather than cropped in CSS, so the browser is not
+   downloading pixels it throws away. */
+
+export const portrait = {
+  src: "/portrait-4x5.jpg",
+  alt: "Yash Nirwan on Calton Hill in Edinburgh, in a sherpa jacket and beanie, with the National Monument behind him",
+  w: 800,
+  h: 1000,
+  caption: "Edinburgh, on the hill with the unfinished Parthenon on it.",
 };

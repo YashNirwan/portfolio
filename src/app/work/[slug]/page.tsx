@@ -101,16 +101,28 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
   );
 }
 
-const MEASURE = "max-w-[58ch]";
+const MEASURE = "mx-auto w-full max-w-[38rem]";
 
 function BlockView({ block }: { block: Block }) {
   if (block.kind === "h") {
-    return <h2 className={`subhead mt-11 mb-3 ${MEASURE}`}>{block.text}</h2>;
+    return <h2 className={`subhead mb-3 mt-12 ${MEASURE}`}>{block.text}</h2>;
   }
 
   if (block.kind === "pull") {
+    /* Sized against the body, not against the masthead. At headline scale a
+       three-line quote swamped everything around it. */
     return (
-      <p className={`headline my-8 max-w-[20ch] text-balance`}>{block.text}</p>
+      <p
+        className={`my-9 border-l border-ink pl-6 ${MEASURE}`}
+        style={{
+          fontFamily: "var(--font-mid)",
+          fontSize: "1.5rem",
+          lineHeight: 1.22,
+          letterSpacing: "-0.02em",
+        }}
+      >
+        {block.text}
+      </p>
     );
   }
 

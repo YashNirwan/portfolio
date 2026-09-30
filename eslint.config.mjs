@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored tooling, not this project's source. These are third-party
+    // minified bundles that shipped with the impeccable design linter;
+    // linting them produced 94 warnings about code nobody here will edit.
+    ".github/skills/**",
   ]),
 ]);
 

@@ -70,12 +70,19 @@ function Masthead() {
       <div className="sheet flex items-center justify-between gap-4 py-5">
         <span className="plate-row">{profile.location}</span>
         <span className="gothic hidden text-[22px] sm:block">The Second Opinion</span>
-        <Link href="/work" aria-label="All work" className="group no-underline">
-          <span aria-hidden="true" className="flex w-8 flex-col gap-[5px]">
-            <span className="block h-[2px] w-full bg-ink" />
-            <span className="block h-[2px] w-full bg-ink" />
-          </span>
-        </Link>
+        {/* The reference's nav is Index / Work / About. The masthead had a
+            route to the catalogue and none to /about, which did not exist. */}
+        <div className="flex items-center gap-5">
+          <Link href="/about" className="plate-row no-underline hover:underline">
+            About
+          </Link>
+          <Link href="/work" aria-label="All work" className="group no-underline">
+            <span aria-hidden="true" className="flex w-8 flex-col gap-[5px]">
+              <span className="block h-[2px] w-full bg-ink" />
+              <span className="block h-[2px] w-full bg-ink" />
+            </span>
+          </Link>
+        </div>
       </div>
     </header>
   );

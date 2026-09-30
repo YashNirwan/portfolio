@@ -16,10 +16,10 @@
   --color-charcoal: #514d48; /* spec value #69645f measured 4.4:1 on parchment and 3.5:1 on bone — both under AA */
   --color-ember: #c03f13;
 
-  --font-display: var(--font-gloock);
+  --font-display: var(--font-instrument);
   /* Both display roles are Bodoni now; the mid slot is the same face at a
      heavier weight rather than a third family. */
-  --font-mid: var(--font-gloock);
+  --font-mid: var(--font-instrument);
   --font-gothic: var(--font-pirata);
   --font-body: var(--font-newsreader);
 }
@@ -237,6 +237,18 @@ body {
 .heavy,
 .gothic {
   font-synthesis-weight: none;
+}
+
+/* Instrument Serif has one weight, and it is lighter in the stem than the
+   faces it stands in for. A hairline stroke in the text's own colour puts the
+   colour back — thickening every stem and serif evenly, which synthesised
+   bold does not; it smears the contrast. 0.016em: 1.6px at 100px, measured
+   against the reference's DIGITAL ART DIRECTOR. */
+.display,
+.headline,
+.subhead,
+.heavy {
+  -webkit-text-stroke: 0.016em currentColor;
 }
 
 /* The drop cap is the only typographic flourish permitted in body text. */

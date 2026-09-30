@@ -25,9 +25,10 @@ export const metadata: Metadata = {
      PUBLICATIONS  Canopee 158px, then a three-column grid at 43px / 500
      gutter        29px
 
-   Canopee is a condensed face and Gloock is not, so display sizes are fitted
-   to the sheet rather than copied in px — "ABOUT ME" at 33vw in Gloock would
-   run off the page where Canopee sits exactly edge to edge.
+   Canopee is more condensed than any free stand-in (Instrument Serif sets
+   1.32x its width), so display sizes are fitted to the sheet rather than
+   copied in px — copying 475px would run "ABOUT ME" off the page where
+   Canopee sits exactly edge to edge.
 
    The reference fills its slots with awards and publications. There are none
    here and none are invented: each slot takes the nearest real material
@@ -272,17 +273,23 @@ export default function About() {
 function FitLine({ text }: { text: string }) {
   const t = text.toUpperCase();
   const BOX = 1000;
-  const size = BOX / (0.62 * t.length);
-  const height = size * 0.86;
+  const size = BOX / (0.47 * t.length);
+  /* 0.47em per capital: Instrument Serif measures 0.47-0.50 on these words,
+     so the natural width just meets or overshoots the box and textLength
+     only ever tightens — by ~1%. 0.45 tightened NIRWAN ~5% and, in a face
+     already set tight, ran N-I-R into one shape. (0.62 was Gloock's.) */
+  const height = size * 0.854;
   return (
     <svg viewBox={`0 0 ${BOX} ${height}`} className="block w-full" role="img" aria-label={text}>
       <text
         x={BOX / 2}
-        y={size * 0.8}
+        y={size * 0.794}
         textAnchor="middle"
         textLength={BOX * 0.995}
         lengthAdjust="spacing"
         fill="var(--color-ink)"
+        stroke="var(--color-ink)"
+        strokeWidth={size * 0.01}
         style={{ fontFamily: "var(--font-display)", fontSize: `${size}px`, fontWeight: 400 }}
       >
         {t}

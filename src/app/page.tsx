@@ -118,12 +118,21 @@ function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
   /* Sized so the word's natural width slightly exceeds the box, which means
      lengthAdjust only ever tightens. Hardcoding a size instead is what made
      MEASURED collide with itself. */
-  /* Gloock carries a tall cap height and long ascenders for its em, so a
-     viewBox sized at 0.86em clipped the letters top and bottom. Sized from
+  /* The display face carries a tall cap height for its em (0.734em in
+     Instrument Serif, measured), so a viewBox sized at 0.86em clipped the
+     letters top and bottom. Sized from
      the cap box instead, with the type scaled down to keep the same optical
      weight inside a taller block. */
-  const size = BOX / (0.62 * text.length);
-  const height = size * 1.02;
+  const size = BOX / (0.47 * text.length);
+  /* 0.47em per capital: Instrument Serif measures 0.47-0.50 on these words,
+     so the natural width just meets or overshoots the box and textLength
+     only ever tightens — by ~1%. 0.45 tightened NIRWAN ~5% and, in a face
+     already set tight, ran N-I-R into one shape. (0.62 was Gloock's.) */
+  /* Capitals only, so no descender room: cap height (0.734em, measured) plus
+     0.06em of ink above and below. The old 1.02em left a band of empty ink
+     under the letters that the reference's block does not have — its MIRANDA
+     hugs the box top and bottom. */
+  const height = size * 0.854;
 
   /* The letters are KNOCKED OUT of the ink, not painted on top of it. That is
      why the reference's banner type carries the paper texture: you are seeing
@@ -144,11 +153,13 @@ function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
       <svg viewBox={`0 0 ${BOX} ${height}`} className="block w-full" role="img" aria-label={word}>
         <text
           x={BOX / 2}
-          y={size * 0.82}
+          y={size * 0.794}
           textAnchor="middle"
           textLength={BOX * 0.985}
           lengthAdjust="spacing"
           fill="var(--color-bone)"
+          stroke="var(--color-bone)"
+          strokeWidth={size * 0.01}
           style={{ fontFamily: "var(--font-display)", fontSize: `${size}px`, fontWeight: 400 }}
         >
           {text}
@@ -183,9 +194,10 @@ function Identity() {
     <section className="sheet border-b border-ink pb-12">
       <div className="ruled grid gap-x-10 gap-y-10 md:grid-cols-[30fr_63fr]">
         <div>
-          {/* 8.2vw rather than the reference's 14vw: Canopee is condensed and
-              Gloock is not, and PROVE at 14vw would run out of a 420px column. */}
-          <h1 className="guide heavy heavy-xl text-[clamp(3rem,8.2vw,7.6rem)]">
+          {/* 12vw against the reference's 14vw. Instrument Serif is 1.32x
+              Canopee's width, so PROVE at 14vw would just overrun the ~420px
+              column; Gloock, at 1.88x, had held this to 8.2vw. */}
+          <h1 className="guide heavy heavy-xl text-[clamp(3.4rem,12vw,11rem)]">
             <span>{lede.kicker.split(" ")[0]}</span>
             <span>{lede.kicker.split(" ").slice(1).join(" ")}</span>
           </h1>
@@ -224,10 +236,10 @@ function Identity() {
             />
           </figure>
 
-          {/* The reference's description is display caps at 8.5vw. 4.8vw
-              here because the longest line is NOT JUST THE THING. — 19
-              characters in a wider face — and it has to fit ~860px. */}
-          <h2 className="guide heavy mt-8 text-[clamp(2rem,4.8vw,4.4rem)] leading-[0.86]">
+          {/* The reference's description is display caps at 8.5vw. 6.6vw here:
+              the longest line, NOT JUST THE THING., is 19 characters and has
+              to fit ~850px. (It was 4.8vw in Gloock.) */}
+          <h2 className="guide heavy mt-8 text-[clamp(2.3rem,6.6vw,6rem)] leading-[0.86]">
             {lede.roles.map((r) => (
               <span key={r}>{r}</span>
             ))}

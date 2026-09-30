@@ -57,16 +57,24 @@ export default function WorkIndex() {
       <main id="main" tabIndex={-1} className="bg-bone lg:pl-[6.5rem]">
         <Lateral>
           <section className="flex w-[min(92vw,44rem)] shrink-0 flex-col justify-center px-5 md:px-10">
+            {/* The reference sets FEATURED and WORK at the SAME size (Canopee
+                240px) in boxes of different widths, 608 and 460. So each box
+                here is its own word's measured width — Instrument Serif at
+                180 units: FEATURED 677, WORK 389, plus 28 a side — and the two
+                containers keep the ratio of those viewBoxes (733:445), which
+                is what holds the two words at one size on screen. */}
             <div className="ink press w-full max-w-[32rem]">
-              <svg viewBox="0 0 620 150" className="block w-full" role="img" aria-label="Featured">
+              <svg viewBox="0 0 733 172" className="block w-full" role="img" aria-label="Featured">
                 <text
-                  x="310"
-                  y="118"
+                  x="366.5"
+                  y="152"
                   textAnchor="middle"
-                  textLength="586"
+                  textLength="677"
                   lengthAdjust="spacing"
                   fill="currentColor"
-                  style={{ fontFamily: "var(--font-display)", fontSize: "150px", fontWeight: 400 }}
+                  stroke="currentColor"
+                  strokeWidth="2.9"
+                  style={{ fontFamily: "var(--font-display)", fontSize: "180px", fontWeight: 400 }}
                 >
                   FEATURED
                 </text>
@@ -74,16 +82,18 @@ export default function WorkIndex() {
             </div>
 
             <div className="mt-2 flex items-end gap-5">
-              <div className="ink press press-2 w-full max-w-[21rem]">
-                <svg viewBox="0 0 420 150" className="block w-full" role="img" aria-label="Work">
+              <div className="ink press press-2 w-full max-w-[19.43rem]">
+                <svg viewBox="0 0 445 172" className="block w-full" role="img" aria-label="Work">
                   <text
-                    x="210"
-                    y="118"
+                    x="222.5"
+                    y="152"
                     textAnchor="middle"
-                    textLength="397"
+                    textLength="389"
                     lengthAdjust="spacing"
                     fill="currentColor"
-                    style={{ fontFamily: "var(--font-display)", fontSize: "150px", fontWeight: 400 }}
+                    stroke="currentColor"
+                    strokeWidth="2.9"
+                    style={{ fontFamily: "var(--font-display)", fontSize: "180px", fontWeight: 400 }}
                   >
                     WORK
                   </text>

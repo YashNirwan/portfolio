@@ -224,10 +224,11 @@ export function CurtainProvider({ children }: { children: React.ReactNode }) {
             transition: "opacity 400ms ease-out",
           }}
         >
-          {/* Measured on the reference: three links at Canopee 270px
-              (18.75vw at 1440). Gloock is wider, so 15vw. The current page
-              is the one ember item — the site's one-exception rule. */}
-          <ul className="guide-light heavy heavy-xl text-[clamp(4rem,15vw,15rem)]">
+          {/* Measured on the reference: three links at Canopee 270px —
+              18.75vw at 1440, used as-is now that the display face is
+              condensed. The current page is the one ember item, the site's
+              one-exception rule. */}
+          <ul className="guide-light heavy heavy-xl text-[clamp(4.5rem,18.75vw,17rem)]">
             {MENU.map((m, i) => {
               const current = m.href === "/" ? pathname === "/" : pathname.startsWith(m.href);
               return (

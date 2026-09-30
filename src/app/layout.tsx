@@ -1,30 +1,35 @@
 import type { Metadata } from "next";
-import { Gloock, Newsreader, Pirata_One } from "next/font/google";
+import { Instrument_Serif, Newsreader, Pirata_One } from "next/font/google";
 import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { CurtainProvider } from "@/components/curtain";
 
-/* Standing in for Domaine Display Condensed Medium and Canopee.
+/* Standing in for Canopee (banners) and Domaine Display Condensed (headings).
 
-   Reading the reference's own font files settled what these actually are:
-   EditorialNew-Light for text, Canopee for the giant banners, and
-   DomaineDispCondMedium for every heading. The headings are CONDENSED at
-   weight 500 — they read heavy because they are narrow and high-contrast,
-   not because they are bold. Cranking Playfair and then Bodoni to 800 to
-   chase that was solving the wrong variable.
+   Both are retail and unbought on purpose — the owner's rule is no spend,
+   and Canopée is VJ Type's, commercial-licence only (its free download is
+   for testing). The reference's CDN serves the files; using them unlicensed
+   on a site that carries a real name is not a trade worth making.
 
-   Measured "CREATIVE DEVELOPER" at 54px across seven free faces: Instrument
-   Serif is narrowest at 424px but far too light in the stem; Bodoni Moda
-   runs 622px and is not condensed at all. Gloock carries the thick stems
-   and hairline thins that give Domaine its colour, which is the dominant
-   character here.
+   Gloock stood in until 2026-09-30, chosen because Instrument Serif had been
+   measured and rejected as "far too light in the stem". That was right about
+   the weight and cost everything else: measured on "INTERACTIVE" at 100px
+   caps, Canopee sets it ~354px wide, Gloock 664px — 1.88x — which is why
+   every display line on this site read wide and blown out against the
+   reference. Instrument Serif sets it 467px (1.32x), the closest free face
+   with the reference's character: tall, condensed, high-contrast, sharp.
+   Ranked against it and rejected: Roboto Serif at wdth 50 (1.41x, right
+   weight, but reads as a news slab), Oranienbaum (1.47x, light), Noto Serif
+   Display at its narrowest (1.68x — its width axis only condenses 17%),
+   Stint Ultra Condensed (1.06x, a slab serif).
 
-   Those three are commercial (Klim, Pangram Pangram). Their woff2 files are
-   served publicly but using them unlicensed on a site that carries a real
-   name is not a trade worth making. */
-const display = Gloock({
-  variable: "--font-gloock",
+   The stem weight it lacks is put back with a hairline of its own colour —
+   `-webkit-text-stroke: 0.016em` on the display roles in globals.css, and
+   `stroke` on the SVG banners — which is what makes it read at Canopee's
+   colour rather than as a light cut. */
+const display = Instrument_Serif({
+  variable: "--font-instrument",
   subsets: ["latin"],
   weight: ["400"],
   display: "optional",

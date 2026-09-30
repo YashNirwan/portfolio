@@ -17,7 +17,7 @@ import {
 } from "@/lib/data";
 import { Stamp } from "@/components/stamp";
 import { Perforated } from "@/components/perforated";
-import { Spinner } from "@/components/spinner";
+import { Opening } from "@/components/opening";
 import { WorkCard } from "@/components/work-card";
 import { SiteNav } from "@/components/site-nav";
 import { OrgMark } from "@/components/org-mark";
@@ -30,8 +30,7 @@ export const metadata = { alternates: { canonical: "/" } };
    with a thin intro on top and a work grid filling the middle. */
 export default function Home() {
   return (
-    <>
-      <Spinner masthead="The Second Opinion" />
+    <Opening>
       <SiteNav />
       <main id="main" tabIndex={-1}>
         <WorkStrip
@@ -61,7 +60,7 @@ export default function Home() {
       </main>
       <Classified />
       <Colophon />
-    </>
+    </Opening>
   );
 }
 

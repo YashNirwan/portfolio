@@ -625,44 +625,46 @@ html.lenis {
 /* ---------------------------------------------------------------------------
    The open
 
-   A paper spins in from a point, unwinds and settles — the newspaper montage
-   shot. Two nested animations: the stage fades out at the end so the page
-   underneath is simply there, and the paper itself does the spinning, so the
-   fade never fights the rotation.
+   The whole page, on ink: it rises into view at 0.4 scale, holds, then turns
+   through two full turns anticlockwise while growing to full size. Timings
+   and the origin are measured off the reference; see components/opening.tsx.
+   One keyframe list, with a timing function per segment, so the rise, the
+   hold and the turn are one animation that ends in one event.
    --------------------------------------------------------------------------- */
-.spin-stage {
-  animation: spin-stage 1750ms ease-out both;
-  perspective: 1200px;
+html:has(body[data-opening]) {
+  overflow: hidden;
+  background-color: var(--color-ink);
 }
 
-.spin-paper {
-  animation: spin-paper 1400ms cubic-bezier(0.2, 0.82, 0.24, 1) both;
-  transform-origin: center;
+.opening {
+  /* The page's own stock, so it reads as a sheet against the ink while it
+     turns. Harmless afterwards: it is the colour html paints anyway. */
+  background-color: var(--color-parchment);
 }
 
-@keyframes spin-paper {
+body[data-opening] .opening {
+  transform-origin: 50% 70vh;
+  animation: opening 4200ms both;
+  will-change: transform;
+}
+
+@keyframes opening {
   0% {
-    transform: scale(0.06) rotate(-760deg);
-    filter: blur(1px);
+    transform: translateY(40vh) rotate(0deg) scale(0.4);
   }
-  70% {
-    transform: scale(1.04) rotate(8deg);
-    filter: blur(0);
+  5% {
+    transform: translateY(40vh) rotate(0deg) scale(0.4);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
   }
-  100% {
-    transform: scale(1) rotate(0deg);
+  40% {
+    transform: translateY(-28.8vh) rotate(0deg) scale(0.4);
   }
-}
-
-@keyframes spin-stage {
-  0%,
-  72% {
-    opacity: 1;
-    visibility: visible;
+  48% {
+    transform: translateY(-28.8vh) rotate(0deg) scale(0.4);
+    animation-timing-function: cubic-bezier(0.87, 0, 0.13, 1);
   }
   100% {
-    opacity: 0;
-    visibility: hidden;
+    transform: translateY(0) rotate(-720deg) scale(1);
   }
 }
 

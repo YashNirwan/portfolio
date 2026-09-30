@@ -255,6 +255,17 @@ none should be invented.
   The farewatch chart ships in two cuts: `farewatch.svg` (three across) and
   `farewatch-narrow.svg` (one across, for phones), chosen with `<picture>`.
   The ellipse says THE CODE when the only link is GitHub.
+- **The open** now transforms the WHOLE homepage, as the reference does
+  (`components/opening.tsx`, `@keyframes opening`). It replaces the old
+  Spinner, which spun only NIRWAN and the masthead on an overlay. Measured
+  off the reference's `.app` transform: scale 0.4 on ink, a rise of about
+  1.5s, a 0.5s hold, then -720deg while growing to 1 over about 2.2s.
+  The transform origin is 50% 70vh. It is armed by an inline script that
+  sets `data-opening` on `<body>` before first paint, once per session, and
+  never for reduced motion.
+  Note: the dev server kept serving the pre-change CSS chunk even after a
+  restart; a production build had it. If the open does not play in dev,
+  stop dev and clear `.next`.
 - **Nameplate** enlarged to 24/32px. Whether "The Second Opinion" is the
   right title for a job-search portfolio is the owner's call; see the chat
   for the trade-off.

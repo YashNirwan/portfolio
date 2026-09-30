@@ -106,7 +106,7 @@ def panel(route, t0, t1, absolute, ox, oy):
     low_v = min(val(p) for p in prices)
     g.append(f'<text x="{ox + LEFT}" y="{oy + 30}" font-size="{FS + 4}" font-weight="bold">{esc(route["name"])}</text>')
     if hot:
-        g.append(f'<text x="{ox + LEFT}" y="{oy + 30 + FS + 4}" fill-opacity="0.7">lowest fare of all six</text>')
+        g.append(f'<text x="{ox + LEFT}" y="{oy + 30 + FS + 4}" fill-opacity="0.7">lowest fare seen</text>')
 
     # Gridlines and dollar ticks, recessive.
     step = nice_step(hi - lo)

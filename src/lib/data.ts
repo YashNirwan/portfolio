@@ -215,7 +215,7 @@ export const work: Work[] = [
     standfirst:
       "A thing I built for myself that has been running unattended on my laptop since July.",
     body:
-      "It checks the price of six flight routes out of New York every few minutes, keeps every observation, and tells me when a fare drops far enough below its own recent baseline to be worth a look. Not a fixed threshold — a route that is always cheap should not alert every morning.",
+      "It checks the price of flight routes out of New York every few minutes, keeps every observation, and tells me when a fare drops far enough below its own recent baseline to be worth a look. Not a fixed threshold — a route that is always cheap should not alert every morning.",
     turn:
       "214,882 observations and 442 alerts so far. I have booked two flights off it. Nobody asked for it and it has never been switched off.",
     stack: ["Python", "SQLite", "launchd"],
@@ -233,7 +233,7 @@ export const work: Work[] = [
         w: 1440,
         h: 708,
         caption:
-          "The cheapest fare in every three-hour window for the six routes farewatch watches most. The dashed line is each route's median; the shaded band is where it alerts, under 60% of that. Two Houston routes fell into it in September.",
+          "The cheapest fare in every three-hour window for the routes farewatch watches most. The dashed line is each route's median; the shaded band is where it alerts, under 60% of that. Two Houston routes fell into it in September.",
       },
     ],
     image: {
@@ -317,7 +317,7 @@ export const backPage = {
         w: 1216,
         h: 832,
       },
-      line: "I like going places and I graduated broke, which is a bad combination. So I wrote something to watch six routes out of New York and tell me when a fare drops far enough below its own baseline to be worth taking. 214,882 readings since July. I have booked two of them.",
+      line: "I like going places and I graduated broke, which is a bad combination. So I wrote something to watch flight routes out of New York and tell me when a fare drops far enough below its own baseline to be worth taking. 214,882 readings since July. I have booked two of them.",
     },
   ],
 };

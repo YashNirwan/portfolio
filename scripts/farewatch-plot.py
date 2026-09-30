@@ -1,17 +1,39 @@
-import sqlite3, datetime, os
+"""Redraws public/farewatch.svg from farewatch's own observations.
+
+The source database lives outside this repo at ~/Projects/farewatch and is
+~19 MB of scraped fares, so it is not committed and is not present on CI or
+in a cloud session. What is committed is the derived slice this chart
+actually plots — six routes, the cheapest fare seen in each three-hour
+bucket — which is 37 KB and reproduces the figure exactly.
+
+So: run it where the database exists and it refreshes both the extract and
+the SVG. Run it anywhere else and it redraws from the extract.
+"""
+import sqlite3, datetime, json, os
+
 DB = os.path.expanduser("~/Projects/farewatch/farewatch.db")
-con = sqlite3.connect(DB); cur = con.cursor()
+EXTRACT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "farewatch-series.json")
 
-routes = [r[0] for r in cur.execute(
-  "SELECT origin||'-'||dest FROM observations GROUP BY origin,dest ORDER BY COUNT(*) DESC LIMIT 6")]
+if os.path.exists(DB):
+    con = sqlite3.connect(f"file:{DB}?mode=ro", uri=True); cur = con.cursor()
+    routes = [r[0] for r in cur.execute(
+      "SELECT origin||'-'||dest FROM observations GROUP BY origin,dest ORDER BY COUNT(*) DESC LIMIT 6")]
 
-series = {}
-for r in routes:
-    o, d = r.split("-")
-    rows = cur.execute("""
-      SELECT strftime('%s', observed_at)/10800*10800 AS b, MIN(price)
-      FROM observations WHERE origin=? AND dest=? GROUP BY b ORDER BY b""", (o, d)).fetchall()
-    if len(rows) > 12: series[r] = rows
+    series = {}
+    for r in routes:
+        o, d = r.split("-")
+        rows = cur.execute("""
+          SELECT strftime('%s', observed_at)/10800*10800 AS b, MIN(price)
+          FROM observations WHERE origin=? AND dest=? GROUP BY b ORDER BY b""", (o, d)).fetchall()
+        if len(rows) > 12: series[r] = [[int(t), round(p, 2)] for t, p in rows]
+
+    with open(EXTRACT, "w") as f:
+        json.dump(series, f, separators=(",", ":"))
+    print(f"read {DB} and refreshed {os.path.basename(EXTRACT)}")
+else:
+    with open(EXTRACT) as f:
+        series = json.load(f)
+    print(f"no local database; redrawing from {os.path.basename(EXTRACT)}")
 
 allpts = [p for s in series.values() for _, p in s]
 allt   = [t for s in series.values() for t, _ in s]
@@ -40,7 +62,10 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
 <g>{"".join(paths)}</g>
 </svg>'''
 
-out = os.path.expanduser("~/Projects/portfolio/public/farewatch.svg")
+# Relative to this file, not to $HOME: the repo is not at ~/Projects/portfolio
+# on CI or in a cloud session.
+out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                   "public", "farewatch.svg")
 open(out, "w").write(svg)
 span = (datetime.datetime.fromtimestamp(t1) - datetime.datetime.fromtimestamp(t0)).days
 print(f"routes plotted: {list(series)}")

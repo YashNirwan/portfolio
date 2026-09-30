@@ -58,7 +58,7 @@ export default function WorkIndex() {
                   x="310"
                   y="118"
                   textAnchor="middle"
-                  textLength="620"
+                  textLength="586"
                   lengthAdjust="spacing"
                   fill="currentColor"
                   style={{ fontFamily: "var(--font-display)", fontSize: "150px", fontWeight: 400 }}
@@ -75,7 +75,7 @@ export default function WorkIndex() {
                     x="210"
                     y="118"
                     textAnchor="middle"
-                    textLength="420"
+                    textLength="397"
                     lengthAdjust="spacing"
                     fill="currentColor"
                     style={{ fontFamily: "var(--font-display)", fontSize: "150px", fontWeight: 400 }}

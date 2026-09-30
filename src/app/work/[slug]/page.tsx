@@ -83,6 +83,20 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
   const live =
     item.links.find((l) => !l.href.includes("github.com")) ?? item.links[0] ?? null;
 
+  /* Indices of the paragraphs that open a section: the first "p" after each
+     "h". The lede already carries its own cap and is excluded. */
+  const capOpeners = new Set<number>();
+  if (study) {
+    let awaiting = false;
+    study.blocks.forEach((b, i) => {
+      if (b.kind === "h") awaiting = true;
+      else if (awaiting && b.kind === "p") {
+        capOpeners.add(i);
+        awaiting = false;
+      }
+    });
+  }
+
   return (
     /* Project pages sit on bone cream, a darker stock than the front page.
        That is how the reference separates a story from the paper it came
@@ -242,7 +256,9 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
           </aside>
 
           {study ? (
-            study.blocks.map((block, i) => <BlockView key={i} block={block} />)
+            study.blocks.map((block, i) => (
+              <BlockView key={i} block={block} capped={capOpeners.has(i)} />
+            ))
           ) : (
             <>
               {/* The same reversed-out cap the studies open with. Without it
@@ -315,7 +331,17 @@ function NextProjects({ currentSlug }: { currentSlug: string }) {
   );
 }
 
-function BlockView({ block }: { block: Block }) {
+/* HANDOFF.md's measurement of the reference says every body paragraph opens
+   with a reversed-out drop cap. Taken literally that is eight black squares
+   down a Foreman-length study, which stops reading as a printed page and
+   starts reading as a fault. The cap goes on the paragraph that OPENS each
+   section instead — the reference's "every body column", one column per
+   subhead — so every run of prose starts on one and no run is a queue of
+   them. If the owner wants it on all of them, `capOpeners` is the switch.
+
+   This cannot be re-measured from here: niccolomiranda.com is denied by the
+   environment's egress policy. Recorded in HANDOFF.md as an open question. */
+function BlockView({ block, capped = false }: { block: Block; capped?: boolean }) {
   if (block.kind === "h") {
     return <h2 className="col-main subhead mb-3 mt-12">{block.text}</h2>;
   }
@@ -363,7 +389,7 @@ function BlockView({ block }: { block: Block }) {
       {/* The lede paragraph carried no bottom margin, so the one paragraph
           with a 62px float in it was also the one with nothing under it. */}
       <p className={`col-main pretty mb-4 leading-[1.36] ${block.lede ? "lede" : ""}`}>
-        {block.lede ? (
+        {block.lede || capped ? (
           <>
             <span className="capbox" aria-hidden="true">
               {block.text.charAt(0)}

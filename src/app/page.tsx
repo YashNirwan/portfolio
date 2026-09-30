@@ -276,30 +276,49 @@ function Second() {
   );
 }
 
-/* Small-caps label, then the word and a large numeral. Every figure here is
-   one a reader can go and check. */
+/* --- The figures ----------------------------------------------------------
+   Set the way the reference sets its awards row, measured at 1440: a label
+   in the text face (24.5px, caps, centred) over a display word (72px caps),
+   and beside the pair a numeral in the BLACKLETTER at 158px — the reference
+   uses its nameplate face (Germgoth) for these; ours is Pirata One, the
+   masthead's. Four items spread across the sheet at their natural widths, no
+   rules between them. Ours had the word at 19px and the numeral at 42px,
+   which set the figures as a footnote to the page instead of a row of it.
+
+   The labels are longer than the reference's ("Site of the day") and are
+   capped to wrap under their word rather than widening the item. The
+   figures and labels themselves are untouched: two of them are flagged in
+   HANDOFF.md for the owner to settle. */
 function Stats() {
   return (
-    <section className="sheet border-y border-ink py-7"><span className="draw sr-only" aria-hidden="true" />
-      <div className="ruled grid gap-x-7 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+    <section className="sheet border-y border-ink py-9 md:py-12">
+      <span className="draw sr-only" aria-hidden="true" />
+      {/* One-up on phones: COUNTRIES plus a two-digit blackletter numeral
+          needs ~212px, and two-up at 390 gives each ~170 — it overran the
+          viewport by a pixel. */}
+      <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:flex lg:items-start lg:justify-between">
         {stats.map((s) => (
-          <div key={s.label}>
-            <p className="byline byline-caps">{s.label}</p>
-            <p className="flex items-baseline gap-2.5">
-              <span className="heavy tighten text-[19px]">{s.unit}</span>
-              <span
-                className="tabular"
+          <div key={s.label} className="flex items-start gap-2.5">
+            <div className="text-center">
+              <p
+                className="mx-auto max-w-[19ch] uppercase text-charcoal"
                 style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 400,
-                  fontSize: "42px",
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.03em",
+                  fontFamily: "var(--font-body)",
+                  fontSize: "clamp(0.9rem, 1.35vw, 1.3rem)",
+                  lineHeight: 1.15,
+                  letterSpacing: "-0.01em",
                 }}
               >
-                {s.value}
-              </span>
-            </p>
+                {s.label}
+              </p>
+              <p className="heavy mt-1.5 text-[clamp(2rem,3.9vw,4.5rem)] leading-[0.9]">{s.unit}</p>
+            </div>
+            <span
+              className="gothic tabular"
+              style={{ fontSize: "clamp(4.2rem, 9vw, 10rem)", lineHeight: 0.55, marginTop: "0.08em" }}
+            >
+              {s.value}
+            </span>
           </div>
         ))}
       </div>
@@ -307,27 +326,79 @@ function Stats() {
   );
 }
 
+/* --- The big type ---------------------------------------------------------
+   The reference's THE / PIXEL / PERFECT / ARTISAN block, measured: display
+   words at 446px (31vw) set into a grid with images slotted between them —
+   a small upright crop beside the first word, a large near-square spanning
+   the first two rows on the right, a landscape crop leading the third row,
+   and a closing line with a small label. Ours was 118px of type with the
+   creed beside it and no images at all.
+
+   Same shape here, with our own plates in the image slots: the three
+   measurement projects, cropped to keep each plate's ember exception in
+   frame. One size for every word rather than fitting each word to its
+   cell: in a face that is still 1.32x Canopee's width, fitted sizes would
+   range widely and read as three separate headlines. */
 function BigType() {
+  const plate = (slug: string) => work.find((w) => w.slug === slug)!.image!;
+  const cut = (
+    slug: string,
+    position: string,
+    cls: string,
+    sizes: string,
+  ) => {
+    const img = plate(slug);
+    return (
+      <div className={`par-frame ${cls}`}>
+        <Image
+          src={img.src}
+          alt=""
+          aria-hidden="true"
+          width={img.w}
+          height={img.h}
+          sizes={sizes}
+          className="par-img block h-full w-full object-cover"
+          style={{ objectPosition: position }}
+        />
+      </div>
+    );
+  };
+
   return (
-    <section className="sheet py-11">
-      <div className="grid gap-x-7 gap-y-6 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
-        <h2 className="heavy heavy-xl press text-[clamp(3rem,9vw,7.4rem)]">
-          Measure
-          <br />
-          the thing
-          <br />
-          you built
-        </h2>
-        <div className="self-end">
-          <p className="pretty leading-[1.32]">{lede.creed}</p>
-          <Link
-            href="/work"
-            className="mt-6 inline-block border border-ink px-7 py-3 no-underline"
-            style={{ borderRadius: "999px" }}
-          >
-            <span className="heavy text-[15px]">All work</span>
-          </Link>
+    <section className="sheet py-12">
+      <h2 className="sr-only">Measure the thing you built</h2>
+      {/* Proportions from the reference block: the words take the left 62%,
+          a landscape plate spans the first two rows on the right (38%), and
+          the last row runs the full width behind a lead crop. At 13.5vw the
+          longest line, YOU BUILT., is ~912px and clears 1382 with its crop;
+          the type is what dominates, as it does there. */}
+      <div
+        aria-hidden="true"
+        className="heavy heavy-xl grid items-end gap-x-4 gap-y-3 text-[clamp(3.2rem,13.5vw,13.4rem)] md:grid-cols-[minmax(0,62fr)_minmax(0,38fr)]"
+      >
+        <div className="flex items-end gap-4">
+          {cut("foreman", "8% 50%", "hidden aspect-[2/3] w-[15%] shrink-0 md:block", "10vw")}
+          <span>Measure</span>
         </div>
+        {cut("farewatch", "82% 50%", "hidden self-stretch md:row-span-2 md:block", "38vw")}
+        <span>The thing</span>
+        <div className="flex items-end gap-4 md:col-span-2">
+          {cut("vibecheck", "34% 50%", "hidden aspect-[373/317] w-[27%] shrink-0 md:block", "27vw")}
+          <span>You built.</span>
+        </div>
+      </div>
+
+      {/* The closing line — where the reference sets ARTISAN with a small
+          Awwwards label — carries the creed and the way on. */}
+      <div className="mt-10 flex flex-wrap items-end justify-between gap-8 border-t border-ink pt-7">
+        <p className="pretty max-w-[52ch] leading-[1.32]">{lede.creed}</p>
+        <Link
+          href="/work"
+          className="inline-block border border-ink px-7 py-3 no-underline"
+          style={{ borderRadius: "999px" }}
+        >
+          <span className="heavy text-[15px]">All work</span>
+        </Link>
       </div>
     </section>
   );
@@ -440,25 +511,31 @@ function Classified() {
     <div className="flex shrink-0 items-center" key={key} aria-hidden={hidden || undefined}>
       {classified.map((c) => (
         <span key={c} className="flex shrink-0 items-center">
+          {/* Measured on the reference's footer run: 86.4px (6vw), line
+              height 1.33, tracking -0.04em, sentence case, in its narrow
+              text face (Editorial New). Newsreader is too wide to stand in
+              at this size — it read spread out — so the run is set in the
+              condensed display face at its natural weight, unstroked. */}
           <span
             className="whitespace-nowrap px-7"
             style={{
-              fontFamily: "var(--font-body)",
-              fontWeight: 300,
-              fontSize: "clamp(2.2rem,5.6vw,5.375rem)",
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(2.4rem,6vw,5.4rem)",
               lineHeight: 1.33,
-              letterSpacing: "-0.04em",
+              letterSpacing: "-0.02em",
             }}
           >
             {c}
           </span>
+          {/* EMAIL ME is display caps at the SAME 86px as the run, in an
+              ink block that hugs the caps (238x65 on the reference). */}
           <a
             href={`mailto:${links.email}`}
-            className="shrink-0 px-4 py-1.5 no-underline"
+            className="shrink-0 px-4 pb-1.5 pt-2.5 no-underline"
             style={{ background: "var(--color-ink)", color: "var(--color-parchment)" }}
             tabIndex={hidden ? -1 : 0}
           >
-            <span className="heavy text-[clamp(1.1rem,2.2vw,1.8rem)]">Email me</span>
+            <span className="heavy block text-[clamp(2.4rem,6vw,5.4rem)] leading-[0.67]">Email me</span>
           </a>
         </span>
       ))}
@@ -551,23 +628,39 @@ function Archive() {
   );
 }
 
+/* The footer line, measured on the reference: the name in display caps at
+   23px left; the links right in display caps at 21.6px, separated by
+   middle dots. */
 function Colophon() {
+  const out = [
+    { label: "GitHub", href: links.github },
+    { label: "LinkedIn", href: links.linkedin },
+    { label: "Résumé", href: links.resume },
+  ];
   return (
     <footer>
       <div className="border-t border-ink">
-        <div className="sheet flex flex-wrap items-baseline justify-between gap-3 py-3.5">
-          <span className="gothic text-[16px]">Yash Nirwan</span>
-          <div className="flex flex-wrap gap-x-5">
-            <a href={links.github} target="_blank" rel="noreferrer" className="byline">
-              GitHub
-            </a>
-            <a href={links.linkedin} target="_blank" rel="noreferrer" className="byline">
-              LinkedIn
-            </a>
-            <a href={links.resume} className="byline">
-              Résumé
-            </a>
-          </div>
+        <div className="sheet flex flex-wrap items-center justify-between gap-3 py-5">
+          <span className="heavy text-[23px]">Yash Nirwan</span>
+          <ul className="flex flex-wrap items-center">
+            {out.map((l, i) => (
+              <li key={l.label} className="flex items-center">
+                {i > 0 ? (
+                  <span aria-hidden="true" className="heavy px-2 text-[21.6px]">
+                    ·
+                  </span>
+                ) : null}
+                <a
+                  href={l.href}
+                  target={l.href.startsWith("http") ? "_blank" : undefined}
+                  rel="noreferrer"
+                  className="heavy text-[21.6px] no-underline hover:underline"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>

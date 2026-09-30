@@ -173,16 +173,32 @@ body {
 /* Small caps metadata rows — the byline voice. */
 /* Small metadata. Uppercase only via .byline-caps, and only on short
    labels: long passages in caps lose the word-shape cues people read by. */
-.byline {
-  font-size: var(--text-caption);
-  line-height: 1.38;
-  letter-spacing: 0.02em;
-  color: var(--color-charcoal);
-}
+/* In @layer components, NOT un-layered. Un-layered CSS beats every Tailwind
+   utility regardless of specificity, so `.byline`'s charcoal silently won
+   over any `text-*` put beside it. Two places that cost:
 
-.byline-caps {
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+   - The skip link. It asks for `focus:text-parchment` on `focus:bg-ink`, and
+     rendered charcoal on black instead — roughly 2:1, near-invisible — to a
+     keyboard user pressing Tab, who is the one person it exists for. On
+     every page, since it lives in the root layout.
+   - The catalogue spines, once they moved onto ink: `text-bone` on the year
+     was ignored the same way.
+
+   Layered, a utility beside it wins, which is the only behaviour that makes
+   writing one there mean anything. Same trap as `body > *` and the base `a`
+   rule further up; this was the third instance of it. */
+@layer components {
+  .byline {
+    font-size: var(--text-caption);
+    line-height: 1.38;
+    letter-spacing: 0.02em;
+    color: var(--color-charcoal);
+  }
+
+  .byline-caps {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
 }
 
 .lede {

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ViewTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { work, lede } from "@/lib/data";
+import { work, lede, links } from "@/lib/data";
 import { Stamp } from "@/components/stamp";
 import { Lateral } from "@/components/lateral";
 
@@ -18,7 +18,7 @@ export default function WorkIndex() {
   return (
     <>
       {/* The rail. Fixed, so it stays put while the shelf slides past. */}
-      <div className="pointer-events-none fixed inset-y-0 left-0 z-20 hidden w-[6.5rem] border-r border-ink bg-parchment lg:block">
+      <div className="pointer-events-none fixed inset-y-0 left-0 z-20 hidden w-[6.5rem] border-r border-ink bg-bone lg:block">
         <div className="grid h-full grid-rows-[auto_1fr_auto] justify-items-center py-7">
           <Link href="/" className="pointer-events-auto byline no-underline hover:underline">
             ←
@@ -49,7 +49,12 @@ export default function WorkIndex() {
         </div>
       </header>
 
-      <main id="main" tabIndex={-1} className="lg:pl-[6.5rem]">
+      {/* Measured on the reference at 1440: body background rgb(205,198,190),
+          which is this palette's bone, not parchment. The shelf beyond the
+          opening panel then runs on ink — the page is bone up to roughly one
+          viewport and near-black for the remaining ~4,200px of its 5,617px
+          width. Ours was parchment end to end. */}
+      <main id="main" tabIndex={-1} className="bg-bone lg:pl-[6.5rem]">
         <Lateral>
           <section className="flex w-[min(92vw,44rem)] shrink-0 flex-col justify-center px-5 md:px-10">
             <div className="ink press w-full max-w-[32rem]">
@@ -104,19 +109,34 @@ export default function WorkIndex() {
             <Spine key={item.slug} item={item} />
           ))}
 
-          {/* A closing panel, so the shelf ends on something rather than air. */}
-          <section className="flex w-[min(86vw,26rem)] shrink-0 flex-col justify-center border-l border-ink px-5 md:px-10">
-            <p className="heavy text-[clamp(1.8rem,3vw,2.6rem)]">That is all of it.</p>
-            <p className="pretty mt-4 leading-[1.42]">
+          {/* The closing panel. The reference ends its shelf on a display-scale
+              LET'S TALK! — measured at Canopee 220px, line-height 0.77,
+              tracking -0.05em — not on a paragraph. Ours ended on 2.6rem of
+              body copy, which reads as the page running out rather than as an
+              invitation. Same register as the FEATURED/WORK opening, so the
+              shelf is bracketed by two display panels. */}
+          <section className="flex w-[min(92vw,34rem)] shrink-0 flex-col justify-center border-l border-parchment/25 bg-ink px-5 text-parchment md:px-10">
+            <h2 className="heavy text-[clamp(3rem,7vw,7.2rem)] leading-[0.77]">
+              Let’s
+              <br />
+              talk!
+            </h2>
+            <p className="pretty mt-6 max-w-[34ch] leading-[1.35]">
               Six things, each with the number that made me keep it. If one of them is the kind of
               problem you have, say so.
             </p>
-            <Link
-              href="/"
-              className="heavy mt-7 inline-block text-[16px] no-underline hover:underline"
-            >
-              ← Back to the front page
-            </Link>
+            <div className="mt-7 flex flex-wrap items-center gap-4">
+              <a
+                href={`mailto:${links.email}`}
+                className="inline-block border border-parchment px-7 py-3 no-underline"
+                style={{ borderRadius: "999px" }}
+              >
+                <span className="heavy text-[15px]">Email me</span>
+              </a>
+              <Link href="/" className="byline text-bone no-underline hover:underline">
+                ← Back to the front page
+              </Link>
+            </div>
           </section>
         </Lateral>
       </main>
@@ -132,7 +152,7 @@ function Spine({ item }: { item: (typeof work)[number] }) {
      is what lets it fall open into the project page rather than cutting. */
   return (
     <ViewTransition name={`folder-${item.slug}`}>
-      <article className="leaf group relative h-full w-[11rem] shrink-0 overflow-hidden border-r border-ink bg-parchment sm:w-[13.5rem]">
+      <article className="leaf group relative h-full w-[11rem] shrink-0 overflow-hidden border-r border-parchment/25 bg-ink sm:w-[13.5rem]">
         <div className="absolute inset-0 opacity-0 transition-opacity duration-500 ease-out group-focus-within:opacity-100 group-hover:opacity-100">
           {item.image ? (
             <Image
@@ -144,14 +164,14 @@ function Spine({ item }: { item: (typeof work)[number] }) {
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
             />
           ) : null}
-          <div className="absolute inset-0 bg-ink/60" />
+          <div className="absolute inset-0 bg-ink/45" />
         </div>
 
         <Link
           href={`/work/${item.slug}`}
           className="relative flex h-full flex-col items-center justify-between gap-5 px-3 py-10 no-underline"
         >
-          <h2 className="heavy text-[30px] transition-colors duration-300 group-focus-within:text-parchment group-hover:text-parchment">
+          <h2 className="heavy text-[30px] text-parchment">
             <span
               className="inline-block [writing-mode:vertical-rl] transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
               style={{ transform: "none" }}
@@ -182,7 +202,7 @@ function Spine({ item }: { item: (typeof work)[number] }) {
                 New
               </span>
             ) : null}
-            <span className="byline byline-caps tabular transition-colors duration-300 group-focus-within:text-parchment group-hover:text-parchment">
+            <span className="byline byline-caps tabular text-bone">
               {year}
             </span>
           </div>

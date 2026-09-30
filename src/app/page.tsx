@@ -233,7 +233,7 @@ function Identity() {
           {/* 2.1vw rather than 3.4vw: beside the photo the longest role line
               has ~300px at 1280 and ~400px at 1440, and 3.4vw overflowed
               both. It keeps the stacked size below the split. */}
-          <h2 className="heavy mt-5 text-[clamp(1.8rem,3.4vw,2.9rem)] xl:mt-0 xl:text-[clamp(1.5rem,2.1vw,2.2rem)]">
+          <h2 className="heavy mt-5 text-[clamp(1.8rem,3.4vw,2.9rem)] xl:mt-0 xl:text-[clamp(1.5rem,2.1vw,2.2rem)] xl:leading-[0.92]">
             {lede.roles.map((r) => (
               <span key={r} className="block">
                 {r}

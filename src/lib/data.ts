@@ -110,10 +110,8 @@ export const work: Work[] = [
     hasStudy: true,
     isNew: true,
     image: {
-      /* PLACEHOLDER. On-palette and labelled with the subject so it is
-         obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+warehouse+floor",
-      alt: "Placeholder marking where artwork of a warehouse floor belongs",
+      src: "/art/foreman.svg",
+      alt: "Engraving of a warehouse aisle: pallet racking on both sides, a forklift in the aisle, and one pallet flagged in ember",
       w: 1200,
       h: 675,
     },
@@ -133,10 +131,8 @@ export const work: Work[] = [
     hasStudy: true,
     isNew: true,
     image: {
-      /* PLACEHOLDER. On-palette and labelled with the subject so it is
-         obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+legacy+terminal",
-      alt: "Placeholder marking where artwork of an old computer terminal belongs",
+      src: "/art/interface-cua.svg",
+      alt: "Engraving of an old computer terminal showing a ruled form of unlabelled fields, with one field flagged in ember",
       w: 1200,
       h: 675,
     },
@@ -157,10 +153,8 @@ export const work: Work[] = [
       { label: "GitHub", href: "https://github.com/yashnirwan/Raivana" },
     ],
     image: {
-      /* PLACEHOLDER. On-palette and labelled with the subject so it is
-         obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=Rajasthani+homeware",
-      alt: "Placeholder marking where artwork of handmade Rajasthani homeware belongs",
+      src: "/art/raivana.svg",
+      alt: "Engraving of five thrown Rajasthani vessels on a shelf between block-printed borders, one picked out in ember",
       w: 1200,
       h: 675,
     },
@@ -181,10 +175,8 @@ export const work: Work[] = [
       { label: "GitHub", href: "https://github.com/yashnirwan/VibeCheck" },
     ],
     image: {
-      /* PLACEHOLDER. On-palette and labelled with the subject so it is
-         obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+record+that+may+not+exist",
-      alt: "Placeholder marking where artwork about music belongs",
+      src: "/art/vibecheck.svg",
+      alt: "Engraving of a grid of fifteen records; one is an empty dashed outline in ember, a track that does not exist",
       w: 1200,
       h: 675,
     },
@@ -202,10 +194,8 @@ export const work: Work[] = [
     stack: ["Python", "SQLite", "launchd"],
     links: [{ label: "GitHub", href: "https://github.com/YashNirwan/farewatch" }],
     image: {
-      /* PLACEHOLDER. On-palette and labelled with the subject so it is
-         obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+fare+that+will+not+settle",
-      alt: "Placeholder marking where artwork about air travel belongs",
+      src: "/art/farewatch.svg",
+      alt: "Engraving of six fare traces against a dashed baseline band, one dropping away below it in ember",
       w: 1200,
       h: 675,
     },
@@ -224,10 +214,8 @@ export const work: Work[] = [
     links: [{ label: "GitHub", href: "https://github.com/yashnirwan/firesight-nyc" }],
     hasStudy: true,
     image: {
-      /* PLACEHOLDER. On-palette and labelled with the subject so it is
-         obvious what belongs here. Replace src with real artwork. */
-      src: "https://placehold.co/1200x675/1d1d1b/e2dedb.png?font=playfair-display&text=A+Bronx+tenement",
-      alt: "Placeholder marking where artwork of a Bronx apartment building belongs",
+      src: "/art/firesight.svg",
+      alt: "Engraving of a tenement facade with a fire escape running up its centre bay, one window flagged in ember",
       w: 1200,
       h: 675,
     },
@@ -247,9 +235,8 @@ export const backPage = {
       term: "Hong Kong cinema",
       unit: "mostly the nineties",
       image: {
-        /* PLACEHOLDER. Replace src with real artwork. */
-        src: "https://placehold.co/900x600/cdc6be/1d1d1b.png?font=playfair-display&text=A+cinema+marquee",
-        alt: "Placeholder marking where artwork about Hong Kong cinema belongs",
+        src: "/art/marquee.svg",
+        alt: "Engraving of a cinema marquee with an unlettered bill, one bulb along its edge lit in ember",
         w: 900,
         h: 600,
       },
@@ -259,9 +246,8 @@ export const backPage = {
       term: "Films the ratings got wrong",
       unit: "exhibit A: Stay, 2005",
       image: {
-        /* PLACEHOLDER. Replace src with real artwork. */
-        src: "https://placehold.co/900x600/cdc6be/1d1d1b.png?font=playfair-display&text=A+ticket+stub",
-        alt: "Placeholder marking where artwork about a film ticket belongs",
+        src: "/art/ticket.svg",
+        alt: "Engraving of a ticket torn along its perforation, the last figure of its serial printed in ember",
         w: 900,
         h: 600,
       },
@@ -272,9 +258,8 @@ export const backPage = {
       unit: "1709 rapid on Lichess",
       href: "https://lichess.org/@/YashNirwan",
       image: {
-        /* PLACEHOLDER. Replace src with real artwork. */
-        src: "https://placehold.co/900x600/cdc6be/1d1d1b.png?font=playfair-display&text=A+board,+move+four",
-        alt: "Placeholder marking where artwork of a chessboard belongs",
+        src: "/art/chessboard.svg",
+        alt: "Engraving of a chessboard four moves into the London System, the bishop's square marked in ember",
         w: 900,
         h: 600,
       },
@@ -284,9 +269,8 @@ export const backPage = {
       term: "Going places cheaply",
       unit: "which is why farewatch exists",
       image: {
-        /* PLACEHOLDER. Replace src with real artwork. */
-        src: "https://placehold.co/900x600/cdc6be/1d1d1b.png?font=playfair-display&text=A+departure+board",
-        alt: "Placeholder marking where artwork of a departure board belongs",
+        src: "/art/departures.svg",
+        alt: "Engraving of a split-flap departure board, one row picked out in ember",
         w: 900,
         h: 600,
       },

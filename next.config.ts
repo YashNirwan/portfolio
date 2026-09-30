@@ -6,12 +6,17 @@ const nextConfig: NextConfig = {
   experimental: { viewTransition: true },
 
   images: {
-    /* Placeholder services, used until real artwork exists. */
-    remotePatterns: [
-      { protocol: "https", hostname: "picsum.photos" },
-      { protocol: "https", hostname: "fastly.picsum.photos" },
-      { protocol: "https", hostname: "placehold.co" },
-    ],
+    /* No `remotePatterns`. It listed picsum and placehold.co for the
+       placeholder artwork; every slot is now a local plate in public/art, so
+       the site loads no image from a third party at all. Anything added back
+       here is a host the page will fetch from — and one more thing that has to
+       be reachable for the page to render.
+
+       Nothing needs `dangerouslyAllowSVG` either: Next 16 applies
+       `unoptimized` automatically when `src` ends in .svg, which is what these
+       want anyway. A vector plate resizes losslessly and has nothing to
+       optimise. */
+
     /* AVIF is opt-in — the default is webp only. Measured on foreman.jpg at
        w=1920: 71,496 B as JPEG, 51,470 B as WebP. AVIF lands roughly 20%
        under WebP again, which matters once images run full-bleed. */

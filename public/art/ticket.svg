@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600" role="img" aria-label="Engraving of a torn ticket stub with an ember serial number"><defs>
+    <pattern id="h45" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="7" stroke="#1d1d1b" stroke-width="1" opacity="0.55"/>
+    </pattern>
+    <pattern id="h45f" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="4" stroke="#1d1d1b" stroke-width="1" opacity="0.7"/>
+    </pattern>
+    <pattern id="hv" width="6" height="6" patternUnits="userSpaceOnUse">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#1d1d1b" stroke-width="1" opacity="0.45"/>
+    </pattern>
+    <pattern id="dots" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.35" fill="#1d1d1b" opacity="0.5"/>
+      <circle cx="6" cy="6" r="1.35" fill="#1d1d1b" opacity="0.5"/>
+    </pattern>
+    <pattern id="dotsf" width="5" height="5" patternUnits="userSpaceOnUse">
+      <circle cx="1.6" cy="1.6" r="1" fill="#1d1d1b" opacity="0.62"/>
+    </pattern>
+    <pattern id="emberdots" width="7" height="7" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#c03f13" opacity="0.85"/>
+      <circle cx="5.5" cy="5.5" r="1.5" fill="#c03f13" opacity="0.85"/>
+    </pattern>
+  </defs><rect width="900" height="600" fill="#cdc6be"/><path d="M90 144.0 L565.2 144.0 L574.2 162.4 L556.2 180.8 L574.2 199.2 L556.2 217.6 L574.2 236.0 L556.2 254.4 L574.2 272.8 L556.2 291.2 L574.2 309.6 L556.2 328.0 L574.2 346.4 L556.2 364.8 L574.2 383.2 L556.2 401.6 L574.2 420.0 L90 420.0 Z" fill="url(#dotsf)" stroke="#1d1d1b" stroke-width="2.4"/><path d="M565.2 144.0 L574.2 162.4 L556.2 180.8 L574.2 199.2 L556.2 217.6 L574.2 236.0 L556.2 254.4 L574.2 272.8 L556.2 291.2 L574.2 309.6 L556.2 328.0 L574.2 346.4 L556.2 364.8 L574.2 383.2 L556.2 401.6 L574.2 420.0 L810.0 420.0 L810.0 144.0 Z" fill="none" stroke="#1d1d1b" stroke-width="2.4"/><line x1="124.0" y1="204.7" x2="440.8" y2="204.7" stroke="#1d1d1b" stroke-width="6.0" opacity="0.55"/><line x1="124.0" y1="243.4" x2="371.1" y2="243.4" stroke="#1d1d1b" stroke-width="4.6" opacity="0.55"/><line x1="124.0" y1="282.0" x2="301.4" y2="282.0" stroke="#1d1d1b" stroke-width="3.2" opacity="0.55"/><rect x="124.0" y="320.6" width="120.0" height="40.0" fill="url(#h45)" stroke="#1d1d1b" stroke-width="1.8" opacity="1.0"/><rect x="599.2" y="226.8" width="28.0" height="40.0" fill="none" stroke="#1d1d1b" stroke-width="1.8" opacity="0.8"/><rect x="639.2" y="226.8" width="28.0" height="40.0" fill="none" stroke="#1d1d1b" stroke-width="1.8" opacity="0.8"/><rect x="679.2" y="226.8" width="28.0" height="40.0" fill="none" stroke="#1d1d1b" stroke-width="1.8" opacity="0.8"/><rect x="719.2" y="226.8" width="28.0" height="40.0" fill="none" stroke="#1d1d1b" stroke-width="1.8" opacity="0.8"/><rect x="759.2" y="226.8" width="28" height="40" fill="#c03f13"/><rect x="754.2" y="221.8" width="38" height="50" fill="none" stroke="#c03f13" stroke-width="2"/><line x1="599.2" y1="348.2" x2="789.2" y2="348.2" stroke="#1d1d1b" stroke-width="5" opacity="0.45"/><circle cx="784.0" cy="158.0" r="7" fill="#cdc6be" stroke="#1d1d1b" stroke-width="1.8"/><circle cx="784.0" cy="406.0" r="7" fill="#cdc6be" stroke="#1d1d1b" stroke-width="1.8"/><line x1="70.0" y1="474.0" x2="830.0" y2="474.0" stroke="#1d1d1b" stroke-width="1.4" opacity="0.4"/><rect x="14" y="14" width="872" height="572" fill="none" stroke="#1d1d1b" stroke-width="1" opacity="0.38"/></svg>

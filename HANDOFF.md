@@ -1,8 +1,10 @@
 # Handoff
 
 State of the overhaul as of 2026-09-30, branch `overhaul-margin`.
-Production (`main`) is still the old dark-slate site. This branch is not
-merged or deployed.
+Released on 2026-09-30: the owner ran `git push origin
+origin/overhaul-margin:main`, which fast-forwarded `main` to b38285c, and
+Vercel deployed it to yashnirwan.com. The claims under "Claims the owner
+must settle" shipped as they stand.
 
 ## Read these first
 

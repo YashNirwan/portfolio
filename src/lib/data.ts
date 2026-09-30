@@ -340,6 +340,11 @@ export const record = {
    is evidence of practice, and it belongs down here because it is not the
    argument. */
 
+/* Shown above the list, because an unlabelled block of four project titles
+   reads as professional work and these are not that. */
+export const archiveNote =
+  "Coursework, labelled as coursework — volume is evidence of practice, not the argument.";
+
 export const archive: { title: string; year: string; line: string; href: string }[] = [
   {
     title: "Retail stockout prediction",
@@ -371,12 +376,14 @@ export const archive: { title: string; year: string; line: string; href: string 
    Pre-cropped to 4:5 rather than cropped in CSS, so the browser is not
    downloading pixels it throws away. */
 
+/* There was a `plate` key here pointing at /plate-portrait.png, described in
+   a comment as a halftone dot screen that put the portrait in the page's own
+   palette. No such file is in the repo and nothing ever read the key, so the
+   comment described an intention rather than the site. Removed rather than
+   left as a claim about a file that does not exist. The halftone is still the
+   better idea; it needs the plate to be generated and committed first. */
+
 export const portrait = {
-  /* The halftone, not the photograph. A dot screen in one ink is how a
-     broadsheet actually printed a photo, and it puts the portrait in the
-     same palette as everything else instead of being the one colour object
-     on a monochrome page. The original stays in the repo. */
-  plate: "/plate-portrait.png",
   src: "/portrait-4x5.jpg",
   alt: "Yash Nirwan on Calton Hill in Edinburgh, in a sherpa jacket and beanie, with the National Monument behind him",
   w: 800,
@@ -385,10 +392,24 @@ export const portrait = {
 };
 
 /* --- Stats ----------------------------------------------------------------
-   The reference runs awards here. These are measurements instead, and every
-   one can be checked: the eval is in the repo, the commit count is on
-   GitHub, the rating is on Lichess, the observation count is in a database
-   on my laptop. */
+   The reference runs awards here. These are measurements instead.
+
+   The comment that used to sit here claimed every one of them was checkable
+   and then listed four sources — an eval, a commit count, a Lichess rating,
+   an observation count — only one of which is a stat in this array. It was
+   describing an earlier version of the list. Sources for what is actually
+   here, so the next person does not inherit the same false reassurance:
+
+     Clips 49   the labelled set, in the Foreman repo's evals/ — checkable
+     Lines 14k  interface-cua, 14,373 lines per studies.ts — checkable, but
+                the label says "in production" and that project has no
+                public link and runs against a synthetic bank app
+     Years 4    a judgement call, not a measurement; the two paid roles are
+                ~20 months
+     Countries 45  unsourced anywhere on the site, and the Raivana entry
+                says "eight currencies" a screen away
+
+   The last three are the owner's calls to confirm or cut, not mine. */
 
 export const stats = [
   { label: "Building things that ship", unit: "Years", value: "4" },

@@ -8,6 +8,8 @@ import {
   work,
   backPage,
   record,
+  archive,
+  archiveNote,
   stats,
   story,
   classified,
@@ -40,6 +42,11 @@ export default function Home() {
         <Stats />
         <Story />
         <RecordSection />
+        {/* Directly after the record, because it is the appendix to it: the
+            recruiter material stays in one run. `archive` was written, given
+            a comment explaining exactly where it belonged, and then never
+            rendered by any component — four entries lost in a restructure. */}
+        <Archive />
         <BigType />
         <Dispatch />
         <Banner word="Back page" />
@@ -251,16 +258,24 @@ function Identity() {
           {/* Kept at its own 4:5 and capped at 22rem. Cropping it to 4:3
               across a 46rem column meant asking an 800px file to cover
               1400px on a retina screen, which is what made it soft. */}
-          <Image
-            src={portrait.src}
-            alt={portrait.alt}
-            width={portrait.w}
-            height={portrait.h}
-            sizes="(max-width: 768px) 100vw, 22rem"
-            priority
-            className="par-slow block h-auto w-full max-w-[22rem]"
-            style={{ boxShadow: "var(--shadow-sm-2)" }}
-          />
+          {/* `portrait.caption` was written and then never rendered, which
+              left the one photograph on a newspaper pastiche as the only
+              picture on the site with no caption under it. The parallax
+              belongs on the figure, not the image, so the caption travels
+              with the photo instead of sliding away from it. */}
+          <figure className="par-slow max-w-[22rem]">
+            <Image
+              src={portrait.src}
+              alt={portrait.alt}
+              width={portrait.w}
+              height={portrait.h}
+              sizes="(max-width: 768px) 100vw, 22rem"
+              priority
+              className="block h-auto w-full"
+              style={{ boxShadow: "var(--shadow-sm-2)" }}
+            />
+            <figcaption className="byline mt-2">{portrait.caption}</figcaption>
+          </figure>
           <h2 className="heavy mt-5 text-[clamp(1.8rem,3.4vw,2.9rem)]">
             {lede.roles.map((r) => (
               <span key={r} className="block">
@@ -511,6 +526,34 @@ function RecordSection() {
           ))}
         </dl>
       </div>
+    </section>
+  );
+}
+
+/* --- The archive ----------------------------------------------------------
+   Set deliberately plainer than the record above it: no images, no badges,
+   hairlines between the rows. Coursework should look like coursework on the
+   page as well as being called it. */
+function Archive() {
+  return (
+    <section className="sheet border-b border-ink py-10">
+      <h2 className="heavy text-[32px]">The archive</h2>
+      <p className="byline mt-2 max-w-[52ch]">{archiveNote}</p>
+      <ul className="mt-6 grid gap-x-9 md:grid-cols-2">
+        {archive.map((a) => (
+          <li key={a.href} className="border-t border-ink/30 py-4">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+              <h3 className="heavy text-[19px]">
+                <a href={a.href} target="_blank" rel="noreferrer" className="no-underline hover:underline">
+                  {a.title}
+                </a>
+              </h3>
+              <span className="byline byline-caps tabular">{a.year}</span>
+            </div>
+            <p className="pretty mt-1.5 max-w-[46ch] leading-[1.3]">{a.line}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

@@ -304,22 +304,10 @@ body {
   border-top: 1px solid var(--color-ink);
 }
 
-/* ---------------------------------------------------------------------------
-   Motion — one press on load, nothing else. No gradients, no blur, no
-   scroll-triggered reveals. This is an 1890s broadsheet.
-   --------------------------------------------------------------------------- */
-@media (prefers-reduced-motion: no-preference) {
-  .press {
-    animation: press 600ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
-    clip-path: inset(0 100% 0 0);
-  }
-}
-
-@keyframes press {
-  to {
-    clip-path: inset(0 0 0 0);
-  }
-}
+/* A first `.press` rule and a first `@keyframes press` stood here, at 600ms
+   with a different easing, both overridden a few rules down by the Motion
+   section that supersedes this one. Two definitions of the signature
+   animation, only the second of which ran. Removed the dead pair. */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -391,10 +379,15 @@ body {
 /* ---------------------------------------------------------------------------
    The folder
 
-   Shared-element view transitions would be the ideal mechanism, but they
-   need React canary and this is on stable, so the folder opens on arrival
-   instead: the hero unfolds from its top edge like a flap being lifted,
-   and the title is pressed on behind it.
+   Shared-element view transitions ARE the mechanism now: `ViewTransition`
+   shipped unprefixed in React 19.3.0, and the spine on the shelf and the
+   hero here share a `folder-<slug>` name, so the spine falls open into the
+   page rather than cutting. This comment used to say the opposite — that it
+   needed React canary, so the unfold was standing in for it — which stopped
+   being true when the canary pin was dropped.
+
+   The unfold stays, and is not redundant: it runs on a cold load of a
+   project page, where there is no shelf to transition from.
    --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
   .unfold {

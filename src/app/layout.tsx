@@ -106,9 +106,20 @@ const personSchema = {
   sameAs: [links.github, links.linkedin],
 };
 
+/* data-scroll-behavior="smooth" is required, not decorative. globals.css sets
+   `scroll-behavior: smooth` on html for in-page jumps. Next 15 and earlier
+   suppressed that during route transitions; Next 16 stopped, and without this
+   attribute it does not suppress it again — so opening a project from the
+   catalogue smooth-SCROLLS to the top over several hundred milliseconds
+   instead of arriving there, which drags against the folder view-transition.
+   Dev logs this as an advisory on every boot. */
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${gothic.variable} ${body.variable}`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${display.variable} ${gothic.variable} ${body.variable}`}
+    >
       {/* Browser extensions write attributes onto <body> before React
           hydrates — Grammarly adds data-gr-ext-installed and
           data-new-gr-c-s-check-loaded — which React then reports as a

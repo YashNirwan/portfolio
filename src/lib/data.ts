@@ -367,8 +367,14 @@ export const archive: { title: string; year: string; line: string; href: string 
    left as a claim about a file that does not exist. The halftone is still the
    better idea; it needs the plate to be generated and committed first. */
 
+/* The photograph is set in the palette: a duotone mapping its shadows to ink
+   #1d1d1b and its highlights to parchment #e2dedb, made from the original
+   with sharp (the colour original stays at /portrait-4x5.jpg). The reference
+   sits its photos in the page the same way it sits everything — under a paper
+   layer multiplied over the whole sheet — and a colour photo was the one thing
+   on this site still reading as pasted on rather than printed. */
 export const portrait = {
-  src: "/portrait-4x5.jpg",
+  src: "/portrait-4x5-duotone.jpg",
   alt: "Yash Nirwan on Calton Hill in Edinburgh, in a sherpa jacket and beanie, with the National Monument behind him",
   w: 800,
   h: 1000,
@@ -429,3 +435,16 @@ export const classified = [
   "Enquiries: yn2328@nyu.edu",
   "No agencies, no crypto, no dashboards nobody opens",
 ];
+
+/* --- The identity plate ---------------------------------------------------
+   The big landscape in the homepage identity section's right column, where
+   the reference runs a large image above its display-caps description. Drawn
+   in the same conceit as every plate — a field of like things, one ember
+   exception — and the exception is a lone figure on the hill where the
+   portrait beside it was taken. */
+export const identityPlate = {
+  src: "/art/calton-hill.jpg",
+  alt: "Engraving of the unfinished National Monument on Calton Hill, Edinburgh, at night, with one small figure in ember standing on the hill below it",
+  w: 1456,
+  h: 816,
+};

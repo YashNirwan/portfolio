@@ -51,6 +51,8 @@ export function Lateral({ children }: { children: React.ReactNode }) {
       ref={ref}
       // tabIndex so arrow keys and Home/End reach the container.
       tabIndex={0}
+      // Its own wheel remapping drives this shelf; smooth scroll stays out.
+      data-lenis-prevent
       aria-label="Project catalogue, scrolls sideways"
       className="h-svh overflow-x-auto overflow-y-hidden"
     >

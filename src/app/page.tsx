@@ -14,6 +14,7 @@ import {
   story,
   classified,
   portrait,
+  identityPlate,
 } from "@/lib/data";
 import { Stamp } from "@/components/stamp";
 import { Perforated } from "@/components/perforated";
@@ -183,70 +184,88 @@ function Banner({ word, bare = false }: { word: string; bare?: boolean }) {
   return bare ? inner : <div className="sheet py-9">{inner}</div>;
 }
 
-/* --- Identity: the centre of the page ------------------------------------- */
+/* --- Identity: the centre of the page -------------------------------------
+   Measured off the reference at 1440, element by element:
+
+     left column   418px (29% of the sheet): display heading, then the
+                   portrait directly under it, 416x533 — a 4:5 photo filling
+                   the column
+     right column  877px (61%): a large landscape image (875x596), then the
+                   description set as DISPLAY CAPS at 122px (8.5vw), not as
+                   body text
+
+   Ours had it the other way round — paragraphs on the left, a 22rem portrait
+   stranded in the 61% column — which is where the bare paper beside the photo
+   came from. Moving the portrait into the narrow column also settles the
+   resolution question the old cap was guarding: at 1440 the column is ~420px,
+   so the 800px source lands at exactly 2x.
+
+   The paragraphs have nowhere in the reference's version of this section;
+   they stay, under the display type, set in two newspaper columns. */
 function Identity() {
   return (
-    <section className="sheet border-b border-ink pb-10">
-      <div className="ruled grid gap-x-7 gap-y-9 md:grid-cols-[39fr_61fr]">
+    <section className="sheet border-b border-ink pb-12">
+      <div className="ruled grid gap-x-10 gap-y-10 md:grid-cols-[30fr_63fr]">
         <div>
-          <h1 className="heavy text-[clamp(2.4rem,4.6vw,3.6rem)]">{lede.kicker}</h1>
-          <p className="pretty mt-5 leading-[1.32]">
-            <span className="capbox" aria-hidden="true">
-              {lede.paragraphs[0].charAt(0)}
-            </span>
-            {lede.paragraphs[0].slice(1)}
-          </p>
-          {lede.paragraphs.slice(1).map((p, i) => (
-            <p key={i} className="pretty mt-3.5 leading-[1.32]">
-              {p}
-            </p>
-          ))}
-          <p className="byline mt-6">{lede.meta}</p>
-        </div>
-
-        {/* The roles heading sits BESIDE the portrait from 1280 up.
-            Stacked under it, the 22rem photo left ~430px of bare paper down
-            the right of this column at 1440 — the gap the owner flagged. The
-            photo itself is not the fix: it is an 800px source and the cap
-            below is what keeps it sharp, so the space gets filled with the
-            type that was already sitting under it.
-
-            1280 is where the split starts earning its place. Below it this
-            column is under 700px, the roles would get ~300px beside a 352px
-            photo, and stacked is the better reading — which is also the gap's
-            smallest at those widths. */}
-        <div className="grid gap-x-7 gap-y-6 xl:grid-cols-[22rem_minmax(0,1fr)] xl:items-end">
-          {/* Kept at its own 4:5 and capped at 22rem. Cropping it to 4:3
-              across a 46rem column meant asking an 800px file to cover
-              1400px on a retina screen, which is what made it soft. */}
-          {/* `portrait.caption` was written and then never rendered, which
-              left the one photograph on a newspaper pastiche as the only
-              picture on the site with no caption under it. The parallax
-              belongs on the figure, not the image, so the caption travels
-              with the photo instead of sliding away from it. */}
-          <figure className="par-slow max-w-[22rem]">
-            <Image
-              src={portrait.src}
-              alt={portrait.alt}
-              width={portrait.w}
-              height={portrait.h}
-              sizes="(max-width: 768px) 100vw, 22rem"
-              preload
-              className="block h-auto w-full"
-              style={{ boxShadow: "var(--shadow-sm-2)" }}
-            />
+          {/* 8.2vw rather than the reference's 14vw: Canopee is condensed and
+              Gloock is not, and PROVE at 14vw would run out of a 420px column. */}
+          <h1 className="guide heavy heavy-xl text-[clamp(3rem,8.2vw,7.6rem)]">
+            <span>{lede.kicker.split(" ")[0]}</span>
+            <span>{lede.kicker.split(" ").slice(1).join(" ")}</span>
+          </h1>
+          {/* `portrait.caption` was written and then never rendered for a
+              while; the caption travels with the figure, not the image. */}
+          <figure className="mt-7 max-w-[26rem]">
+            <div className="par-frame" style={{ boxShadow: "var(--shadow-sm-2)" }}>
+              <Image
+                src={portrait.src}
+                alt={portrait.alt}
+                width={portrait.w}
+                height={portrait.h}
+                sizes="(max-width: 768px) 100vw, 26rem"
+                preload
+                className="par-img block h-auto w-full"
+              />
+            </div>
             <figcaption className="byline mt-2">{portrait.caption}</figcaption>
           </figure>
-          {/* 2.1vw rather than 3.4vw: beside the photo the longest role line
-              has ~300px at 1280 and ~400px at 1440, and 3.4vw overflowed
-              both. It keeps the stacked size below the split. */}
-          <h2 className="heavy mt-5 text-[clamp(1.8rem,3.4vw,2.9rem)] xl:mt-0 xl:text-[clamp(1.5rem,2.1vw,2.2rem)] xl:leading-[0.92]">
+        </div>
+
+        <div>
+          <figure className="par-frame" style={{ boxShadow: "var(--shadow-sm)" }}>
+            <Image
+              src={identityPlate.src}
+              alt={identityPlate.alt}
+              width={identityPlate.w}
+              height={identityPlate.h}
+              sizes="(max-width: 768px) 100vw, 62vw"
+              className="par-img block aspect-[1456/816] h-auto w-full object-cover"
+            />
+          </figure>
+
+          {/* The reference's description is display caps at 8.5vw. 4.8vw
+              here because the longest line is NOT JUST THE THING. — 19
+              characters in a wider face — and it has to fit ~860px. */}
+          <h2 className="guide heavy mt-8 text-[clamp(2rem,4.8vw,4.4rem)] leading-[0.86]">
             {lede.roles.map((r) => (
-              <span key={r} className="block">
-                {r}
-              </span>
+              <span key={r}>{r}</span>
             ))}
           </h2>
+
+          <div className="mt-9 gap-9 lg:columns-2">
+            <p className="pretty mb-3.5 break-inside-avoid leading-[1.32]">
+              <span className="capbox" aria-hidden="true">
+                {lede.paragraphs[0].charAt(0)}
+              </span>
+              {lede.paragraphs[0].slice(1)}
+            </p>
+            {lede.paragraphs.slice(1).map((p, i) => (
+              <p key={i} className="pretty mb-3.5 break-inside-avoid leading-[1.32]">
+                {p}
+              </p>
+            ))}
+            <p className="byline mt-5">{lede.meta}</p>
+          </div>
         </div>
       </div>
     </section>
@@ -345,17 +364,18 @@ function BackPage() {
       <p className="lede pretty max-w-[52ch]">{backPage.standfirst}</p>
       <dl className="mt-8 grid gap-x-9 gap-y-10 md:grid-cols-[46fr_54fr]">
         {backPage.items.map((item) => (
-          <div key={item.term} className="par-slow">
+          <div key={item.term}>
             {item.image ? (
-              <Image
-                src={item.image.src}
-                alt={item.image.alt}
-                width={item.image.w}
-                height={item.image.h}
-                sizes="(max-width: 768px) 100vw, 34rem"
-                className="mb-4 block aspect-[3/2] h-auto w-full object-cover"
-                style={{ boxShadow: "var(--shadow-sm)" }}
-              />
+              <div className="par-frame mb-4" style={{ boxShadow: "var(--shadow-sm)" }}>
+                <Image
+                  src={item.image.src}
+                  alt={item.image.alt}
+                  width={item.image.w}
+                  height={item.image.h}
+                  sizes="(max-width: 768px) 100vw, 34rem"
+                  className="par-img block aspect-[3/2] h-auto w-full object-cover"
+                />
+              </div>
             ) : null}
             <dt className="flex flex-wrap items-baseline gap-x-2.5">
               <span className="heavy text-[25px]">

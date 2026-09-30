@@ -111,6 +111,21 @@ PROMPTS = {
         "and the building is REVERSED OUT of it in pale parchment line — a white-on-black "
         "engraving, not black-on-white."
     ),
+    # --- the identity plate: the big landscape in the homepage's right column.
+    # The reference puts a large image above its display-caps description;
+    # this is the owner's own place — his portrait was taken on Calton Hill —
+    # drawn in the same one-exception conceit as every other plate.
+    "calton-hill": (
+        "The National Monument on Calton Hill in Edinburgh: an unfinished Greek "
+        "temple front, a single row of twelve identical Doric columns on a stepped "
+        "stone base carrying an architrave, standing alone on a grassy hilltop under "
+        "a wide open sky. Every column is the same pale parchment. The ONLY coloured "
+        "thing in the whole image is one small lone human figure standing at the foot "
+        "of the steps, filled flat burnt-orange ember, crisp and engraved, no glow. "
+        "IMPORTANT: the background is a solid near-black ink field and the "
+        "drawing is REVERSED OUT of it in pale parchment line — a white-on-black "
+        "engraving, not black-on-white."
+    ),
     # --- the four back-page slots: ink line on a bone ground ----------------
     "marquee": (
         "An old cinema marquee jutting from a building front, a blank unlettered "
@@ -139,7 +154,7 @@ PROMPTS = {
     ),
 }
 
-SIZES = {k: (WIDE if k in ("foreman", "interface-cua", "raivana", "vibecheck", "farewatch", "firesight") else TALL) for k in PROMPTS}
+SIZES = {k: (WIDE if k in ("foreman", "interface-cua", "raivana", "vibecheck", "farewatch", "firesight", "calton-hill") else TALL) for k in PROMPTS}
 
 
 def generate(slot, key, attempt=1):

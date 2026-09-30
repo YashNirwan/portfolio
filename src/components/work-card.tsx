@@ -26,18 +26,25 @@ export function NewBadge() {
 
 export function WorkCard({ item, wide = true }: { item: Work; wide?: boolean }) {
   return (
-    <article className="par-slow relative flex flex-col">
-      <figure className="mb-3" style={{ boxShadow: "var(--shadow-sm)" }}>
+    <article className="group relative flex flex-col">
+      {/* Two transforms, two elements. The frame parallax (.par-img) drives
+          `transform` from a scroll timeline, and a hover scale on the same
+          element would be overwritten by it every frame — so the hover lives
+          on the wrapper. Measured on the reference: `.item-img` scales 1 →
+          1.1 over 1000ms outExpo on hover. */}
+      <figure className="par-frame mb-3" style={{ boxShadow: "var(--shadow-sm)" }}>
         {item.image ? (
-          <Image
-            src={item.image.src}
-            alt={item.image.alt}
-            width={item.image.w}
-            height={item.image.h}
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className={`block h-auto w-full object-cover ${wide ? "aspect-[16/9]" : "aspect-[5/4]"}`}
-            style={{ objectPosition: item.image.position ?? "center" }}
-          />
+          <div className="card-zoom">
+            <Image
+              src={item.image.src}
+              alt={item.image.alt}
+              width={item.image.w}
+              height={item.image.h}
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className={`par-img block h-auto w-full object-cover ${wide ? "aspect-[16/9]" : "aspect-[5/4]"}`}
+              style={{ objectPosition: item.image.position ?? "center" }}
+            />
+          </div>
         ) : (
           <div
             className={`flex items-center justify-center bg-bone ${wide ? "aspect-[16/9]" : "aspect-[5/4]"}`}

@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { getStudy, type Block, type Note } from "@/lib/studies";
 import { work, links } from "@/lib/data";
 import { Torn } from "@/components/torn";
+import { WorkCard } from "@/components/work-card";
 
 export const dynamicParams = false;
 
@@ -108,14 +109,28 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
           style={{ borderRadius: "var(--radius-sm)" }}
         >
           <span aria-hidden="true">←</span>
-          <span className="heavy text-[13px]">Back all</span>
+          <span className="heavy text-[13px]">All work</span>
         </Link>
 
         {/* The tear, pulled up over the base of the image. */}
         <Torn className="relative -mt-[46px] h-[48px]" />
 
-        <div className="sheet relative -mt-[6vw] pb-8 md:-mt-[5vw]">
-          <h1 className="heavy press text-[clamp(3rem,11vw,9rem)]">{title}</h1>
+        {/* The title used to be pulled up -6vw INTO the tear, so the ragged
+            edge cut straight through the letterforms — "INTERFACE-CUA" was
+            sliced across its waist. The reference sets the title clear below
+            its tear. A small lift keeps the two locked together without the
+            collision.
+
+            The size is capped in ch as well as vw: at 11vw a long slug ran
+            into the gutter on both sides. Capping by character count lets
+            "Foreman" stay huge and brings "interface-cua" down to fit. */}
+        <div className="sheet relative -mt-[1.2vw] pb-8">
+          <h1
+            className="heavy press"
+            style={{ fontSize: `min(11vw, 9rem, ${Math.round(190 / title.length)}vw)` }}
+          >
+            {title}
+          </h1>
         </div>
       </section>
 
@@ -146,58 +161,120 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
       </div>
 
       <main id="main" tabIndex={-1} className="sheet pb-16 pt-10">
-        <p className="lede pretty mx-auto mb-10 max-w-[38rem]">{standfirst}</p>
+        {/* Two columns, the way the reference runs a project: the reading
+            column on the left and a margin rail on the right carrying the
+            evidence — notes, figures, and the link out.
 
-        <div className="flex flex-col">
+            It used to be a single 38rem column centred in the sheet, which at
+            1440 left 416px of empty paper down BOTH sides and made every
+            project read as an unfinished page. The notes were the worst of
+            it: `Note` exists because the old design had a margin-note system
+            (studies.ts still says so, and this branch is called
+            overhaul-margin), and they had been folded inline into the column
+            where they just interrupted the argument. They belong out here. */}
+        <div className="article">
+          <p className="col-main lede pretty mb-8">{standfirst}</p>
+
+          {/* The reference puts a LIVE SITE control at exactly this spot. */}
+          <aside className="col-rail mb-8">
+            <div className="flex flex-wrap gap-2">
+              {item.stack.map((t) => (
+                <span key={t} className="byline byline-caps border border-ink/40 px-2.5 py-1">
+                  {t}
+                </span>
+              ))}
+            </div>
+            <div className="mt-4 flex flex-wrap items-center gap-2.5">
+              {item.links.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block border border-ink px-6 py-2.5 no-underline"
+                  style={{ borderRadius: "999px" }}
+                >
+                  <span className="heavy text-[14px]">{l.label}</span>
+                </a>
+              ))}
+              {/* Outside the links list on purpose. This used to sit inside a
+                  `links.length > 0` guard, so interface-cua — the one project
+                  with no external links, the one page where asking is all
+                  that is left — was the one page with no way to ask. */}
+              <a href={`mailto:${links.email}`} className="byline">
+                Ask me about it
+              </a>
+            </div>
+          </aside>
+
           {study ? (
             study.blocks.map((block, i) => <BlockView key={i} block={block} />)
           ) : (
-            <ShortForm body={item.body} turn={item.turn} />
+            <>
+              <p className="col-main pretty mb-4 leading-[1.36]">{item.body}</p>
+              <NoteView note={{ label: "The cost", tone: "cost", body: item.turn }} />
+            </>
           )}
         </div>
 
-        {/* Outside the links block on purpose. This used to live inside it,
-            which meant the one project with no external links — the one page
-            where asking is the only thing left to do — was also the one page
-            with no way to ask. */}
-        <div className={`mt-14 border-t border-ink pt-4 ${MEASURE}`}>
-          <div className="flex flex-wrap gap-x-5 gap-y-1">
-            {item.links.map((l) => (
-              <a key={l.href} href={l.href} target="_blank" rel="noreferrer">
-                {l.label}
-              </a>
-            ))}
-            <a href={`mailto:${links.email}`}>Ask me about it</a>
-          </div>
-        </div>
-
-        <div className={`mt-12 ${MEASURE}`}>
+        <div className="col-main mt-14">
           <Link href="/work" className="heavy inline-block text-[17px] no-underline hover:underline">
             ← All work
           </Link>
         </div>
       </main>
+
+      <NextProjects currentSlug={item.slug} />
     </div>
   );
 }
 
-const MEASURE = "mx-auto w-full max-w-[38rem]";
+/* The reference ends every project with a NEXT PROJECTS! strip rather than a
+   dead end: a card, centred display type with a Tip!, and a second card. Same
+   shape as the homepage strip, so it is the same component. */
+function NextProjects({ currentSlug }: { currentSlug: string }) {
+  const start = work.findIndex((w) => w.slug === currentSlug);
+  const rest = [...work.slice(start + 1), ...work.slice(0, start)];
+  const picks = [rest[0], rest[rest.length - 1]];
 
-/* The short form, for a project without a long-form study: what it does,
-   then what it cost. Both strings already existed in data.ts and were being
-   rendered nowhere — the catalogue card shows only the standfirst. */
-function ShortForm({ body, turn }: { body: string; turn: string }) {
   return (
-    <div className={MEASURE}>
-      <p className="pretty mb-4 leading-[1.36]">{body}</p>
-      <NoteView note={{ label: "The cost", tone: "cost", body: turn }} />
-    </div>
+    <section className="sheet border-t border-ink py-10">
+      <div className="ruled grid gap-x-7 gap-y-10 md:grid-cols-3">
+        <WorkCard item={picks[0]} />
+
+        <div className="flex flex-col items-center justify-center text-center">
+          <h2 className="heavy text-[clamp(2rem,3.6vw,3rem)]">
+            <Link href="/work" className="tighten inline-block no-underline hover:underline">
+              Next projects!
+            </Link>
+          </h2>
+          <p
+            className="pretty mt-4 max-w-[18ch]"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 300,
+              fontSize: "clamp(1.5rem,2.6vw,2.3125rem)",
+              lineHeight: 1.15,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            The rest of it, and what each one cost.
+          </p>
+          <p className="byline mt-5">
+            <span className="heavy mr-1.5 text-[13px]">Tip!</span>
+            Or open the whole catalogue
+          </p>
+        </div>
+
+        <WorkCard item={picks[1]} />
+      </div>
+    </section>
   );
 }
 
 function BlockView({ block }: { block: Block }) {
   if (block.kind === "h") {
-    return <h2 className={`subhead mb-3 mt-12 ${MEASURE}`}>{block.text}</h2>;
+    return <h2 className="col-main subhead mb-3 mt-12">{block.text}</h2>;
   }
 
   if (block.kind === "pull") {
@@ -205,7 +282,7 @@ function BlockView({ block }: { block: Block }) {
        three-line quote swamped everything around it. */
     return (
       <p
-        className={`my-9 border-l border-ink pl-6 ${MEASURE}`}
+        className="col-main my-9 border-l border-ink pl-6"
         style={{
           fontFamily: "var(--font-mid)",
           fontSize: "1.5rem",
@@ -219,41 +296,55 @@ function BlockView({ block }: { block: Block }) {
   }
 
   if (block.kind === "figure") {
+    /* Figures go in the rail. They are evidence, and the reference runs its
+       imagery down the right of the reading column rather than interrupting
+       it. */
     return (
-      <figure className="my-9 bg-parchment p-3">
+      <figure className="col-rail my-4 bg-parchment p-3">
         <Image
           src={block.src}
           alt={block.alt}
           width={block.w}
           height={block.h}
-          sizes="(max-width: 768px) 100vw, 90rem"
+          sizes="(max-width: 1024px) 100vw, 40rem"
           className="block h-auto w-full"
           style={{ boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px" }}
         />
-        <figcaption className={`byline mt-3 ${MEASURE}`}>{block.caption}</figcaption>
+        <figcaption className="byline mt-3">{block.caption}</figcaption>
       </figure>
     );
   }
 
   return (
-    <div className={MEASURE}>
-      <p className={`pretty leading-[1.36] ${block.lede ? "lede" : "mb-4"}`}>{block.text}</p>
+    <>
+      <p className={`col-main pretty leading-[1.36] ${block.lede ? "lede" : "mb-4"}`}>
+        {block.lede ? (
+          <>
+            <span className="capbox" aria-hidden="true">
+              {block.text.charAt(0)}
+            </span>
+            {block.text.slice(1)}
+          </>
+        ) : (
+          block.text
+        )}
+      </p>
       {block.note ? <NoteView note={block.note} /> : null}
-    </div>
+    </>
   );
 }
 
 /* `tone` was declared on Note, set to "cost" on four of them, and then never
    read — so the paragraph where a project admits what it gave up rendered
    identically to a footnote about tooling. It is the one thing this site is
-   actually arguing, so it gets the ember rule. One accent, used on the one
-   idea that earns it. */
+   actually arguing, so it gets the ember rule. One accent, on the one idea
+   that earns it. */
 function NoteView({ note }: { note: Note }) {
   const cost = note.tone === "cost";
 
   return (
     <div
-      className="mb-4 mt-3 border-l pl-4"
+      className="col-rail mb-6 max-w-[30rem] border-l pl-4"
       style={{ borderColor: cost ? "var(--color-ember)" : "var(--color-ink)" }}
     >
       {note.label ? (

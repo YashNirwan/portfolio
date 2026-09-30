@@ -18,6 +18,7 @@ import {
 import { Stamp } from "@/components/stamp";
 import { Perforated } from "@/components/perforated";
 import { Spinner } from "@/components/spinner";
+import { WorkCard } from "@/components/work-card";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -124,64 +125,6 @@ function WorkStrip({
         <WorkCard item={items[1]} />
       </div>
     </section>
-  );
-}
-
-function WorkCard({ item, wide = true }: { item: (typeof work)[number]; wide?: boolean }) {
-  return (
-    <article className="par-slow relative flex flex-col">
-      <figure className="mb-3" style={{ boxShadow: "var(--shadow-sm)" }}>
-        {item.image ? (
-          <Image
-            src={item.image.src}
-            alt={item.image.alt}
-            width={item.image.w}
-            height={item.image.h}
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className={`block h-auto w-full object-cover ${wide ? "aspect-[16/9]" : "aspect-[5/4]"}`}
-            style={{ objectPosition: item.image.position ?? "center" }}
-          />
-        ) : (
-          /* PLACEHOLDER — the reference runs commissioned artwork here. Drop
-             an image into the data file and this slot takes it. */
-          <div className={`flex items-center justify-center bg-bone ${wide ? "aspect-[16/9]" : "aspect-[5/4]"}`}>
-            <span className="byline">Artwork to come</span>
-          </div>
-        )}
-      </figure>
-
-      <div className="flex flex-wrap items-center gap-x-2">
-        <h3 className="heavy tighten text-[19px]">
-          <Link
-            href={`/work/${item.slug}`}
-            className="no-underline after:absolute after:inset-0 after:content-['']"
-          >
-            {item.title}
-          </Link>
-        </h3>
-        {item.isNew ? <NewBadge /> : null}
-      </div>
-      <p className="pretty mt-1.5 leading-[1.27]">{item.standfirst}</p>
-      <p className="byline mt-2">{item.kicker}</p>
-    </article>
-  );
-}
-
-export function NewBadge() {
-  return (
-    <span
-      className="px-1.5 py-[1px]"
-      style={{
-        borderRadius: "var(--radius-sm)",
-        background: "var(--color-ember)",
-        color: "#fff",
-        fontSize: "11px",
-        letterSpacing: "0.08em",
-        textTransform: "uppercase",
-      }}
-    >
-      New
-    </span>
   );
 }
 

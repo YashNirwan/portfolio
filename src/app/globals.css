@@ -553,3 +553,40 @@ body {
   text-transform: none;
   color: var(--color-ink);
 }
+
+/* ---------------------------------------------------------------------------
+   The article grid
+
+   A project page is two columns: the reading column, and a margin rail
+   carrying the evidence. Measured off the reference at a 1440 viewport — its
+   body text runs x 65..605 and its imagery x 690..1410, so the rail is the
+   wider of the two and the text keeps a proper measure instead of being
+   stretched to fill the page.
+
+   Single column below 1024px, where everything falls back into DOM order and
+   a note simply follows the paragraph it belongs to.
+   --------------------------------------------------------------------------- */
+.article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: clamp(2.5rem, 5vw, 5.5rem);
+}
+
+.article > * {
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .article {
+    grid-template-columns: minmax(0, 37rem) minmax(0, 1fr);
+  }
+  /* Explicit columns, so grid auto-placement drops a note into the free cell
+     beside its own paragraph rather than below it. */
+  .col-main {
+    grid-column: 1;
+  }
+  .col-rail {
+    grid-column: 2;
+    align-self: start;
+  }
+}

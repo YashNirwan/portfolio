@@ -12,26 +12,33 @@ import { useEffect, useState } from "react";
    Rendered client-side and mounted after paint so it never blocks the LCP
    text underneath, and skipped entirely for reduced-motion. */
 export function Spinner({ masthead }: { masthead: string }) {
-  const [state, setState] = useState<"idle" | "running" | "done">("idle");
+  const [running, setRunning] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setState("done");
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     // sessionStorage, not localStorage: a fresh visit gets the open, a
     // second page in the same visit does not.
-    if (sessionStorage.getItem("seen-open") === "1") {
-      setState("done");
-      return;
-    }
+    if (sessionStorage.getItem("seen-open") === "1") return;
     sessionStorage.setItem("seen-open", "1");
-    setState("running");
-    const t = window.setTimeout(() => setState("done"), 1750);
-    return () => window.clearTimeout(t);
+
+    /* Starting the run inside a frame callback rather than in the effect
+       body is not a style choice. There is no third state here: "has not
+       started" and "has finished" both render null, so setting state
+       synchronously on mount only to render null again is a wasted render
+       pass on every navigation that does not play the open — which is most
+       of them. react-hooks/set-state-in-effect flags exactly this. */
+    let timeout = 0;
+    const frame = requestAnimationFrame(() => {
+      setRunning(true);
+      timeout = window.setTimeout(() => setRunning(false), 1750);
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+    };
   }, []);
 
-  if (state === "done" || state === "idle") return null;
+  if (!running) return null;
 
   return (
     <div

@@ -3,6 +3,7 @@ import { Gloock, Newsreader, Pirata_One } from "next/font/google";
 import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 import { SmoothScroll } from "@/components/smooth-scroll";
+import { CurtainProvider } from "@/components/curtain";
 
 /* Standing in for Domaine Display Condensed Medium and Canopee.
 
@@ -137,7 +138,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Skip to content
         </a>
-        {children}
+        <CurtainProvider>{children}</CurtainProvider>
         <SmoothScroll />
         <script
           type="application/ld+json"

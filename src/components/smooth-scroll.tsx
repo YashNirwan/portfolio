@@ -3,6 +3,11 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
+/* The live instance, for the one other component that needs it: the curtain
+   stops the page scrolling while the menu is down, and resets to the top
+   after a navigation so Lenis does not ease back to the old position. */
+export const lenisRef: { current: Lenis | null } = { current: null };
+
 /* The reference's scroll.
 
    Read out of its source: `new LocomotiveScroll({ smooth: true })`, on
@@ -33,8 +38,12 @@ export function SmoothScroll() {
       // In-page links (the skip link, #main) glide instead of jumping.
       anchors: true,
     });
+    lenisRef.current = lenis;
 
-    return () => lenis.destroy();
+    return () => {
+      lenisRef.current = null;
+      lenis.destroy();
+    };
   }, []);
 
   return null;

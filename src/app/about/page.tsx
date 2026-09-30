@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { lede, record, archive, archiveNote, portrait, classified, links } from "@/lib/data";
 import { OrgMark } from "@/components/org-mark";
+import { SiteNav } from "@/components/site-nav";
 
 export const metadata: Metadata = {
   title: "About — Yash Nirwan",
@@ -54,17 +54,7 @@ export default function About() {
 
   return (
     <div className="min-h-svh bg-bone">
-      <header className="border-b border-ink">
-        <div className="sheet flex items-baseline justify-between gap-4 py-5">
-          <Link href="/" className="plate-row no-underline hover:underline">
-            ← The front page
-          </Link>
-          <span className="gothic hidden text-[22px] sm:block">The Second Opinion</span>
-          <Link href="/work" className="plate-row no-underline hover:underline">
-            All work
-          </Link>
-        </div>
-      </header>
+      <SiteNav tone="bone" />
 
       <main id="main" tabIndex={-1}>
         {/* ABOUT ME. Fitted with textLength so it spans the sheet exactly,

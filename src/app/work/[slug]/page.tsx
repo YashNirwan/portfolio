@@ -8,6 +8,7 @@ import { work, links } from "@/lib/data";
 import { Stamp } from "@/components/stamp";
 import { Torn } from "@/components/torn";
 import { WorkCard } from "@/components/work-card";
+import { SiteNav } from "@/components/site-nav";
 
 export const dynamicParams = false;
 
@@ -102,6 +103,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
        That is how the reference separates a story from the paper it came
        wrapped in. */
     <div className="bg-bone">
+      <SiteNav tone="bone" revealAfter={0.6} />
       {/* Hero: full-bleed image, a torn edge, and the title straddling it. */}
       <section className="relative">
         <ViewTransition name={`folder-${slug}`}>

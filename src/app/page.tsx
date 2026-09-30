@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  profile,
   links,
   lede,
   dispatch,
@@ -20,6 +19,7 @@ import { Stamp } from "@/components/stamp";
 import { Perforated } from "@/components/perforated";
 import { Spinner } from "@/components/spinner";
 import { WorkCard } from "@/components/work-card";
+import { SiteNav } from "@/components/site-nav";
 import { OrgMark } from "@/components/org-mark";
 
 export const metadata = { alternates: { canonical: "/" } };
@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <>
       <Spinner masthead="The Second Opinion" />
-      <Masthead />
+      <SiteNav />
       <main id="main" tabIndex={-1}>
         <WorkStrip
           items={[work[0], work[1]]}
@@ -62,30 +62,6 @@ export default function Home() {
       <Classified />
       <Colophon />
     </>
-  );
-}
-
-function Masthead() {
-  return (
-    <header className="border-b border-ink">
-      <div className="sheet flex items-center justify-between gap-4 py-5">
-        <span className="plate-row">{profile.location}</span>
-        <span className="gothic hidden text-[22px] sm:block">The Second Opinion</span>
-        {/* The reference's nav is Index / Work / About. The masthead had a
-            route to the catalogue and none to /about, which did not exist. */}
-        <div className="flex items-center gap-5">
-          <Link href="/about" className="plate-row no-underline hover:underline">
-            About
-          </Link>
-          <Link href="/work" aria-label="All work" className="group no-underline">
-            <span aria-hidden="true" className="flex w-8 flex-col gap-[5px]">
-              <span className="block h-[2px] w-full bg-ink" />
-              <span className="block h-[2px] w-full bg-ink" />
-            </span>
-          </Link>
-        </div>
-      </div>
-    </header>
   );
 }
 

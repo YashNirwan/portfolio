@@ -868,3 +868,29 @@ body[data-opening] .opening {
     display: none;
   }
 }
+
+/* The MEASURE / THE THING / YOU BUILT. block: each line full width, its
+   plate a strip one capital tall filling the rest of the line. The strip sits
+   on the baseline — the line box is 0.86em with the caps ~0.72em tall, so
+   0.1em of margin lifts it off the descender space onto the baseline. */
+.big-line {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.14em;
+  line-height: 0.86;
+}
+.big-line + .big-line {
+  margin-top: 0.12em;
+}
+.big-strip {
+  display: none;
+}
+@media (min-width: 768px) {
+  .big-strip {
+    display: block;
+    flex: 1 1 0;
+    min-width: 0;
+    height: 0.73em;
+    margin-bottom: 0.085em;
+  }
+}

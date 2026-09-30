@@ -366,24 +366,26 @@ function BigType() {
   return (
     <section className="sheet py-12">
       <h2 className="sr-only">Measure the thing you built</h2>
-      {/* Proportions from the reference block: the words take the left 62%,
-          a landscape plate spans the first two rows on the right (38%), and
-          the last row runs the full width behind a lead crop. At 13.5vw the
-          longest line, YOU BUILT., is ~912px and clears 1382 with its crop;
-          the type is what dominates, as it does there. */}
-      <div
-        aria-hidden="true"
-        className="heavy heavy-xl grid items-end gap-x-4 gap-y-3 text-[clamp(3.2rem,13.5vw,13.4rem)] md:grid-cols-[minmax(0,62fr)_minmax(0,38fr)]"
-      >
-        <div className="flex items-end gap-4">
-          {cut("foreman", "8% 50%", "hidden aspect-[2/3] w-[15%] shrink-0 md:block", "10vw")}
+      {/* Three lines, one rule for all of them: each runs the full width of
+          the sheet, and its plate is a strip exactly one capital tall that
+          fills whatever the words leave, alternating sides. The first
+          version slotted three plates of three unrelated shapes around the
+          words — a sliver, a floating landscape and a square that stretched
+          its row — which left dead space above YOU BUILT. and under the
+          landscape, and no line reached the edge. On phones the strips drop
+          out and the words stack. */}
+      <div aria-hidden="true" className="heavy heavy-xl text-[clamp(3.2rem,11.6vw,11.6rem)]">
+        <div className="big-line">
           <span>Measure</span>
+          {cut("foreman", "50% 62%", "big-strip", "55vw")}
         </div>
-        {cut("farewatch", "82% 50%", "hidden self-stretch md:row-span-2 md:block", "38vw")}
-        <span>The thing</span>
-        <div className="flex items-end gap-4 md:col-span-2">
-          {cut("vibecheck", "34% 50%", "hidden aspect-[373/317] w-[27%] shrink-0 md:block", "27vw")}
+        <div className="big-line">
+          {cut("farewatch", "70% 42%", "big-strip", "45vw")}
+          <span>The thing</span>
+        </div>
+        <div className="big-line">
           <span>You built.</span>
+          {cut("vibecheck", "50% 24%", "big-strip", "40vw")}
         </div>
       </div>
 

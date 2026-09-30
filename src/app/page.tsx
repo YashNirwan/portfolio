@@ -436,10 +436,13 @@ function Dispatch() {
 function BackPage() {
   return (
     <section className="sheet border-y border-ink py-10">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
-        <h2 className="heavy text-[32px]">The back page</h2>
-        <p className="byline max-w-[60ch]">{backPage.standfirst}</p>
-      </div>
+      <h2 className="heavy text-[clamp(2rem,4vw,3.25rem)] leading-[0.95]">The back page</h2>
+      <p
+        className="pretty mt-3 max-w-[48ch]"
+        style={{ fontFamily: "var(--font-mid)", fontSize: "clamp(1.25rem, 1.8vw, 1.6rem)", lineHeight: 1.25, letterSpacing: "-0.01em" }}
+      >
+        {backPage.standfirst}
+      </p>
       <dl className="cols-even -mx-[14px] mt-7 grid gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
         {backPage.items.map((item) => (
           <div key={item.term}>

@@ -271,8 +271,11 @@ export const work: Work[] = [
    Each entry is something I actually do, not a trait I am claiming. */
 
 export const backPage = {
+  /* The heading stays "The back page"; the line under it says plainly what
+     is on it. It used to sit small and faint off to the right, so readers
+     could not tell these were interests. */
   standfirst:
-    "What I am actually into, when nobody is paying me to be into anything. One of these got out of hand and is still running.",
+    "What I'm into, off the clock: the things I would talk about for an hour if you let me. One of them got out of hand and is still running.",
   items: [
     {
       term: "Hong Kong cinema",

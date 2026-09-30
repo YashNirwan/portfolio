@@ -29,34 +29,38 @@ Concept. Copy the *structure, layout, type system and motion* as closely as
 you like — that is the documented brief — but generate or license the
 imagery. `fonts/README.md` already makes this argument about the fonts.
 
-### READ THIS BEFORE PLANNING ANYTHING: the network is an allowlist
+### Network access, and how to inspect the reference
 
-The cloud environment this branch was last worked in permits **source-control
-hosts only**. Everything else is refused by the egress proxy with a 403 on
-CONNECT, which surfaces as `curl: (56) CONNECT tunnel failed`. Confirmed
-denied on 2026-09-30:
+The cloud environment started as a source-control-only allowlist, which
+denied both the image Gateway and niccolomiranda.com. The owner opened it on
+2026-09-30. If a new environment is back on an allowlist, the symptom is
+`curl: (56) CONNECT tunnel failed` and `curl -sS "$HTTPS_PROXY/__agentproxy/status"`
+lists the refusals; the fix is the owner's (session title bar → environment →
+Edit → Network access), not the agent's.
 
-    ai-gateway.vercel.sh     the image generation path below
-    niccolomiranda.com       the reference site itself
-    placehold.co             the old placeholder artwork
-    example.com              i.e. it is an allowlist, not a blocklist
+**Inspecting the reference headless takes two non-obvious steps.**
 
-`/root/.ccr/README.md` is explicit that a policy denial gets reported rather
-than routed around, and `curl -sS "$HTTPS_PROXY/__agentproxy/status"` lists
-the recent refusals with reasons. **Do not burn a session trying to work
-around this.** The fix is the owner's, not the agent's: cloud environment menu
-in the session title bar, Edit, Network access — either a broader access level
-or those hosts added to the allowed domains. Levels are documented at
-https://code.claude.com/docs/en/claude-code-on-the-web
+1. **Trust the proxy CA in Chromium.** The egress proxy re-terminates TLS, so
+   a headless browser shows `NET::ERR_CERT_AUTHORITY_INVALID`. Add the CA to
+   the NSS store — do NOT pass `--ignore-certificate-errors`:
 
-Two consequences, both of which shaped what is in the repo now:
+       apt-get install -y libnss3-tools
+       certutil -A -n "CCR Upstream Proxy CA" -t "C,," \
+         -i /root/.ccr/agent-proxy-ca.crt -d sql:/root/.pki/nssdb
 
-- **The ten images were authored, not generated.** See below.
-- **The reference cannot be inspected.** Every measured fact in this file
-  came from an earlier session that could reach the site. Nothing in it has
-  been re-verified since, and nothing new can be measured until the host is
-  reachable. Treat the measurements as the best available evidence, and do
-  not add to them by guessing.
+2. **Unlock Locomotive Scroll.** The reference is Webflow + GSAP + Locomotive,
+   and it renders as a flat bone field headless. Locomotive puts
+   `[data-scroll-container]` into `position: fixed` under `.has-scroll-smooth`
+   and drives it with transforms. Forcing `transform: none` on everything —
+   the obvious move — is what BLANKS it. Instead remove the classes and put
+   the container back in flow:
+
+       document.documentElement.classList.remove('has-scroll-smooth','has-scroll-init')
+       const c = document.querySelector('[data-scroll-container]')
+       c.style.position = 'static'; c.style.transform = 'none'
+
+   Computed styles are readable without either step, via CDP
+   `Runtime.evaluate`; the screenshots are what need them.
 
 ### Image generation, if the Gateway is ever reachable
 
@@ -91,49 +95,33 @@ also no reason to use the $0.25 tiers.
 **v0 is not available through the Gateway.** The full 395-model catalog has
 no `v0` or `vercel/*` entries. Do not go looking for it.
 
-### The ten slots are FILLED — with authored plates
+### The ten slots are FILLED — generated
 
-All ten are drawn by `scripts/make-art.py` into `public/art/*.svg`, and wired
-into the `image:` keys in `src/lib/data.ts`. Regenerate with:
+Generated with `bfl/flux-2-pro` by `scripts/gen-art.py`, committed as JPEG in
+`public/art/`. The authored SVG fallbacks from `scripts/make-art.py` are still
+there, unreferenced.
 
-    python3 scripts/make-art.py
+    set -a && . ./.env.local && set +a
+    python3 scripts/gen-art.py            # all ten
+    python3 scripts/gen-art.py foreman    # one
 
-**This is a replaceable decision, not a permanent one.** Generation was the
-documented plan and it was blocked, so the plates are authored instead: no
-network, no cost, on palette by construction, and editable by changing a
-number rather than by re-rolling a prompt. If the Gateway opens up, swapping
-any slot is a one-line change in data.ts.
+The Gateway returns PNG; the script's docstring has the one-line `sharp`
+command that converts to JPEG (8.4 MB → 4.5 MB, no visible loss). Running all
+ten back-to-back hits a 429 around the ninth — space them ~35s apart.
 
-They read as one set because they share a conceit rather than a texture:
-**each plate is an array of like things with exactly one ember exception.**
-One flagged pallet, one bad field, one window, one fare that broke its own
-baseline, one record that does not exist. That is the argument the site
-already makes in prose — the work is finding the row worth reading — so the
-artwork makes it too. Keep that rule if you redraw them.
+**Every plate is an array of like things with exactly one ember exception.**
+That conceit is what makes ten separate generations read as one set, and it
+is the site's own argument. Keep it in any rewrite of the prompts.
 
-    foreman         a warehouse aisle, racking, one flagged pallet
-    interface-cua   a terminal form, one flagged field
-    raivana         five thrown vessels, one in ember
-    vibecheck       fifteen records, one an empty dashed outline
-    farewatch       six fare traces, one breaking its baseline band
-    firesight       a tenement facade, one window flagged
-    back page       marquee / ticket / chessboard / departures
+Three things the prompts had to be forced into, all now in `gen-art.py`:
 
-Projects are parchment line on ink at 16:9 — the page's own signature, since
-the masthead knocks its letters out of an ink block rather than painting them
-on top. Back-page plates invert to ink on bone at 3:2, because they run
-four-up and small on parchment where a row of black blocks would shout.
-
-Two things worth knowing before editing the script:
-
-- The project hero crops its plate with `object-cover` to a much taller box,
-  which takes roughly 11% off each side at 1440. Keep the ember element well
-  inside that. The foreman pallet was in the outer rack cell and got sliced
-  off the edge.
-- `next/image` needs no `dangerouslyAllowSVG` here. Next 16 applies
-  `unoptimized` automatically when `src` ends in `.svg`, which is what a
-  vector plate wants anyway. `remotePatterns` is now empty and the site
-  fetches no image from a third party at all.
+- "Reversed out" was too weak. Two of six project plates came back
+  black-on-white. Naming the ground explicitly ("a solid near-black ink field,
+  white-on-black engraving") fixed both.
+- A single "no text" clause let garbled rank-and-file letters onto the
+  chessboard. The no-text directive is now exhaustive.
+- The style directive is concatenated into EVERY prompt. Calls are
+  independent; a preamble on the first buys nothing for the other nine.
 
 **Do not use the app screenshots** in `public/` (foreman.jpg, meridian.png,
 raivana.jpg, firesight.jpg). The owner rejected them explicitly — "Don't want
@@ -209,32 +197,35 @@ banner type in bone cream `rgb(205,198,190)`; headings Domaine Display
 - The stamp is positioned rather than laid out as a flex sibling of the title.
   As a sibling it shrank the h1's box, and `.press` clips the title to that
   box with `clip-path`, so FOREMAN rendered as FOREMA.
+- `.byline` was un-layered CSS and silently beat every `text-*` utility beside
+  it. The skip link asked for parchment on ink and rendered charcoal on black
+  (~2:1) to keyboard users on every page. It lives in `@layer components` now;
+  measured after a real Tab: 12.63:1. Third instance of the un-layered trap.
+  If a utility "does nothing", check for an un-layered rule before anything
+  else — and then check for a stale Turbopack chunk, which is what made the
+  first attempt at this fix look like it had failed.
 - In `make-art.py`, the rule that leaves some rack cells empty ran before the
   ember check, and the flagged pallet's cell was one it emptied — so the one
   thing the foreman plate is about was not drawn at all.
 
 ## What is left
 
-1. **The rest of Miranda's pages, when the site is reachable.** `/work` and
-   the remaining project pages have not been inspected element by element.
-   The homepage has. This is blocked on network access, not on effort.
-2. **There is no `/about` route at all.** Miranda has one; this site 404s.
-   Deliberately not invented here: building a page from our own content and
-   calling it a mirror of a page nobody in this session could see would be
-   fabrication. It needs either the reference or the owner's call on what
-   belongs on it. Note that `record`, `archive`, `story` and `stats` all
-   currently live on the homepage, so an /about has a duplication question to
-   answer before it has a layout question.
+1. **The remaining project pages have not been inspected element by element**
+   against their counterparts (`/work/prada` etc.). The homepage, `/work` and
+   `/about` have.
+2. **`/about` repeats the front page's record and archive.** It was built from
+   the reference's measured structure with only content already in data.ts —
+   no invented awards or publications — which means the two pages overlap.
+   Whether to trim the homepage or the about page is the owner's call.
+3. **The homepage is still parchment.** The reference's `/work` and `/about`
+   measured bone, and ours now match; the homepage was not re-measured this
+   session and was left as it was.
 3. **The drop cap is on section openers, not every paragraph.** The measured
    note below says the reference caps every body paragraph. On a
    Foreman-length study that is eight reversed-out squares down one column,
    which reads as a fault rather than as a page. `capOpeners` in
    `work/[slug]/page.tsx` is the switch. Re-measure before changing it.
-4. **The catalogue spines carry a lot of dead vertical space** — title at the
-   top, year at the foot, and the middle empty until hover. That may well be
-   correct (a closed book is the stated idea) and was left alone rather than
-   redesigned against a reference nobody could load.
-5. **An independent content review.** Partly done — see "Claims to settle".
+4. **An independent content review.** Partly done — see "Claims to settle".
 
 ## Claims the owner must settle (do not silently change these)
 

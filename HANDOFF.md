@@ -187,7 +187,7 @@ banner type in bone cream `rgb(205,198,190)`; headings Domaine Display
 Everything below was measured off niccolomiranda.com with headless Chromium
 over CDP (see "Inspecting the reference headless" above), not guessed.
 
-- **Portrait** is a linocut of the photo (`/portrait-engraved.jpg`), made
+- **Portrait** (superseded, see third pass) was a linocut of the photo (`/portrait-engraved.jpg`), made
   with `bytedance/seedream-4.5` via `/v1/images/edits`, tones mapped to ink →
   parchment. The owner rejected a duotone photo and then a detailed hedcut
   as "too detailed". flux-kontext changed the face; seedream kept it. The
@@ -212,7 +212,39 @@ over CDP (see "Inspecting the reference headless" above), not guessed.
   drop-cap intro beside a large LIVE SITE ellipse, THE / WORK / STORY head.
 
 Still open: the reference's testimonials section has no counterpart and
-none should be invented; `/about` still repeats the record and archive.
+none should be invented.
+
+### Done on 2026-09-30 (third pass, owner's notes)
+
+- **Portrait**: the owner's own illustrated Calton Hill portrait
+  (`/portrait-illustrated.jpg`, cropped from what they supplied). The linocut
+  is gone.
+- **Figures** render in the reading column, not the rail. In the rail they
+  opened an empty row on Foreman between "The failure" and "Honest limits"
+  (grid auto-placement put them on a row of their own). Short-form pages
+  now render `figures` too: Raivana has its shop screenshot and farewatch
+  has its chart. **VibeCheck has no screenshot**: the Streamlit app was
+  asleep, then stuck on a loading skeleton, and its stock Streamlit UI
+  would clash with the site anyway. Assumption: better none than a bad one.
+- **farewatch chart** rebuilt for legibility, after the owner said the
+  problem was data visibility, not colour. It is now six small panels, one
+  per route, with dollar and date axes, the median, and an alert band at
+  anomaly.py's 0.6× median. Each route's low is labelled; spikes are
+  clipped and their value written in. It is drawn from the committed
+  `scripts/farewatch-series.json` (or the DB when present).
+  `scripts/data/farewatch-legacy.svg` was an interim source, used before
+  the extract was committed, and can be deleted.
+- **Catalogue order**: foreman, raivana, vibecheck, interface-cua,
+  farewatch, firesight.
+- **Menu** re-laid to the reference's open menu: a centred stack, the
+  current page struck through with one ember bar, dot-separated socials,
+  and sized by `min(vw, svh)` so it fits any window.
+- **/about trimmed**: the status row and the archive are gone (both repeated
+  the front page), the record keeps two lines per role, and "Available now"
+  sits by the ask.
+- **Nameplate** enlarged to 24/32px. Whether "The Second Opinion" is the
+  right title for a job-search portfolio is the owner's call; see the chat
+  for the trade-off.
 
 ## Things that were fixed and are worth not reintroducing
 
@@ -245,10 +277,8 @@ none should be invented; `/about` still repeats the record and archive.
 1. **The remaining project pages have not been inspected element by element**
    against their counterparts (`/work/prada` etc.). The homepage, `/work` and
    `/about` have.
-2. **`/about` repeats the front page's record and archive.** It was built from
-   the reference's measured structure with only content already in data.ts —
-   no invented awards or publications — which means the two pages overlap.
-   Whether to trim the homepage or the about page is the owner's call.
+2. **`/about` was trimmed** (see third pass). It still shares the record
+   with the front page, in shorter form.
 3. **The homepage is still parchment.** The reference's `/work` and `/about`
    measured bone, and ours now match; the homepage was not re-measured this
    session and was left as it was.

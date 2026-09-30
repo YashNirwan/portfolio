@@ -12,66 +12,61 @@ This version fixes what made that unreadable:
   - the alert threshold from farewatch's anomaly.py (0.6 x median), with
     every window that fell below it marked in ember
 
-Two sources:
+Sources, in order:
 
   python3 scripts/farewatch-plot.py
-      reads ~/Projects/farewatch/farewatch.db (the owner's laptop; the
-      database is not in any repo). Real route names, dates and dollars.
 
-  python3 scripts/farewatch-plot.py --from-svg scripts/data/farewatch-legacy.svg
-      rebuilds from the first version's SVG, the only copy of the data
-      outside that laptop. Its y values are whole dollars on a $684 range
-      (checked: every y difference is a multiple of 780/684 px to within
-      0.05 px), and each x step is one three-hour window. So differences in
-      dollars and elapsed days come back exactly. Absolute prices, route
-      names and calendar dates do not, so this version plots dollars
-      relative to each route's median and cannot draw the 0.6x threshold.
+  - ~/Projects/farewatch/farewatch.db, when it exists (the owner's laptop;
+    ~19 MB of scraped fares, not in any repo). Read-only. Also refreshes
+    scripts/farewatch-series.json from it.
+  - otherwise scripts/farewatch-series.json: the derived slice the chart
+    plots (six routes, cheapest fare per three-hour bucket), committed so CI
+    and cloud sessions can redraw the figure exactly.
 """
-import os, re, sqlite3, statistics, sys, datetime
+import datetime, json, os, sqlite3, statistics
 
 OUT = os.path.join(os.path.dirname(__file__), "..", "public", "farewatch.svg")
 BUCKET = 10800  # three hours
 INK, EMBER = "#1d1d1b", "#c03f13"
+HALO = ' paint-order="stroke" stroke="#efe9de" stroke-width="6" stroke-linejoin="round"'
 FONT = "Georgia, 'Times New Roman', serif"
 
 
 # ---------------------------------------------------------------- sources --
-def from_db():
-    db = os.path.expanduser("~/Projects/farewatch/farewatch.db")
-    cur = sqlite3.connect(db).cursor()
-    routes = cur.execute(
-        "SELECT origin, dest FROM observations GROUP BY origin, dest "
-        "ORDER BY COUNT(*) DESC LIMIT 6").fetchall()
-    out = []
-    for o, d in routes:
-        rows = cur.execute(
-            "SELECT CAST(strftime('%s', observed_at) AS INTEGER) / ? * ? AS b, MIN(price) "
-            "FROM observations WHERE origin = ? AND dest = ? GROUP BY b ORDER BY b",
-            (BUCKET, BUCKET, o, d)).fetchall()
-        if len(rows) > 12:
-            out.append({"name": f"{o} → {d}", "pts": [(t, float(p)) for t, p in rows]})
-    return out, True
+DB = os.path.expanduser("~/Projects/farewatch/farewatch.db")
+EXTRACT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "farewatch-series.json")
 
 
-def from_svg(path):
-    src = open(path).read()
-    W, PAD, RANGE = 2400, 60, 684.0  # the first version's geometry
-    per_px = RANGE / (900 - 2 * PAD)
-    out = []
-    for i, m in enumerate(re.finditer(r'<path d="([^"]+)"', src)):
-        pts = []
-        for xs, ys in re.findall(r"([\d.]+),([\d.]+)", m.group(1)):
-            t = round(float(xs) / 4.5) * BUCKET  # 4.5 px per window
-            p = round((900 - PAD - float(ys)) * per_px)  # dollars above the all-route low
-            pts.append((t, float(p)))
-        out.append({"name": f"Route {i + 1}", "pts": pts})
-    return out, False
+def load():
+    if os.path.exists(DB):
+        cur = sqlite3.connect(f"file:{DB}?mode=ro", uri=True).cursor()
+        routes = [r[0] for r in cur.execute(
+            "SELECT origin||'-'||dest FROM observations GROUP BY origin, dest "
+            "ORDER BY COUNT(*) DESC LIMIT 6")]
+        series = {}
+        for r in routes:
+            o, d = r.split("-")
+            rows = cur.execute(
+                "SELECT strftime('%s', observed_at)/10800*10800 AS b, MIN(price) "
+                "FROM observations WHERE origin=? AND dest=? GROUP BY b ORDER BY b",
+                (o, d)).fetchall()
+            if len(rows) > 12:
+                series[r] = [[int(t), round(p, 2)] for t, p in rows]
+        with open(EXTRACT, "w") as f:
+            json.dump(series, f, separators=(",", ":"))
+        print(f"read {DB} and refreshed {os.path.basename(EXTRACT)}")
+    else:
+        with open(EXTRACT) as f:
+            series = json.load(f)
+        print(f"no local database; redrawing from {os.path.basename(EXTRACT)}")
+    return [{"name": k.replace("-", " → "), "pts": [(int(t), float(p)) for t, p in v]}
+            for k, v in series.items()]
 
 
 # ----------------------------------------------------------------- render --
 W = 960
 COLS, GAP_X, GAP_Y = 2, 48, 44
-LEFT, RIGHT, TOP, PH = 84, 16, 58, 210  # axis gutter, right margin, title band, plot height
+LEFT, RIGHT, TOP, PH = 84, 16, 84, 210  # axis gutter, right margin, title band, plot height
 PW = (W - GAP_X) // COLS - LEFT - RIGHT
 FS = 21  # ~12.5px in the 568px reading column at 1440
 
@@ -95,7 +90,7 @@ def panel(route, t0, t1, absolute, ox, oy):
     # Relative mode: every value becomes dollars against the route's median.
     val = (lambda p: p) if absolute else (lambda p: p - med)
     vs = sorted(val(p) for p in prices)
-    lo = min(vs[0], val(thresh) if thresh else vs[0])
+    lo = vs[0]
     hi = vs[int(0.98 * (len(vs) - 1))]
     pad = (hi - lo) * 0.08 or 10
     lo, hi = lo - pad, hi + pad
@@ -109,8 +104,9 @@ def panel(route, t0, t1, absolute, ox, oy):
     g = []
     hot = route.get("hot")
     low_v = min(val(p) for p in prices)
-    title = route["name"] + ("  ·  lowest fare seen" if hot else "")
-    g.append(f'<text x="{ox + LEFT}" y="{oy + 30}" font-size="{FS + 4}" font-weight="bold">{esc(title)}</text>')
+    g.append(f'<text x="{ox + LEFT}" y="{oy + 30}" font-size="{FS + 4}" font-weight="bold">{esc(route["name"])}</text>')
+    if hot:
+        g.append(f'<text x="{ox + LEFT}" y="{oy + 30 + FS + 4}" fill-opacity="0.7">lowest fare of all six</text>')
 
     # Gridlines and dollar ticks, recessive.
     step = nice_step(hi - lo)
@@ -127,10 +123,21 @@ def panel(route, t0, t1, absolute, ox, oy):
     ym = Y(val(med))
     g.append(f'<line x1="{ox + LEFT}" x2="{ox + LEFT + PW}" y1="{ym:.1f}" y2="{ym:.1f}" stroke="{INK}" stroke-width="1.5" stroke-dasharray="6 5"/>')
     if absolute:
-        g.append(f'<text x="{ox + LEFT + PW}" y="{ym - 8:.1f}" text-anchor="end" fill-opacity="0.7">median ${med:,.0f}</text>')
-        yt = Y(thresh)
-        g.append(f'<rect x="{ox + LEFT}" y="{yt:.1f}" width="{PW}" height="{oy + TOP + PH - yt:.1f}" fill="{EMBER}" fill-opacity="0.08"/>')
-        g.append(f'<text x="{ox + LEFT + PW}" y="{yt + FS + 2:.1f}" text-anchor="end" fill-opacity="0.7">alert below ${thresh:,.0f}</text>')
+        # Keyed in the title row, not on the line: on the line it sat on
+        # the data it was describing.
+        key = f"median ${med:,.0f}"
+        g.append(f'<text x="{ox + LEFT + PW}" y="{oy + 30}" text-anchor="end">{key}</text>')
+        kx = ox + LEFT + PW - len(key) * FS * 0.5 - 8
+        g.append(f'<line x1="{kx - 30:.1f}" x2="{kx:.1f}" y1="{oy + 23}" y2="{oy + 23}" stroke="{INK}" stroke-width="1.5" stroke-dasharray="6 5"/>')
+        # The alert line only where the route came near it. Stretching every
+        # panel down to 0.6x median left the routes that never alerted as a
+        # thin band at the top of an empty box.
+        if thresh > lo:
+            yt = Y(thresh)
+            g.append(f'<rect x="{ox + LEFT}" y="{yt:.1f}" width="{PW}" height="{oy + TOP + PH - yt:.1f}" fill="{EMBER}" fill-opacity="0.12"/>')
+            g.append(f'<text x="{ox + LEFT + 8}" y="{oy + TOP + PH - 8}"{HALO}>alert zone, under ${thresh:,.0f}</text>')
+        else:
+            g.append(f'<text x="{ox + LEFT + PW}" y="{oy + 30 + FS + 4}" text-anchor="end" fill-opacity="0.7">never near the ${thresh:,.0f} alert line</text>')
 
     # The line, broken wherever there are no observations for 12+ hours.
     segs, cur = [], []
@@ -155,11 +162,11 @@ def panel(route, t0, t1, absolute, ox, oy):
         g.append(f'<text x="{x + (-12 if end else 12):.1f}" y="{oy + TOP + 14}" text-anchor="{"end" if end else "start"}" paint-order="stroke" stroke="#efe9de" stroke-width="6" stroke-linejoin="round">{lab}</text>')
 
     # Windows under the alert threshold, or in relative mode the route's low.
-    marks = [(t, val(p)) for t, p in pts if absolute and p <= thresh]
-    if not absolute:
-        marks = [min(((t, val(p)) for t, p in pts), key=lambda q: q[1])]
-    for t, v in marks:
-        g.append(f'<circle cx="{X(t):.1f}" cy="{Y(v):.1f}" r="5" fill="{EMBER}" stroke="#efe9de" stroke-width="2"/>')
+    low_t, low_p = min(pts, key=lambda q: q[1])
+    marks = [(t, val(p), absolute and p <= thresh) for t, p in pts if absolute and p <= thresh]
+    marks.append((low_t, val(low_p), bool(thresh and low_p <= thresh)))
+    for t, v, alert in marks:
+        g.append(f'<circle cx="{X(t):.1f}" cy="{Y(v):.1f}" r="5.5" fill="{EMBER if alert else INK}" stroke="#efe9de" stroke-width="2"/>')
     t_low = min(pts, key=lambda q: q[1])[0]
     xl, yl = X(t_low), Y(low_v)
     lab = f"${low_v:,.0f}" if absolute else f"−${abs(low_v):,.0f}"
@@ -206,11 +213,7 @@ def render(routes, absolute):
 
 
 if __name__ == "__main__":
-    if "--from-svg" in sys.argv:
-        routes, absolute = from_svg(sys.argv[sys.argv.index("--from-svg") + 1])
-    else:
-        routes, absolute = from_db()
-    svg, (w, h) = render(routes, absolute)
+    svg, (w, h) = render(load(), True)
     open(OUT, "w").write(svg)
     print(f"wrote {os.path.normpath(OUT)}  {w}x{h}  {len(svg):,} bytes")
     print("update the figure's w/h in src/lib/data.ts if they changed")

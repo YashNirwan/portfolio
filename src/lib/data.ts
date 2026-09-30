@@ -209,18 +209,17 @@ export const work: Work[] = [
     links: [{ label: "GitHub", href: "https://github.com/YashNirwan/farewatch" }],
     figures: [
       {
-        /* Real data, redrawn to be read: scripts/farewatch-plot.py rebuilt
-           from the first plot's SVG (scripts/data/farewatch-legacy.svg),
-           which recovers exact dollar differences and elapsed days but not
-           absolute prices or route names. Running the script against
-           farewatch.db on the owner's laptop replaces this with named
-           routes, dates, real fares and the 0.6x alert line. */
+        /* Real data: scripts/farewatch-plot.py drawing
+           scripts/farewatch-series.json, the committed slice of the
+           owner's farewatch.db (six routes, cheapest fare per three-hour
+           window). The alert line is anomaly.py's 0.6 x median, taken here
+           over the whole route rather than per departure month. */
         src: "/farewatch.svg",
-        alt: "Six small line charts, one per route, each showing the cheapest fare per three-hour window over about nine weeks against that route's median; the deepest drops are 22 to 104 dollars below median",
+        alt: "Six small line charts, one per route from New York: three to Seattle with medians of $337 to $357, three to Houston with medians of $238 to $267, from late July to late September. The Seattle routes never approach their alert lines. LGA and EWR to Houston both drop into the alert zone in mid-September, to $140 and $142.",
         w: 960,
-        h: 1006,
+        h: 1084,
         caption:
-          "The cheapest fare in every three-hour window for the six routes farewatch watches most, each in dollars above or below that route's own median. Dots mark each route's low; gaps are stretches with no observations.",
+          "The cheapest fare in every three-hour window for the six routes farewatch watches most. The dashed line is each route's median; the shaded band is where it alerts, under 60% of that. Two Houston routes fell into it in September.",
       },
     ],
     image: {

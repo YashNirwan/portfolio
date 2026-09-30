@@ -182,6 +182,38 @@ banner type in bone cream `rgb(205,198,190)`; headings Domaine Display
   title.
 - `priority` → `preload` on `next/image`; `priority` is deprecated in Next 16.
 
+### Done later on 2026-09-30 (second pass, reference measured live)
+
+Everything below was measured off niccolomiranda.com with headless Chromium
+over CDP (see "Inspecting the reference headless" above), not guessed.
+
+- **Portrait** is a linocut of the photo (`/portrait-engraved.jpg`), made
+  with `bytedance/seedream-4.5` via `/v1/images/edits`, tones mapped to ink →
+  parchment. The owner rejected a duotone photo and then a detailed hedcut
+  as "too detailed". flux-kontext changed the face; seedream kept it. The
+  model's corner watermark was cropped out. The colour original stays.
+- **Identity section** follows the reference's layout: heading + portrait in
+  the narrow left column, a plate (Calton Hill, `/art/calton-hill.jpg`) and
+  display-caps roles on the right.
+- **Accenture mark**: the supplied chevron, traced into an inline SVG
+  (`components/org-mark.tsx`), set in ink.
+- **Back page**: four equal newspaper columns (`.cols-even`), not 46/54.
+- **Menu bar, menu and torn-paper transition** (`components/site-nav.tsx`,
+  `components/curtain.tsx`). The curtain lives in the ROOT layout; a
+  per-page curtain would unmount mid-transition.
+- **Smooth scroll** (Lenis) — the reference runs Locomotive with lerp 0.1;
+  its Webflow interactions have no scroll-linked transforms at all.
+- **Typeface**: Instrument Serif + a 0.016em stroke replaces Gloock.
+  Measured on "INTERACTIVE" at 100px: Canopee ~354px, Instrument 467,
+  Gloock 664. Canopée is VJ Type's, commercial licence only.
+- **Stats, big type, ticker, footer** rebuilt to the reference's awards row,
+  pixel-perfect collage and footer run.
+- **Project pages**: centred title with the tear across its tops, 32px
+  drop-cap intro beside a large LIVE SITE ellipse, THE / WORK / STORY head.
+
+Still open: the reference's testimonials section has no counterpart and
+none should be invented; `/about` still repeats the record and archive.
+
 ## Things that were fixed and are worth not reintroducing
 
 - `<Perforated>` hardcoded a bone panel with parchment bites and its comment
@@ -243,7 +275,10 @@ names the real sources. The numbers are untouched.
 
 ## Things that will bite you
 
-**Turbopack serves a stale CSS chunk.** Happened again this session: new
+**Turbopack serves a stale CSS chunk — on nearly every CSS edit.** It
+happened repeatedly on 2026-09-30: HMR took one CSS edit and silently
+dropped the next. Before believing any visual result after a CSS change,
+check the served chunk contains the new rule. Happened again this session: new
 classes silently missing from the compiled output while the markup
 references them. `.col-main` was simply absent and the grid did not apply.
 The fix is `rm -rf .next`. Clearing `.next/cache` alone is not enough.

@@ -18,7 +18,7 @@ import { useCurtain } from "@/components/curtain";
    It sits above the curtain, so the same control opens and closes the menu,
    and its ink turns to parchment while the menu is down. */
 export function SiteNav({
-  tone = "parchment",
+  tone = "bone",
   revealAfter,
 }: {
   tone?: "parchment" | "bone";

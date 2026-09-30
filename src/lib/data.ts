@@ -315,8 +315,8 @@ export const backPage = {
       term: "Going places cheaply",
       unit: "which is why farewatch exists",
       image: {
-        src: "/art/departures.jpg",
-        alt: "Engraving of a split-flap departure board, one row picked out in ember",
+        src: "/art/going-places.jpg",
+        alt: "Engraving of a battered, sticker-covered suitcase on a platform with an ember luggage tag on its handle and a propeller plane passing overhead",
         w: 1216,
         h: 832,
       },

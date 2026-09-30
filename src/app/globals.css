@@ -63,7 +63,11 @@
 html {
   scroll-behavior: smooth;
   overflow-x: clip;
-  background-color: var(--color-parchment);
+  /* Bone on every page, the homepage included. Measured on the reference:
+     its homepage, /work and /about all sit on the same rgb(205,198,190) with
+     the paper over it. Our homepage alone was on the lighter parchment, which
+     read cooler and flatter than the reference beside it. */
+  background-color: var(--color-bone);
 }
 
 /* Paper grain — ON TOP of the page, not under it.
@@ -91,6 +95,9 @@ body::after {
      reference's paper layer is z-index 998 for the same reason. */
   z-index: 90;
   pointer-events: none;
+  /* Measured against the reference's empty gutter, excluding the rules
+     that cross it: its paper varies by +-1.7 per channel and darkens bone to
+     ~196/188/179; at .42 this grain gives +-2.0 and ~198/192/184. */
   opacity: 0.42;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.34' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.55'/%3E%3C/svg%3E");
   /* multiply so the grain darkens the stock rather than sitting as a grey
@@ -639,7 +646,7 @@ html:has(body[data-opening]) {
 .opening {
   /* The page's own stock, so it reads as a sheet against the ink while it
      turns. Harmless afterwards: it is the colour html paints anyway. */
-  background-color: var(--color-parchment);
+  background-color: var(--color-bone);
 }
 
 body[data-opening] .opening {

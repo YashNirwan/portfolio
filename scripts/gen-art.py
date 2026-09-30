@@ -146,11 +146,20 @@ PROMPTS = {
         "burnt-orange ember and no other square is coloured. Dark ink linework on a pale "
         "bone-grey paper ground."
     ),
+    # Was a split-flap departure board with every flap blank (no text is
+    # allowed), which read as an abstract grid: the owner could not tell what
+    # it was. A battered suitcase says travel at a glance, and a budget one.
+    # Published as public/art/going-places.jpg (renamed so image caches keyed
+    # on the old URL cannot keep serving the board).
     "departures": (
-        "A railway split-flap departure board in its housing, seven horizontal rows of "
-        "blank flap panels in four columns, no readable writing. Exactly one whole row "
-        "is a solid burnt-orange ember bar. Dark ink linework on a pale bone-grey "
-        "paper ground."
+        "A battered old leather suitcase standing upright on a railway platform, "
+        "strapped shut with two belts, its sides covered in plain round and oval "
+        "travel stickers with no writing on them. A small paper luggage tag hangs "
+        "from the handle on a string; the luggage tag is the single burnt-orange "
+        "ember element. A small propeller airliner crosses the sky above it; the "
+        "aircraft is completely unmarked, plain ink and parchment, with no "
+        "registration letters, no roundels and no coloured tail. Dark "
+        "ink linework on a pale bone-grey paper ground."
     ),
 }
 

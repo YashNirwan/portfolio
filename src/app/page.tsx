@@ -408,7 +408,7 @@ function BigType() {
 function Dispatch() {
   return (
     <section className="sheet pb-11">
-      <div className="bg-bone px-6 py-8 md:px-10 md:py-10">
+      <div className="bg-parchment px-6 py-8 md:px-10 md:py-10">
         <p className="byline">{dispatch.kicker}</p>
         <h2 className="heavy mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)]">{dispatch.headline}</h2>
         <div className="mt-6 columns-1 gap-7 md:columns-2 lg:columns-3">
@@ -482,7 +482,7 @@ function BackPage() {
 function Story() {
   return (
     <section className="sheet py-12">
-      <Perforated className="mx-auto max-w-[62rem]">
+      <Perforated tone="on-bone" className="mx-auto max-w-[62rem]">
         <p className="byline byline-caps">{story.kicker}</p>
         <h2 className="heavy mt-3 text-[clamp(1.9rem,4.4vw,3.2rem)]">{story.headline}</h2>
         <div className="mt-7 columns-1 gap-9 md:columns-2">

@@ -92,8 +92,11 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
               src={item.image.src}
               alt={item.image.alt}
               fill
-              priority
+              preload
               sizes="100vw"
+              /* `priority` is deprecated in Next 16 in favour of `preload`,
+                 which names what it actually does: a <link rel=preload> in
+                 the head. Same behaviour, no deprecation warning. */
               className="object-cover"
               style={{ objectPosition: item.image.position ?? "center" }}
             />
@@ -211,7 +214,16 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
             study.blocks.map((block, i) => <BlockView key={i} block={block} />)
           ) : (
             <>
-              <p className="col-main pretty mb-4 leading-[1.36]">{item.body}</p>
+              {/* The same reversed-out cap the studies open with. Without it
+                  Raivana, VibeCheck and farewatch were the three project
+                  pages whose reading column started on bare body text, which
+                  read as a different template rather than a shorter one. */}
+              <p className="col-main lede pretty mb-4 leading-[1.36]">
+                <span className="capbox" aria-hidden="true">
+                  {item.body.charAt(0)}
+                </span>
+                {item.body.slice(1)}
+              </p>
               <NoteView note={{ label: "The cost", tone: "cost", body: item.turn }} />
             </>
           )}
@@ -317,7 +329,9 @@ function BlockView({ block }: { block: Block }) {
 
   return (
     <>
-      <p className={`col-main pretty leading-[1.36] ${block.lede ? "lede" : "mb-4"}`}>
+      {/* The lede paragraph carried no bottom margin, so the one paragraph
+          with a 62px float in it was also the one with nothing under it. */}
+      <p className={`col-main pretty mb-4 leading-[1.36] ${block.lede ? "lede" : ""}`}>
         {block.lede ? (
           <>
             <span className="capbox" aria-hidden="true">

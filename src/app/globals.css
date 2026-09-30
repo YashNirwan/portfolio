@@ -578,7 +578,13 @@ body {
 
 @media (min-width: 1024px) {
   .article {
-    grid-template-columns: minmax(0, 37rem) minmax(0, 1fr);
+    /* 37rem was a flat cap, and at exactly 1024 it ate the sheet: 938px of
+       paper minus a 592px reading column minus the 51px gap left the rail
+       295px, which is why its link pills stacked into a tower instead of
+       sitting in a row. The reading column tracks the viewport up to the same
+       37rem ceiling now, so the rail keeps a usable width at every step —
+       437px at 1024, 690px at 1440, which is the measured reference ratio. */
+    grid-template-columns: minmax(0, clamp(24rem, 44vw, 37rem)) minmax(0, 1fr);
   }
   /* Explicit columns, so grid auto-placement drops a note into the free cell
      beside its own paragraph rather than below it. */

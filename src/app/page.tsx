@@ -197,7 +197,18 @@ function Identity() {
           <p className="byline mt-6">{lede.meta}</p>
         </div>
 
-        <div>
+        {/* The roles heading sits BESIDE the portrait from 1280 up.
+            Stacked under it, the 22rem photo left ~430px of bare paper down
+            the right of this column at 1440 — the gap the owner flagged. The
+            photo itself is not the fix: it is an 800px source and the cap
+            below is what keeps it sharp, so the space gets filled with the
+            type that was already sitting under it.
+
+            1280 is where the split starts earning its place. Below it this
+            column is under 700px, the roles would get ~300px beside a 352px
+            photo, and stacked is the better reading — which is also the gap's
+            smallest at those widths. */}
+        <div className="grid gap-x-7 gap-y-6 xl:grid-cols-[22rem_minmax(0,1fr)] xl:items-end">
           {/* Kept at its own 4:5 and capped at 22rem. Cropping it to 4:3
               across a 46rem column meant asking an 800px file to cover
               1400px on a retina screen, which is what made it soft. */}
@@ -213,13 +224,16 @@ function Identity() {
               width={portrait.w}
               height={portrait.h}
               sizes="(max-width: 768px) 100vw, 22rem"
-              priority
+              preload
               className="block h-auto w-full"
               style={{ boxShadow: "var(--shadow-sm-2)" }}
             />
             <figcaption className="byline mt-2">{portrait.caption}</figcaption>
           </figure>
-          <h2 className="heavy mt-5 text-[clamp(1.8rem,3.4vw,2.9rem)]">
+          {/* 2.1vw rather than 3.4vw: beside the photo the longest role line
+              has ~300px at 1280 and ~400px at 1440, and 3.4vw overflowed
+              both. It keeps the stacked size below the split. */}
+          <h2 className="heavy mt-5 text-[clamp(1.8rem,3.4vw,2.9rem)] xl:mt-0 xl:text-[clamp(1.5rem,2.1vw,2.2rem)]">
             {lede.roles.map((r) => (
               <span key={r} className="block">
                 {r}

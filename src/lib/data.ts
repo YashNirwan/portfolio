@@ -85,6 +85,11 @@ export type Work = {
   image?: { src: string; alt: string; w: number; h: number; position?: string };
   hasStudy?: boolean;
   isNew?: boolean;
+  /* Evidence shown on the project page under the text — a real screenshot
+     or a real chart — as distinct from `image`, the drawn plate that is the
+     project's cover. The owner rejected screenshots as COVERS; these are
+     figures, captioned, in the reading column. */
+  figures?: { src: string; alt: string; w: number; h: number; caption: string }[];
 };
 
 export const work: Work[] = [
@@ -117,27 +122,6 @@ export const work: Work[] = [
     },
   },
   {
-    slug: "interface-cua",
-    title: "interface-cua",
-    kicker: "Automation · 2026",
-    standfirst:
-      "A lot of company software has no way in except the screen. To get data out, something has to click through it the way a person would.",
-    body:
-      "This lets an AI work out a task once — sign in, look up a customer, read the result — and records exactly what it did. After that the recording replays on its own, with no AI involved, so it does the same thing every time instead of improvising a new route and quietly getting it wrong.",
-    turn:
-      "Real systems fail in ways demos never do, so I also built the thing it practises on: a fake bank back-office that breaks on purpose. It drops sessions, throws errors and stalls on command, which is what makes the failures worth measuring.",
-    stack: ["TypeScript", "Playwright", "zod"],
-    links: [],
-    hasStudy: true,
-    isNew: true,
-    image: {
-      src: "/art/interface-cua.jpg",
-      alt: "Engraving of an old computer terminal showing a ruled form of unlabelled fields, with one field flagged in ember",
-      w: 1456,
-      h: 816,
-    },
-  },
-  {
     slug: "raivana",
     title: "Raivana",
     kicker: "Shop · 2024 to now",
@@ -151,6 +135,15 @@ export const work: Work[] = [
     links: [
       { label: "Visit the shop", href: "https://raivana.in/" },
       { label: "GitHub", href: "https://github.com/yashnirwan/Raivana" },
+    ],
+    figures: [
+      {
+        src: "/raivana.jpg",
+        alt: "The Raivana shop's home page: 'Objects with centuries of memory', a hand-painted ceramic vase, and links to brass, ceramics and woodwork",
+        w: 1500,
+        h: 754,
+        caption: "The shop as customers see it, at raivana.in.",
+      },
     ],
     image: {
       src: "/art/raivana.jpg",
@@ -182,6 +175,27 @@ export const work: Work[] = [
     },
   },
   {
+    slug: "interface-cua",
+    title: "interface-cua",
+    kicker: "Automation · 2026",
+    standfirst:
+      "A lot of company software has no way in except the screen. To get data out, something has to click through it the way a person would.",
+    body:
+      "This lets an AI work out a task once — sign in, look up a customer, read the result — and records exactly what it did. After that the recording replays on its own, with no AI involved, so it does the same thing every time instead of improvising a new route and quietly getting it wrong.",
+    turn:
+      "Real systems fail in ways demos never do, so I also built the thing it practises on: a fake bank back-office that breaks on purpose. It drops sessions, throws errors and stalls on command, which is what makes the failures worth measuring.",
+    stack: ["TypeScript", "Playwright", "zod"],
+    links: [],
+    hasStudy: true,
+    isNew: true,
+    image: {
+      src: "/art/interface-cua.jpg",
+      alt: "Engraving of an old computer terminal showing a ruled form of unlabelled fields, with one field flagged in ember",
+      w: 1456,
+      h: 816,
+    },
+  },
+  {
     slug: "farewatch",
     title: "farewatch",
     kicker: "Nobody asked · 2026",
@@ -193,6 +207,22 @@ export const work: Work[] = [
       "214,882 observations and 442 alerts so far. I have booked two flights off it. Nobody asked for it and it has never been switched off.",
     stack: ["Python", "SQLite", "launchd"],
     links: [{ label: "GitHub", href: "https://github.com/YashNirwan/farewatch" }],
+    figures: [
+      {
+        /* Real data, redrawn to be read: scripts/farewatch-plot.py rebuilt
+           from the first plot's SVG (scripts/data/farewatch-legacy.svg),
+           which recovers exact dollar differences and elapsed days but not
+           absolute prices or route names. Running the script against
+           farewatch.db on the owner's laptop replaces this with named
+           routes, dates, real fares and the 0.6x alert line. */
+        src: "/farewatch.svg",
+        alt: "Six small line charts, one per route, each showing the cheapest fare per three-hour window over about nine weeks against that route's median; the deepest drops are 22 to 104 dollars below median",
+        w: 960,
+        h: 1006,
+        caption:
+          "The cheapest fare in every three-hour window for the six routes farewatch watches most, each in dollars above or below that route's own median. Dots mark each route's low; gaps are stretches with no observations.",
+      },
+    ],
     image: {
       src: "/art/farewatch.jpg",
       alt: "Engraving of six fare traces against a dashed baseline band, one dropping away below it in ember",
@@ -367,28 +397,21 @@ export const archive: { title: string; year: string; line: string; href: string 
    left as a claim about a file that does not exist. The halftone is still the
    better idea; it needs the plate to be generated and committed first. */
 
-/* The portrait is a LINOCUT of the photograph, not the photograph.
+/* The portrait is the owner's own illustrated version of the Calton Hill
+   photo, supplied 2026-09-30 and used as given — colour intact, cropped
+   just inside its printed keyline (it arrived as a photograph of the print,
+   with a strip of the page above it and a ~0.3° tilt that the inset absorbs).
 
-   Three rounds with the owner:
-   1. A duotone of the photo (ink → parchment). Rejected: a desaturated photo
-      still reads as a photo pasted onto an engraved page.
-   2. A detailed stipple-and-hatch "hedcut". Rejected as too detailed — every
-      surface, sky and fleece included, carried texture.
-   3. This: a bold, simple linocut — flat black shapes, bare paper, a plain
-      background — which also sits better beside the Calton Hill plate than a
-      second set of columns would.
-
-   Made with bytedance/seedream-4.5 through the Vercel AI Gateway
-   (/v1/images/edits) from /portrait-4x5.jpg, chosen over flux-kontext on
-   likeness (kontext changed the face). Tones then mapped onto ink #1d1d1b →
-   parchment #e2dedb. The bottom 8% was cropped off to remove the model's own
-   "AI generated" corner mark rather than painted over. The colour original
-   stays at /portrait-4x5.jpg. */
+   It replaces three generated attempts, all rejected: a duotone of the photo
+   (read as a pasted-on photo), a stipple hedcut (too detailed), and a bold
+   linocut. The reference's own portraits are colour illustrations sitting
+   under the page's paper layer, which is what this now does. The original
+   photo stays at /portrait-4x5.jpg. */
 export const portrait = {
-  src: "/portrait-engraved.jpg",
-  alt: "Linocut portrait of Yash Nirwan on Calton Hill in Edinburgh, in a sherpa jacket and beanie, with the National Monument behind him",
-  w: 1200,
-  h: 1500,
+  src: "/portrait-illustrated.jpg",
+  alt: "Illustrated portrait of Yash Nirwan on Calton Hill in Edinburgh at sunset, in a sherpa jacket and beanie, with the National Monument behind him",
+  w: 1064,
+  h: 1914,
   caption: "Edinburgh, on the hill with the unfinished Parthenon on it.",
 };
 

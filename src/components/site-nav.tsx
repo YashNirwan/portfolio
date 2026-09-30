@@ -62,10 +62,12 @@ export function SiteNav({
         }}
       >
         <div className="sheet grid h-[72px] grid-cols-[1fr_auto_1fr] items-center gap-4 md:h-[97px]">
-          <span className="plate-row" style={{ color: "inherit" }}>
+          {/* Off on phones, as on the reference: beside a centred nameplate at
+              390 it wrapped to two lines and crowded the title. */}
+          <span className="plate-row whitespace-nowrap max-sm:invisible" style={{ color: "inherit" }}>
             {profile.location}
           </span>
-          <Link href="/" className="gothic justify-self-center text-[22px] no-underline" style={{ color: "inherit" }}>
+          <Link href="/" className="gothic justify-self-center text-[24px] no-underline md:text-[32px]" style={{ color: "inherit" }}>
             The Second Opinion
           </Link>
           <button

@@ -349,6 +349,9 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
                 {item.body.slice(1)}
               </p>
               <NoteView note={{ label: "The cost", tone: "cost", body: item.turn }} />
+              {(item.figures ?? []).map((f) => (
+                <BlockView key={f.src} block={{ kind: "figure", ...f }} />
+              ))}
             </>
           )}
         </div>
@@ -442,17 +445,24 @@ function BlockView({ block, capped = false }: { block: Block; capped?: boolean }
   }
 
   if (block.kind === "figure") {
-    /* Figures go in the rail. They are evidence, and the reference runs its
-       imagery down the right of the reading column rather than interrupting
-       it. */
+    /* Figures go in the READING column, not the rail.
+
+       They were in the rail, and on Foreman that opened a gap the height of
+       the audit chart between "The failure that changed the design" and
+       "Honest limits". Grid auto-placement is sequential: the figure came
+       after a paragraph whose note already held the rail on that row, so it
+       went to a row of its own — and the reading column on that row was
+       empty. Rail items that are not beside a paragraph cannot avoid that.
+       In the reading column the figure flows with the text like a cut in a
+       newspaper column; the rail keeps the notes it was built for. */
     return (
-      <figure className="col-rail my-4 bg-parchment p-3">
+      <figure className="col-main my-8 bg-parchment p-3">
         <Image
           src={block.src}
           alt={block.alt}
           width={block.w}
           height={block.h}
-          sizes="(max-width: 1024px) 100vw, 40rem"
+          sizes="(max-width: 1024px) 100vw, 37rem"
           className="block h-auto w-full"
           style={{ boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px" }}
         />

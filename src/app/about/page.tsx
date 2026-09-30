@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { lede, record, archive, archiveNote, portrait, classified, links } from "@/lib/data";
+import { lede, record, portrait, classified, links } from "@/lib/data";
 import { OrgMark } from "@/components/org-mark";
 import { SiteNav } from "@/components/site-nav";
 
@@ -33,25 +33,21 @@ export const metadata: Metadata = {
    The reference fills its slots with awards and publications. There are none
    here and none are invented: each slot takes the nearest real material
    already in data.ts. The record stands where the awards stand, because both
-   are the credentials block; the archive stands where the publications do,
-   because both are a list of titled things with a line and a link. Nothing
+   are the credentials block; the publications slot is left empty,
+   since the only candidate was coursework already on the front page. Nothing
    on this page is a claim that is not already made, and sourced, on the
    front page.
 
-   That also means this page repeats the front page's record and archive.
-   Deliberately left as a question for the owner rather than resolved by
-   deleting content from the homepage: see HANDOFF.md.
+   Trimmed on the owner's note ("trim the /about"). The status row and the
+   archive are gone: both repeated the front page almost word for word, and the
+   archive is coursework. The record keeps each role's first two lines — the
+   rest are on the front page and the résumé. What is left is the portrait,
+   the three paragraphs that say what the work is, the record, and the ask.
    =========================================================================== */
 export default function About() {
-  const nyu = record.education[0];
-  const status = [
-    /* Each of these is verbatim or near-verbatim from data.ts: the
-       classified's "Available now", the roles line "Based in New York.", and
-       the education entry. No new claims. */
-    classified.find((c) => c.startsWith("Available")) ?? "Available now",
-    lede.roles[lede.roles.length - 1],
-    `NYU, ${nyu.detail.split(",")[0]} ${nyu.period.split("–").pop()?.trim()}`,
-  ];
+  // Verbatim from the classified; the one line of the old status row a
+  // recruiter needs, kept where the page asks them to get in touch.
+  const available = classified.find((c) => c.startsWith("Available")) ?? "Available now";
 
   return (
     <div className="min-h-svh bg-bone">
@@ -139,7 +135,7 @@ export default function About() {
                   </div>
                   <p className="byline mt-1">{r.title}</p>
                   <ul className="mt-3 max-w-[52ch]">
-                    {r.lines.map((l, i) => (
+                    {r.lines.slice(0, 2).map((l, i) => (
                       <li key={i} className="pretty mb-1.5 leading-[1.3]">
                         {l}
                       </li>
@@ -167,70 +163,21 @@ export default function About() {
           </div>
         </section>
 
-        {/* The status row. Three columns at 60px / 300 on the reference —
-            4.2vw at 1440. Hairlines between, the way a paper separates
-            stories. */}
-        <section className="sheet mt-16 border-y border-ink py-10">
-          <ul className="ruled grid gap-x-7 gap-y-6 md:grid-cols-3">
-            {status.map((s) => (
-              <li
-                key={s}
-                className="pretty"
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontWeight: 300,
-                  fontSize: "clamp(1.9rem, 4.2vw, 3.75rem)",
-                  lineHeight: 1.03,
-                  letterSpacing: "-0.04em",
-                }}
-              >
-                {s}
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* The list block. The reference's PUBLICATIONS: a display heading,
-            then a three-column grid of titles at 43px / 500. The archive is
-            the same shape — titled items with a line and a link — and is
-            labelled as coursework, which it is. */}
-        <section className="sheet mt-16 pb-16">
-          <h2 className="heavy heavy-xl text-[clamp(3.2rem,11vw,9.9rem)]">The archive</h2>
-          <p className="byline mt-4 max-w-[52ch]">{archiveNote}</p>
-          <ul className="mt-10 grid gap-x-10 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
-            {archive.map((a) => (
-              <li key={a.href} className="border-t border-ink pt-4">
-                <span className="byline byline-caps tabular">{a.year}</span>
-                <h3
-                  className="mt-2"
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontWeight: 500,
-                    fontSize: "clamp(1.6rem, 3vw, 2.6875rem)",
-                    lineHeight: 1.0,
-                    letterSpacing: "-0.04em",
-                  }}
-                >
-                  <a href={a.href} target="_blank" rel="noreferrer" className="no-underline hover:underline">
-                    {a.title}
-                  </a>
-                </h3>
-                <p className="pretty mt-3 max-w-[40ch] leading-[1.3]">{a.line}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
+        <div className="pb-16" />
       </main>
 
       {/* The reference closes its pages on LET'S TALK!, and so does the
           catalogue now. Same close here, so the two inner pages end alike. */}
       <section className="bg-ink text-parchment">
         <div className="sheet flex flex-wrap items-end justify-between gap-8 py-14">
-          <h2 className="heavy heavy-xl text-[clamp(3.4rem,10vw,9rem)]">
-            Let’s
-            <br />
-            talk!
-          </h2>
+          <div>
+            <h2 className="heavy heavy-xl text-[clamp(3.4rem,10vw,9rem)]">
+              Let’s
+              <br />
+              talk!
+            </h2>
+            <p className="byline mt-4 text-bone">{available}</p>
+          </div>
           <div className="flex flex-wrap items-center gap-4">
             <a
               href={`mailto:${links.email}`}

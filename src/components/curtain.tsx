@@ -218,17 +218,25 @@ export function CurtainProvider({ children }: { children: React.ReactNode }) {
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
-          className="absolute inset-0 flex flex-col justify-between px-[var(--gutter)] pb-8 pt-28 text-parchment md:pt-32"
+          className="absolute inset-0 flex flex-col items-center px-[var(--gutter)] pb-8 pt-[72px] text-parchment md:pt-[97px]"
           style={{
             opacity: menuOpen && phase === "covered" ? 1 : 0,
             transition: "opacity 400ms ease-out",
           }}
         >
-          {/* Measured on the reference: three links at Canopee 270px —
-              18.75vw at 1440, used as-is now that the display face is
-              condensed. The current page is the one ember item, the site's
-              one-exception rule. */}
-          <ul className="guide-light heavy heavy-xl text-[clamp(4.5rem,18.75vw,17rem)]">
+          {/* Measured on the reference's open menu: the three words CENTRED
+              in the space under the bar, stacked tight with no rules
+              between them, and the current page struck through with one
+              ember bar rather than recoloured. The old version set them flush
+              left with a rule under each, which at 1440 left the right 60%
+              of the curtain empty and on a phone bunched the whole menu into
+              the top quarter of the screen.
+
+              Sized to the smaller of width and height, so three lines always
+              fit: 18.75vw is the reference's 270px at 1440, the svh bound
+              stops a short landscape window overflowing, and phones get
+              34vw so the words hold the screen as they do there. */}
+          <ul className="heavy heavy-xl my-auto text-center text-[min(34vw,24svh)] leading-[0.86] md:text-[min(18.75vw,24svh)]">
             {MENU.map((m, i) => {
               const current = m.href === "/" ? pathname === "/" : pathname.startsWith(m.href);
               return (
@@ -237,23 +245,30 @@ export function CurtainProvider({ children }: { children: React.ReactNode }) {
                     href={m.href}
                     ref={i === 0 ? firstLink : undefined}
                     aria-current={current ? "page" : undefined}
-                    className="tighten inline-block no-underline"
-                    style={{ color: current ? "var(--color-ember)" : undefined }}
+                    className="tighten relative inline-block no-underline transition-opacity hover:opacity-70"
                   >
                     {m.label}
+                    {current ? (
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-x-[-4%] top-[44%] block h-[0.06em] bg-ember"
+                      />
+                    ) : null}
                   </Link>
                 </li>
               );
             })}
           </ul>
-          <ul className="flex flex-wrap gap-x-7 gap-y-2">
+          {/* The reference's social row: centred, dot-separated. */}
+          <ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2">
             {[
               { label: "Email", href: `mailto:${links.email}` },
               { label: "GitHub", href: links.github },
               { label: "LinkedIn", href: links.linkedin },
               { label: "Résumé", href: links.resume },
-            ].map((l) => (
-              <li key={l.label}>
+            ].map((l, i) => (
+              <li key={l.label} className="flex items-center gap-3">
+                {i > 0 ? <span aria-hidden="true" className="text-bone">•</span> : null}
                 <a
                   href={l.href}
                   target={l.href.startsWith("http") ? "_blank" : undefined}

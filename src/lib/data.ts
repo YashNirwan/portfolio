@@ -420,6 +420,26 @@ export const archive: { title: string; year: string; line: string; href: string 
    linocut. The reference's own portraits are colour illustrations sitting
    under the page's paper layer, which is what this now does. The original
    photo stays at /portrait-4x5.jpg. */
+/* The /about classified: the owner asked for something fun that says he is
+   looking, and says the quiet part. Every fact in it is already on the site:
+   NYU, May 2026, and the four areas in the page title. */
+export const situationWanted = {
+  kicker: "Situation wanted",
+  headline: "Graduated. Gowned. Available.",
+  paragraphs: [
+    "That is Yankee Stadium in May 2026: one master's degree, one gown in NYU violet, one person squinting at the sun. What I am looking for now is the right next room: a role in strategy, product, data or AI, somewhere the answer has to be checked before it ships.",
+    "Also, if you have read this far down an about page, you either have far too much time on your hands or an opening on your team. I cannot help with the first. Please let me help with the second.",
+  ],
+};
+
+export const graduation = {
+  src: "/graduation.jpg",
+  alt: "Yash Nirwan in an NYU violet gown and mortarboard at the Class of 2026 commencement in Yankee Stadium, the field and a stage tent behind him",
+  w: 1120,
+  h: 1500,
+  caption: "Yankee Stadium, Class of 2026.",
+};
+
 export const portrait = {
   src: "/portrait-illustrated.jpg",
   alt: "Illustrated portrait of Yash Nirwan on Calton Hill in Edinburgh at sunset, in a sherpa jacket and beanie, with the National Monument behind him",

@@ -367,17 +367,28 @@ export const archive: { title: string; year: string; line: string; href: string 
    left as a claim about a file that does not exist. The halftone is still the
    better idea; it needs the plate to be generated and committed first. */
 
-/* The photograph is set in the palette: a duotone mapping its shadows to ink
-   #1d1d1b and its highlights to parchment #e2dedb, made from the original
-   with sharp (the colour original stays at /portrait-4x5.jpg). The reference
-   sits its photos in the page the same way it sits everything — under a paper
-   layer multiplied over the whole sheet — and a colour photo was the one thing
-   on this site still reading as pasted on rather than printed. */
+/* The portrait is a LINOCUT of the photograph, not the photograph.
+
+   Three rounds with the owner:
+   1. A duotone of the photo (ink → parchment). Rejected: a desaturated photo
+      still reads as a photo pasted onto an engraved page.
+   2. A detailed stipple-and-hatch "hedcut". Rejected as too detailed — every
+      surface, sky and fleece included, carried texture.
+   3. This: a bold, simple linocut — flat black shapes, bare paper, a plain
+      background — which also sits better beside the Calton Hill plate than a
+      second set of columns would.
+
+   Made with bytedance/seedream-4.5 through the Vercel AI Gateway
+   (/v1/images/edits) from /portrait-4x5.jpg, chosen over flux-kontext on
+   likeness (kontext changed the face). Tones then mapped onto ink #1d1d1b →
+   parchment #e2dedb. The bottom 8% was cropped off to remove the model's own
+   "AI generated" corner mark rather than painted over. The colour original
+   stays at /portrait-4x5.jpg. */
 export const portrait = {
-  src: "/portrait-4x5-duotone.jpg",
-  alt: "Yash Nirwan on Calton Hill in Edinburgh, in a sherpa jacket and beanie, with the National Monument behind him",
-  w: 800,
-  h: 1000,
+  src: "/portrait-engraved.jpg",
+  alt: "Linocut portrait of Yash Nirwan on Calton Hill in Edinburgh, in a sherpa jacket and beanie, with the National Monument behind him",
+  w: 1200,
+  h: 1500,
   caption: "Edinburgh, on the hill with the unfinished Parthenon on it.",
 };
 

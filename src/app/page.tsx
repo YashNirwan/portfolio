@@ -20,6 +20,7 @@ import { Stamp } from "@/components/stamp";
 import { Perforated } from "@/components/perforated";
 import { Spinner } from "@/components/spinner";
 import { WorkCard } from "@/components/work-card";
+import { OrgMark } from "@/components/org-mark";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -51,7 +52,6 @@ export default function Home() {
         <Archive />
         <BigType />
         <Dispatch />
-        <Banner word="Back page" />
         <BackPage />
         <WorkStrip
           items={[work[3], work[2]]}
@@ -215,16 +215,21 @@ function Identity() {
           </h1>
           {/* `portrait.caption` was written and then never rendered for a
               while; the caption travels with the figure, not the image. */}
-          <figure className="mt-7 max-w-[26rem]">
+          {/* No width cap. The old 22rem/26rem caps existed because the
+              source was an 800px photo; the engraving is 1200px, so the
+              portrait fills its column at 2x up past 1920. */}
+          <figure className="mt-7">
+            {/* No frame parallax on the portrait: it scales the image 1.16x to
+                have room to travel, and the crop took the top of the head. */}
             <div className="par-frame" style={{ boxShadow: "var(--shadow-sm-2)" }}>
               <Image
                 src={portrait.src}
                 alt={portrait.alt}
                 width={portrait.w}
                 height={portrait.h}
-                sizes="(max-width: 768px) 100vw, 26rem"
+                sizes="(max-width: 768px) 100vw, 30vw"
                 preload
-                className="par-img block h-auto w-full"
+                className="block h-auto w-full"
               />
             </div>
             <figcaption className="byline mt-2">{portrait.caption}</figcaption>
@@ -358,38 +363,51 @@ function Dispatch() {
   );
 }
 
+/* --- The back page ---------------------------------------------------------
+   Set the way a paper sets its back page: four equal columns of short items,
+   hairlines between, small cuts at the head of each.
+
+   It used to be a 46/54 two-column grid — asymmetric for no reason the
+   content supplied — with each hobby's image half the sheet wide (~650px at
+   1440) and a full-width ink banner above it as big as the masthead name.
+   That gave the lightest material on the page the heaviest setting on it.
+   The section head is now the same size as THE RECORD and THE ARCHIVE, which
+   is what it is: a section, not a front page. */
 function BackPage() {
   return (
-    <section className="sheet border-b border-ink py-10">
-      <p className="lede pretty max-w-[52ch]">{backPage.standfirst}</p>
-      <dl className="mt-8 grid gap-x-9 gap-y-10 md:grid-cols-[46fr_54fr]">
+    <section className="sheet border-y border-ink py-10">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+        <h2 className="heavy text-[32px]">The back page</h2>
+        <p className="byline max-w-[60ch]">{backPage.standfirst}</p>
+      </div>
+      <dl className="cols-even -mx-[14px] mt-7 grid gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
         {backPage.items.map((item) => (
           <div key={item.term}>
             {item.image ? (
-              <div className="par-frame mb-4" style={{ boxShadow: "var(--shadow-sm)" }}>
+              <div className="par-frame mb-3.5">
                 <Image
                   src={item.image.src}
                   alt={item.image.alt}
                   width={item.image.w}
                   height={item.image.h}
-                  sizes="(max-width: 768px) 100vw, 34rem"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 22vw"
                   className="par-img block aspect-[3/2] h-auto w-full object-cover"
                 />
               </div>
             ) : null}
-            <dt className="flex flex-wrap items-baseline gap-x-2.5">
-              <span className="heavy text-[25px]">
+            <dt>
+              <span className="heavy block text-[19px] leading-[0.95]">
                 {item.href ? (
-                  <a href={item.href} target="_blank" rel="noreferrer" className="no-underline">
+                  <a href={item.href} target="_blank" rel="noreferrer" className="no-underline hover:underline">
                     {item.term}
                   </a>
                 ) : (
                   item.term
                 )}
               </span>
-              <span className="byline byline-caps">{item.unit}</span>
+              <span className="byline byline-caps mt-1.5 block">{item.unit}</span>
             </dt>
-            <dd className="pretty mt-2 max-w-[46ch] leading-[1.3]">{item.line}</dd>
+            <dd className="pretty mt-2.5 text-[16px] leading-[1.36]">{item.line}</dd>
           </div>
         ))}
       </dl>
@@ -480,7 +498,10 @@ function RecordSection() {
         {record.roles.map((r) => (
           <div key={r.org}>
             <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-              <h3 className="heavy text-[21px]">{r.org}</h3>
+              <h3 className="heavy flex items-center gap-2 text-[21px]">
+                <OrgMark org={r.org} className="h-[0.72em] w-auto" />
+                {r.org}
+              </h3>
               <span className="byline byline-caps tabular">{r.period}</span>
             </div>
             <p className="byline mt-1">{r.title}</p>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { lede, record, archive, archiveNote, portrait, classified, links } from "@/lib/data";
+import { OrgMark } from "@/components/org-mark";
 
 export const metadata: Metadata = {
   title: "About — Yash Nirwan",
@@ -139,7 +140,10 @@ export default function About() {
               {record.roles.map((r) => (
                 <div key={r.org} className="border-t border-ink/30 py-5 first:border-t-0 first:pt-0">
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-                    <h3 className="heavy text-[clamp(1.4rem,2.2vw,2rem)]">{r.org}</h3>
+                    <h3 className="heavy flex items-center gap-3 text-[clamp(1.4rem,2.2vw,2rem)]">
+                      <OrgMark org={r.org} className="h-[0.72em] w-auto" />
+                      {r.org}
+                    </h3>
                     <span className="byline byline-caps tabular">{r.period}</span>
                   </div>
                   <p className="byline mt-1">{r.title}</p>

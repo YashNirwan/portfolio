@@ -309,6 +309,24 @@ body {
   padding-left: var(--spacing-29, 29px);
 }
 
+/* Equal newspaper columns. `.ruled` pads columns 2..n on the left and not
+   column 1, so on an equal-fr grid the first column's CONTENT is 29px wider
+   than the rest — invisible with text, obvious with a row of 3:2 images, where
+   the first came out visibly taller than its neighbours. Here every column
+   carries the same inline padding, so the content boxes are identical and the
+   rule sits exactly midway between the columns either side of it. Rules only
+   from lg, where the row is a single line of four; below that it wraps and a
+   left rule would land on the sheet edge. */
+.cols-even > * {
+  padding-inline: 14px;
+}
+
+@media (min-width: 1024px) {
+  .cols-even > * + * {
+    border-left: 1px solid rgba(29, 29, 27, 0.32);
+  }
+}
+
 /* Heavy condensed caps — the register the real site uses for every section
    head and project title. Playfair at 900 is the closest free face to
    Canopee's weight; it is set tight and never below 32px. */

@@ -802,10 +802,63 @@ html.lenis {
     background-color: var(--color-parchment);
   }
 
+  /* The intro row reuses the article's columns without its panel: on the
+     reference the intro sits above the perforated story, not inside it. */
+  .article.no-panel::before {
+    display: none;
+  }
+
   /* Above the panel. Without this the text renders behind its own ground. */
   .col-main,
   .col-rail {
     position: relative;
     z-index: 1;
+  }
+}
+
+/* The drop cap at intro size. `.capbox` is fixed at 62px for 18-22px text;
+   at the 32px intro that is under two lines and reads as a bullet. Scaled
+   in em instead, so it spans ~2.2 lines at any size. */
+.capbox-lg {
+  /* em here is the cap's own size (1.5x the paragraph): 1.7em is ~82px at
+     the 32px intro, i.e. 2.2 of its 37px lines. */
+  font-size: 1.5em;
+  width: 1.7em;
+  height: 1.7em;
+  margin: 0.08em 0.3em 0 0;
+}
+
+/* The LIVE SITE ellipse's hover, from the reference's interaction config
+   ("CTA – Hover IN (Project)"): the text slides out to the right over 600ms
+   and an arrow follows in over 700ms, both inOutExpo. Both sit in one grid
+   cell so they cross in place. */
+.cta-ellipse > * {
+  grid-area: 1 / 1;
+}
+
+.cta-text,
+.cta-arrow {
+  transition: transform 600ms cubic-bezier(0.87, 0, 0.13, 1);
+}
+
+.cta-arrow {
+  transform: translateX(-340%);
+  transition-duration: 700ms;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .cta-ellipse:hover .cta-text,
+  .cta-ellipse:focus-visible .cta-text {
+    transform: translateX(340%);
+  }
+  .cta-ellipse:hover .cta-arrow,
+  .cta-ellipse:focus-visible .cta-arrow {
+    transform: none;
+  }
+}
+
+@media not (hover: hover) {
+  .cta-arrow {
+    display: none;
   }
 }

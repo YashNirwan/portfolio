@@ -12,6 +12,17 @@ import { SiteNav } from "@/components/site-nav";
 
 export const dynamicParams = false;
 
+/* Where each plate's ember exception sits, so the tall rail crop keeps it
+   in frame: a 16:9 plate cut to 4:5 loses more than half its width. */
+const FOCUS: Record<string, string> = {
+  foreman: "16% 50%",
+  "interface-cua": "50% 50%",
+  raivana: "50% 50%",
+  vibecheck: "62% 50%",
+  farewatch: "84% 50%",
+  firesight: "52% 50%",
+};
+
 /* Derived from `work`, not from `studies`.
 
    Generating only the slugs that have a long-form study is what made three
@@ -136,51 +147,33 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
           <span className="heavy text-[13px]">All work</span>
         </Link>
 
-        {/* The reference carries a LIVE SITE ellipse in this exact corner. It
-            is the one control on a project page that leaves the site, and it
-            gets a shape nothing else on the page has so it reads as a seal
-            rather than as another pill. GitHub is not the live thing, so a
-            repo link is only used when there is nothing else to point at. */}
-        {live ? (
-          <a
-            href={live.href}
-            target="_blank"
-            rel="noreferrer"
-            className="absolute right-5 top-5 hidden h-[86px] w-[148px] place-items-center border border-ink bg-parchment no-underline sm:grid md:right-10"
-            style={{ borderRadius: "50%" }}
-          >
-            <span className="heavy text-[13px]">Live site ↗</span>
-          </a>
-        ) : null}
+        {/* The tear sits ABOVE the title (z-10), so its ragged lip crosses
+            the tops of the letters — measured on the reference, where PRADA
+            is set huge and centred with the tear running across the top of
+            its caps. An earlier version cut through the WAIST of the title
+            ("INTERFACE-CUA" sliced across the middle) and was rightly
+            pulled clear; this takes only the tops, which is what the
+            reference does, and reads as the title printed on the sheet the
+            picture was torn from. */}
+        <Torn className="relative z-10 -mt-[46px] h-[48px]" />
 
-        {/* The tear, pulled up over the base of the image. */}
-        <Torn className="relative -mt-[46px] h-[48px]" />
-
-        {/* The title used to be pulled up -6vw INTO the tear, so the ragged
-            edge cut straight through the letterforms — "INTERFACE-CUA" was
-            sliced across its waist. The reference sets the title clear below
-            its tear. A small lift keeps the two locked together without the
-            collision.
-
-            The size is capped in ch as well as vw: at 11vw a long slug ran
-            into the gutter on both sides. Capping by character count lets
-            "Foreman" stay huge and brings "interface-cua" down to fit. */}
-        {/* The stamp sits inline beside the title, which is where the
-            reference puts it. It is a signature mark rather than a control, so
-            it is aria-hidden here — the page already says whose it is. */}
-        {/* The stamp is positioned rather than laid out as a flex sibling.
-            As a sibling it shrank the h1's box, and `.press` clips the title
-            to that box with `clip-path: inset(...)` — so FOREMAN rendered as
-            FOREMA with the N sliced off. Taking the stamp out of flow leaves
-            the title's own character-count sizing to do its job. */}
-        <div className="sheet relative -mt-[1.2vw] pb-8">
+        {/* Sized to take ~76% of the sheet: the reference's title block is
+            950px of 1440. 0.47em per capital (Instrument Serif, measured),
+            so 162/length vw — FOREMAN at 23vw, INTERFACE-CUA at 12.5vw —
+            capped at 20rem. */}
+        <div className="sheet relative z-0 -mt-[0.9rem] pb-9 text-center md:-mt-[1.6rem]">
           <h1
-            className="heavy press"
-            style={{ fontSize: `min(11vw, 9rem, ${Math.round(190 / title.length)}vw)` }}
+            className="heavy press mx-auto"
+            style={{ fontSize: `min(23vw, 20rem, ${(162 / title.length).toFixed(2)}vw)` }}
           >
             {title}
           </h1>
-          <Stamp className="par-slow absolute bottom-10 right-[var(--gutter)] hidden w-[7rem] lg:block" />
+          <p
+            className="mt-4"
+            style={{ fontFamily: "var(--font-body)", fontSize: "clamp(1.05rem, 1.6vw, 1.5rem)", letterSpacing: "-0.02em" }}
+          >
+            {item.kicker.split("·")[0].trim()}
+          </p>
         </div>
       </section>
 
@@ -206,7 +199,20 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
               </span>
             ))}
           </div>
-          <p className="byline tabular">{item.kicker.split("·").pop()?.trim()}</p>
+          <div className="flex items-center gap-4">
+            <p className="byline tabular">© {item.kicker.split("·").pop()?.trim()}</p>
+            {/* The reference closes its meta bar with a round "explore"
+                control that runs the reader down into the story. */}
+            <a
+              href="#main"
+              aria-label="Down to the story"
+              className="grid h-9 w-9 place-items-center rounded-full border border-ink no-underline"
+            >
+              <svg viewBox="0 0 12 14" className="h-3.5 w-3" aria-hidden="true">
+                <path d="M6 0v12M1 7l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="1.3" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -222,40 +228,109 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
             (studies.ts still says so, and this branch is called
             overhaul-margin), and they had been folded inline into the column
             where they just interrupted the argument. They belong out here. */}
-        <div className="article">
-          <p className="col-main lede pretty mb-8">{standfirst}</p>
+        {/* The intro row, OUTSIDE the perforated panel, as on the reference:
+            the opening paragraph at 32px (2.2vw) with the drop cap on the
+            left, and on the right a large outlined LIVE SITE ellipse —
+            569x216 on the reference, not the small seal this page used to
+            tuck into the hero's corner. The tools and the other links sit
+            under it. */}
+        <div className="article no-panel mb-16">
+          <p
+            className="col-main pretty"
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 300,
+              fontSize: "clamp(1.35rem, 2.2vw, 2rem)",
+              lineHeight: 1.16,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            <span className="capbox capbox-lg" aria-hidden="true">
+              {standfirst.charAt(0)}
+            </span>
+            {standfirst.slice(1)}
+          </p>
 
-          {/* The reference puts a LIVE SITE control at exactly this spot. */}
-          <aside className="col-rail mb-8">
-            <div className="flex flex-wrap gap-2">
+          <aside className="col-rail mt-8 lg:mt-0">
+            {/* interface-cua has nothing live to open, so its ellipse asks
+                instead — the one page where asking is all that is left. */}
+            <a
+              href={live ? live.href : `mailto:${links.email}`}
+              target={live ? "_blank" : undefined}
+              rel="noreferrer"
+              className="cta-ellipse group mx-auto grid aspect-[569/216] w-full max-w-[36rem] place-items-center overflow-clip border border-ink no-underline"
+              style={{ borderRadius: "50%" }}
+            >
+              <span className="cta-text heavy text-[clamp(2rem,3.6vw,3.4rem)]">
+                {live ? "Live site" : "Ask me"}
+              </span>
+              <svg viewBox="0 0 64 20" className="cta-arrow h-[0.9em] w-auto text-[clamp(2rem,3.6vw,3.4rem)]" aria-hidden="true">
+                <path d="M0 10h60M50 1l10 9-10 9" fill="none" stroke="currentColor" strokeWidth="2" />
+              </svg>
+            </a>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
               {item.stack.map((t) => (
                 <span key={t} className="byline byline-caps border border-ink/40 px-2.5 py-1">
                   {t}
                 </span>
               ))}
             </div>
-            <div className="mt-4 flex flex-wrap items-center gap-2.5">
-              {item.links.map((l) => (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-block border border-ink px-6 py-2.5 no-underline"
-                  style={{ borderRadius: "999px" }}
-                >
-                  <span className="heavy text-[14px]">{l.label}</span>
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+              {item.links
+                .filter((l) => l.href !== live?.href)
+                .map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-block border border-ink px-6 py-2.5 no-underline"
+                    style={{ borderRadius: "999px" }}
+                  >
+                    <span className="heavy text-[14px]">{l.label}</span>
+                  </a>
+                ))}
+              {/* Where the ellipse already asks, this would say it twice. */}
+              {live ? (
+                <a href={`mailto:${links.email}`} className="byline">
+                  Ask me about it
                 </a>
-              ))}
-              {/* Outside the links list on purpose. This used to sit inside a
-                  `links.length > 0` guard, so interface-cua — the one project
-                  with no external links, the one page where asking is all
-                  that is left — was the one page with no way to ask. */}
-              <a href={`mailto:${links.email}`} className="byline">
-                Ask me about it
-              </a>
+              ) : null}
             </div>
           </aside>
+        </div>
+
+        <div className="article">
+          {/* THE / WORK / STORY, measured on the reference: stacked display
+              caps at 274px with the stamp beside THE, and STORY reversed out
+              of an ink block — the section head of every project page. The
+              plate runs down the rail beside it, as the reference runs its
+              illustration down the right of the story. Sized to the head's
+              height (~27rem at 4:5) rather than spanning grid rows: a
+              spanning item makes the rows it spans grow to fit it, which
+              would open gaps under the paragraphs beside it. */}
+          <h2 className="col-main heavy heavy-xl mb-10 text-[clamp(4rem,18.5vw,16.6rem)]">
+            <span className="flex items-start justify-between gap-4">
+              <span>The</span>
+              <Stamp className="mt-[0.06em] w-[clamp(5rem,9vw,8.5rem)] shrink-0" />
+            </span>
+            <span className="block">Work</span>
+            <span className="inline-block bg-ink px-[0.06em] pb-[0.02em] pt-[0.08em] text-bone">Story</span>
+          </h2>
+          {item.image ? (
+            <figure className="col-rail par-frame mb-10 w-full max-w-[27rem] justify-self-end">
+              <Image
+                src={item.image.src}
+                alt=""
+                aria-hidden="true"
+                width={item.image.w}
+                height={item.image.h}
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="par-img block aspect-[4/5] h-auto w-full object-cover"
+                style={{ objectPosition: FOCUS[item.slug] ?? "center" }}
+              />
+            </figure>
+          ) : null}
 
           {study ? (
             study.blocks.map((block, i) => (

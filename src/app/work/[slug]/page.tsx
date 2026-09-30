@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getStudy, type Block, type Note } from "@/lib/studies";
 import { work, links } from "@/lib/data";
+import { Stamp } from "@/components/stamp";
 import { Torn } from "@/components/torn";
 import { WorkCard } from "@/components/work-card";
 
@@ -77,6 +78,10 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
   const study = getStudy(slug);
   const title = study?.title ?? item.title;
   const standfirst = study?.standfirst ?? item.standfirst;
+  /* The thing you can go and use, preferred over the thing you can go and
+     read. interface-cua has neither and gets no seal. */
+  const live =
+    item.links.find((l) => !l.href.includes("github.com")) ?? item.links[0] ?? null;
 
   return (
     /* Project pages sit on bone cream, a darker stock than the front page.
@@ -115,6 +120,23 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
           <span className="heavy text-[13px]">All work</span>
         </Link>
 
+        {/* The reference carries a LIVE SITE ellipse in this exact corner. It
+            is the one control on a project page that leaves the site, and it
+            gets a shape nothing else on the page has so it reads as a seal
+            rather than as another pill. GitHub is not the live thing, so a
+            repo link is only used when there is nothing else to point at. */}
+        {live ? (
+          <a
+            href={live.href}
+            target="_blank"
+            rel="noreferrer"
+            className="absolute right-5 top-5 hidden h-[86px] w-[148px] place-items-center border border-ink bg-parchment no-underline sm:grid md:right-10"
+            style={{ borderRadius: "50%" }}
+          >
+            <span className="heavy text-[13px]">Live site ↗</span>
+          </a>
+        ) : null}
+
         {/* The tear, pulled up over the base of the image. */}
         <Torn className="relative -mt-[46px] h-[48px]" />
 
@@ -127,6 +149,14 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
             The size is capped in ch as well as vw: at 11vw a long slug ran
             into the gutter on both sides. Capping by character count lets
             "Foreman" stay huge and brings "interface-cua" down to fit. */}
+        {/* The stamp sits inline beside the title, which is where the
+            reference puts it. It is a signature mark rather than a control, so
+            it is aria-hidden here — the page already says whose it is. */}
+        {/* The stamp is positioned rather than laid out as a flex sibling.
+            As a sibling it shrank the h1's box, and `.press` clips the title
+            to that box with `clip-path: inset(...)` — so FOREMAN rendered as
+            FOREMA with the N sliced off. Taking the stamp out of flow leaves
+            the title's own character-count sizing to do its job. */}
         <div className="sheet relative -mt-[1.2vw] pb-8">
           <h1
             className="heavy press"
@@ -134,6 +164,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
           >
             {title}
           </h1>
+          <Stamp className="par-slow absolute bottom-10 right-[var(--gutter)] hidden w-[7rem] lg:block" />
         </div>
       </section>
 

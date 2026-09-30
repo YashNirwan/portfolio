@@ -2,22 +2,33 @@
 
    The bite marks are a repeating radial-gradient on each edge rather than a
    border image, so the panel takes any width or height and the perforation
-   stays the same size. Parchment-coloured bites eat into the panel, which
-   means this only works over a parchment ground — which is where it sits. */
+   stays the same size. The bites have to be painted in the colour of whatever
+   the panel is sitting ON, because they are holes: they eat the panel away to
+   show the sheet through.
+
+   Hence `tone`. The homepage is parchment and the panel is bone; a project
+   page is bone and the panel is parchment. The first version hardcoded the
+   parchment-on-bone pair and was documented as only working over parchment,
+   which made it unusable on the one page the reference actually puts a
+   perforated panel on. */
 export function Perforated({
   children,
   className = "",
+  tone = "on-parchment",
 }: {
   children: React.ReactNode;
   className?: string;
+  tone?: "on-parchment" | "on-bone";
 }) {
   const bite = "10px";
-  const edge = `radial-gradient(circle ${bite} at center, var(--color-parchment) ${bite}, transparent ${bite})`;
+  const ground = tone === "on-bone" ? "var(--color-bone)" : "var(--color-parchment)";
+  const panel = tone === "on-bone" ? "bg-parchment" : "bg-bone";
+  const edge = `radial-gradient(circle ${bite} at center, ${ground} ${bite}, transparent ${bite})`;
 
   return (
     <div className={`relative ${className}`}>
       <div
-        className="bg-bone px-6 py-9 md:px-12 md:py-12"
+        className={`${panel} px-6 py-9 md:px-12 md:py-12`}
         style={{ borderRadius: "var(--radius-xl)" }}
       >
         {children}

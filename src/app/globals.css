@@ -567,6 +567,7 @@ body {
    a note simply follows the paragraph it belongs to.
    --------------------------------------------------------------------------- */
 .article {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   column-gap: clamp(2.5rem, 5vw, 5.5rem);
@@ -583,8 +584,12 @@ body {
        295px, which is why its link pills stacked into a tower instead of
        sitting in a row. The reading column tracks the viewport up to the same
        37rem ceiling now, so the rail keeps a usable width at every step —
-       437px at 1024, 690px at 1440, which is the measured reference ratio. */
-    grid-template-columns: minmax(0, clamp(24rem, 44vw, 37rem)) minmax(0, 1fr);
+       437px at 1024, 690px at 1440, which is the measured reference ratio.
+
+       Held in a variable because the perforated panel below is sized from it;
+       two copies of this clamp would drift the moment one was tuned. */
+    --main-col: clamp(24rem, 44vw, 37rem);
+    grid-template-columns: minmax(0, var(--main-col)) minmax(0, 1fr);
   }
   /* Explicit columns, so grid auto-placement drops a note into the free cell
      beside its own paragraph rather than below it. */
@@ -594,5 +599,55 @@ body {
   .col-rail {
     grid-column: 2;
     align-self: start;
+  }
+
+  /* The reference sets its project body in a dashed/perforated panel. Doing
+     that by wrapping the reading column in <Perforated> would have meant
+     making the whole column one grid child — and the margin notes, which this
+     branch is named after, only sit beside their own paragraph because each
+     one is a grid child in its own right. Wrapping would have stacked them
+     back into a list.
+
+     So the panel is painted behind the column instead. It is positioned, not
+     placed: as a grid item spanning `grid-row: 1 / -1` it covered one row and
+     nothing else, because -1 counts back from the end of the EXPLICIT grid and
+     every row here is implicit, created by auto-placement. Absolute against
+     `.article` sidesteps that entirely, and it shares the column width through
+     `--main-col` so the two can never drift apart. */
+  .article::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -2.25rem;
+    bottom: -2.25rem;
+    width: var(--main-col);
+    /* 1.75rem, not 2.5rem: the gutter is 2.6875rem, so a wider bleed pushed
+       the left run of bites to within 3px of the viewport edge and clipped
+       them. This keeps the perforation inside the sheet. */
+    padding-inline: 1.75rem;
+    margin-inline: -1.75rem;
+    box-sizing: content-box;
+    z-index: 0;
+    border-radius: var(--radius-xl, 22px);
+    /* Four runs of bites in the PAGE's colour, because they are holes: they
+       eat the panel away to show the sheet through. A project page is bone,
+       so the bites are bone and the panel is parchment — the inverse of the
+       homepage's panel, which is bone on parchment. */
+    background-image:
+      radial-gradient(circle 10px at center, var(--color-bone) 10px, transparent 10px),
+      radial-gradient(circle 10px at center, var(--color-bone) 10px, transparent 10px),
+      radial-gradient(circle 10px at center, var(--color-bone) 10px, transparent 10px),
+      radial-gradient(circle 10px at center, var(--color-bone) 10px, transparent 10px);
+    background-size: 22px 20px, 22px 20px, 20px 22px, 20px 22px;
+    background-position: left top, left bottom, left top, right top;
+    background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+    background-color: var(--color-parchment);
+  }
+
+  /* Above the panel. Without this the text renders behind its own ground. */
+  .col-main,
+  .col-rail {
+    position: relative;
+    z-index: 1;
   }
 }

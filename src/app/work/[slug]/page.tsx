@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ViewTransition } from "react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getStudy, type Block, type Note } from "@/lib/studies";
@@ -11,17 +11,6 @@ import { WorkCard } from "@/components/work-card";
 import { SiteNav } from "@/components/site-nav";
 
 export const dynamicParams = false;
-
-/* Where each plate's ember exception sits, so the tall rail crop keeps it
-   in frame: a 16:9 plate cut to 4:5 loses more than half its width. */
-const FOCUS: Record<string, string> = {
-  foreman: "16% 50%",
-  "interface-cua": "50% 50%",
-  raivana: "50% 50%",
-  vibecheck: "62% 50%",
-  farewatch: "84% 50%",
-  firesight: "52% 50%",
-};
 
 /* Derived from `work`, not from `studies`.
 
@@ -262,7 +251,9 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
               style={{ borderRadius: "50%" }}
             >
               <span className="cta-text heavy text-[clamp(2rem,3.6vw,3.4rem)]">
-                {live ? "Live site" : "Ask me"}
+                {/* farewatch and FireSight have only their repositories; the
+                    ellipse said LIVE SITE and opened GitHub. */}
+                {!live ? "Ask me" : live.href.includes("github.com") ? "The code" : "Live site"}
               </span>
               <svg viewBox="0 0 64 20" className="cta-arrow h-[0.9em] w-auto text-[clamp(2rem,3.6vw,3.4rem)]" aria-hidden="true">
                 <path d="M0 10h60M50 1l10 9-10 9" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -301,36 +292,20 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
         </div>
 
         <div className="article">
-          {/* THE / WORK / STORY, measured on the reference: stacked display
-              caps at 274px with the stamp beside THE, and STORY reversed out
-              of an ink block — the section head of every project page. The
-              plate runs down the rail beside it, as the reference runs its
-              illustration down the right of the story. Sized to the head's
-              height (~27rem at 4:5) rather than spanning grid rows: a
-              spanning item makes the rows it spans grow to fit it, which
-              would open gaps under the paragraphs beside it. */}
-          <h2 className="col-main heavy heavy-xl mb-10 text-[clamp(4rem,18.5vw,16.6rem)]">
-            <span className="flex items-start justify-between gap-4">
+          {/* THE / WORK / STORY on one line across the sheet. The reference
+              stacks it three lines deep at 274px beside a tall plate, and it
+              has the material to fill the column that opens up beside it.
+              These pages do not: stacked, the head and a second copy of the
+              hero art took a full screen before the first sentence. One line
+              keeps the ink block and the stamp at a fifth of the height. */}
+          <h2 className="col-full heavy heavy-xl mb-10 flex items-center justify-between gap-4 text-[min(12.5vw,12rem)] leading-none">
+            <span className="flex flex-wrap items-baseline gap-x-[0.22em]">
               <span>The</span>
-              <Stamp className="mt-[0.06em] w-[clamp(5rem,9vw,8.5rem)] shrink-0" />
+              <span>Work</span>
+              <span className="inline-block bg-ink px-[0.06em] pb-[0.02em] pt-[0.08em] text-bone">Story</span>
             </span>
-            <span className="block">Work</span>
-            <span className="inline-block bg-ink px-[0.06em] pb-[0.02em] pt-[0.08em] text-bone">Story</span>
+            <Stamp className="w-[clamp(3.5rem,8vw,8.5rem)] shrink-0" />
           </h2>
-          {item.image ? (
-            <figure className="col-rail par-frame mb-10 w-full max-w-[27rem] justify-self-end">
-              <Image
-                src={item.image.src}
-                alt=""
-                aria-hidden="true"
-                width={item.image.w}
-                height={item.image.h}
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="par-img block aspect-[4/5] h-auto w-full object-cover"
-                style={{ objectPosition: FOCUS[item.slug] ?? "center" }}
-              />
-            </figure>
-          ) : null}
 
           {study ? (
             study.blocks.map((block, i) => (
@@ -445,28 +420,31 @@ function BlockView({ block, capped = false }: { block: Block; capped?: boolean }
   }
 
   if (block.kind === "figure") {
-    /* Figures go in the READING column, not the rail.
+    /* Figures run across BOTH columns.
 
-       They were in the rail, and on Foreman that opened a gap the height of
-       the audit chart between "The failure that changed the design" and
-       "Honest limits". Grid auto-placement is sequential: the figure came
-       after a paragraph whose note already held the rail on that row, so it
-       went to a row of its own — and the reading column on that row was
-       empty. Rail items that are not beside a paragraph cannot avoid that.
-       In the reading column the figure flows with the text like a cut in a
-       newspaper column; the rail keeps the notes it was built for. */
+       In the rail they opened an empty row on Foreman (grid auto-placement
+       gave the figure a row of its own beside an empty reading column); in
+       the reading column they were 37rem wide beside a half-page of nothing,
+       which shrank the screenshots past reading. Spanning both, each figure
+       takes its own row at the full width of the sheet — a cut across the
+       page, as a paper runs a photograph across its columns. */
     return (
-      <figure className="col-main my-8 bg-parchment p-3">
-        <Image
-          src={block.src}
-          alt={block.alt}
-          width={block.w}
-          height={block.h}
-          sizes="(max-width: 1024px) 100vw, 37rem"
-          className="block h-auto w-full"
-          style={{ boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px" }}
-        />
-        <figcaption className="byline mt-3">{block.caption}</figcaption>
+      <figure className="col-full my-10">
+        <div className="bg-parchment p-3" style={{ boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px" }}>
+          {block.narrow ? (
+            <ArtDirected block={block} />
+          ) : (
+            <Image
+              src={block.src}
+              alt={block.alt}
+              width={block.w}
+              height={block.h}
+              sizes="(max-width: 1024px) 100vw, 90vw"
+              className="block h-auto w-full"
+            />
+          )}
+        </div>
+        <figcaption className="byline mt-3 max-w-[60ch]">{block.caption}</figcaption>
       </figure>
     );
   }
@@ -492,6 +470,21 @@ function BlockView({ block, capped = false }: { block: Block; capped?: boolean }
   );
 }
 
+/* A figure with a separate cut for phones, via <picture>: the way Next's
+   image docs do art direction (getImageProps for each source). */
+function ArtDirected({ block }: { block: Extract<Block, { kind: "figure" }> }) {
+  const narrow = block.narrow!;
+  const common = { alt: block.alt, sizes: "100vw" };
+  const wide = getImageProps({ ...common, src: block.src, width: block.w, height: block.h }).props;
+  const { props } = getImageProps({ ...common, src: narrow.src, width: narrow.w, height: narrow.h });
+  return (
+    <picture>
+      <source media="(min-width: 768px)" srcSet={wide.srcSet ?? wide.src} width={block.w} height={block.h} />
+      <img {...props} alt={block.alt} className="block h-auto w-full" />
+    </picture>
+  );
+}
+
 /* `tone` was declared on Note, set to "cost" on four of them, and then never
    read — so the paragraph where a project admits what it gave up rendered
    identically to a footnote about tooling. It is the one thing this site is
@@ -502,7 +495,7 @@ function NoteView({ note }: { note: Note }) {
 
   return (
     <div
-      className="col-rail mb-6 max-w-[30rem] border-l pl-4"
+      className="col-rail mb-6 max-w-[34rem] border-l-2 pl-5"
       style={{ borderColor: cost ? "var(--color-ember)" : "var(--color-ink)" }}
     >
       {note.label ? (
@@ -510,7 +503,14 @@ function NoteView({ note }: { note: Note }) {
           {note.label}
         </p>
       ) : null}
-      <p className="pretty mt-1 leading-[1.32] text-charcoal">{note.body}</p>
+      {/* Set as a sidebar, not a footnote: with the plate gone the rail is
+          the notes, and at body size they were specks in a wide column. */}
+      <p
+        className="pretty mt-2 text-ink"
+        style={{ fontFamily: "var(--font-mid)", fontSize: "clamp(1.1rem, 1.45vw, 1.4rem)", lineHeight: 1.28, letterSpacing: "-0.01em" }}
+      >
+        {note.body}
+      </p>
     </div>
   );
 }

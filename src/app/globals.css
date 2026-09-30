@@ -752,6 +752,13 @@ html.lenis {
     grid-column: 2;
     align-self: start;
   }
+  /* Across both columns: figures and the section head. A spanning item
+     always takes a row of its own, which is what a figure wants, and it is
+     what stops the project pages reading as a narrow column beside an
+     empty half-page. */
+  .col-full {
+    grid-column: 1 / -1;
+  }
 
   /* The reference sets its project body in a dashed/perforated panel. Doing
      that by wrapping the reading column in <Perforated> would have meant
@@ -772,7 +779,9 @@ html.lenis {
     left: 0;
     top: -2.25rem;
     bottom: -2.25rem;
-    width: var(--main-col);
+    /* The whole article, not only the reading column: the figures now run
+       across both columns and the notes sit on the panel beside the text. */
+    right: 0;
     /* 1.75rem, not 2.5rem: the gutter is 2.6875rem, so a wider bleed pushed
        the left run of bites to within 3px of the viewport edge and clipped
        them. This keeps the perforation inside the sheet. */
@@ -804,7 +813,8 @@ html.lenis {
 
   /* Above the panel. Without this the text renders behind its own ground. */
   .col-main,
-  .col-rail {
+  .col-rail,
+  .col-full {
     position: relative;
     z-index: 1;
   }

@@ -64,11 +64,11 @@ def load():
 
 
 # ----------------------------------------------------------------- render --
-W = 960
-COLS, GAP_X, GAP_Y = 2, 48, 44
+W = 1440  # the figure now spans the article: ~1354px at 1440
+COLS, GAP_X, GAP_Y = 3, 56, 44
 LEFT, RIGHT, TOP, PH = 84, 16, 84, 210  # axis gutter, right margin, title band, plot height
-PW = (W - GAP_X) // COLS - LEFT - RIGHT
-FS = 21  # ~12.5px in the 568px reading column at 1440
+PW = (W - GAP_X * (COLS - 1)) // COLS - LEFT - RIGHT
+FS = 21  # ~20px across the sheet at 1440
 
 
 def esc(s):
@@ -200,7 +200,7 @@ def render(routes, absolute):
     rows = (len(routes) + COLS - 1) // COLS
     cell_h = TOP + PH + 7 + FS + 10
     H = rows * cell_h + (rows - 1) * GAP_Y
-    cw = (W - GAP_X) // COLS
+    cw = (W - GAP_X * (COLS - 1)) // COLS
     body = "".join(
         panel(r, t0, t1, absolute, (i % COLS) * (cw + GAP_X), (i // COLS) * (cell_h + GAP_Y))
         for i, r in enumerate(routes))
@@ -212,8 +212,23 @@ def render(routes, absolute):
     ), (W, H)
 
 
+def layout(w, cols):
+    """Two cuts of the same chart: three panels a row across the desktop
+    sheet, one a row on a phone, where the wide cut's labels would render
+    at ~5px. The page picks between them with <picture>."""
+    global W, COLS, PW
+    W, COLS = w, cols
+    PW = (W - GAP_X * (COLS - 1)) // COLS - LEFT - RIGHT
+
+
 if __name__ == "__main__":
-    svg, (w, h) = render(load(), True)
-    open(OUT, "w").write(svg)
-    print(f"wrote {os.path.normpath(OUT)}  {w}x{h}  {len(svg):,} bytes")
+    routes = load()
+    for name, w, cols in (("farewatch.svg", 1440, 3), ("farewatch-narrow.svg", 620, 1)):
+        layout(w, cols)
+        for r in routes:
+            r.pop("hot", None)
+        svg, (w, h) = render(routes, True)
+        out = os.path.join(os.path.dirname(OUT), name)
+        open(out, "w").write(svg)
+        print(f"wrote {os.path.normpath(out)}  {w}x{h}  {len(svg):,} bytes")
     print("update the figure's w/h in src/lib/data.ts if they changed")

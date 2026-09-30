@@ -1,3 +1,5 @@
+import type { Block } from "./studies";
+
 /* ===========================================================================
    Content.
 
@@ -89,7 +91,7 @@ export type Work = {
      or a real chart — as distinct from `image`, the drawn plate that is the
      project's cover. The owner rejected screenshots as COVERS; these are
      figures, captioned, in the reading column. */
-  figures?: { src: string; alt: string; w: number; h: number; caption: string }[];
+  figures?: Omit<Extract<Block, { kind: "figure" }>, "kind">[];
 };
 
 export const work: Work[] = [
@@ -167,6 +169,17 @@ export const work: Work[] = [
       { label: "Try it", href: "https://newvibecheck.streamlit.app" },
       { label: "GitHub", href: "https://github.com/yashnirwan/VibeCheck" },
     ],
+    figures: [
+      {
+        /* Cropped above the Curate button: its purple gradient and
+           Streamlit's red corner badge fought the page's palette. */
+        src: "/vibecheck.jpg",
+        alt: "VibeCheck's opening screen: the title, the line 'AI-curated, API-validated soundtracks for any scene, book, or feeling', five example prompts, and a sidebar describing its truth filter, era mixing, feedback loop and play-all queue",
+        w: 1500,
+        h: 404,
+        caption: "The app at newvibecheck.streamlit.app. The sidebar's first item is the part that matters: every track is checked against YouTube Music before you see it.",
+      },
+    ],
     image: {
       src: "/art/vibecheck.jpg",
       alt: "Engraving of a grid of fifteen records; one is an empty dashed outline in ember, a track that does not exist",
@@ -215,9 +228,10 @@ export const work: Work[] = [
            window). The alert line is anomaly.py's 0.6 x median, taken here
            over the whole route rather than per departure month. */
         src: "/farewatch.svg",
+        narrow: { src: "/farewatch-narrow.svg", w: 620, h: 2212 },
         alt: "Six small line charts, one per route from New York: three to Seattle with medians of $337 to $357, three to Houston with medians of $238 to $267, from late July to late September. The Seattle routes never approach their alert lines. LGA and EWR to Houston both drop into the alert zone in mid-September, to $140 and $142.",
-        w: 960,
-        h: 1084,
+        w: 1440,
+        h: 708,
         caption:
           "The cheapest fare in every three-hour window for the six routes farewatch watches most. The dashed line is each route's median; the shaded band is where it alerts, under 60% of that. Two Houston routes fell into it in September.",
       },

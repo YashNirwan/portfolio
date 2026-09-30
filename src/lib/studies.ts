@@ -20,7 +20,17 @@ export type Block =
   | { kind: "p"; text: string; lede?: boolean; note?: Note }
   | { kind: "h"; text: string }
   | { kind: "pull"; text: string }
-  | { kind: "figure"; src: string; alt: string; w: number; h: number; caption: string };
+  | {
+      kind: "figure";
+      src: string;
+      alt: string;
+      w: number;
+      h: number;
+      caption: string;
+      /* A second cut for phones, when the wide one would not survive being
+         shrunk to 360px (the farewatch chart's labels would be ~5px). */
+      narrow?: { src: string; w: number; h: number };
+    };
 
 export type Study = {
   slug: string;
@@ -201,6 +211,17 @@ export const studies: Study[] = [
       {
         kind: "p",
         text: "Four NYC Open Data sources were joined into a single ontology, then scored 0–100 on self-closing-door violations, complaint history and building age. Every input stays visible and weighted rather than hidden behind a model, because an inspection queue a supervisor cannot argue with is one they will not use.",
+      },
+      {
+        /* The Workshop app's own screen, from the owner's current site. It
+           runs behind a Palantir AIP login, so it cannot be recaptured. */
+        kind: "figure",
+        src: "/firesight.jpg",
+        alt: "FireSight's Inspection Command screen in Palantir Foundry: a dark map of the Bronx dotted with the 500 highest-risk buildings, beside a priority queue led by 2049 Bartow Avenue at risk score 100, and an AI-written dispatch plan below it",
+        w: 1600,
+        h: 821,
+        caption:
+          "Inspection Command, the dispatcher's view: the 500 highest-risk buildings on the map, the ranked queue beside it, and the model's reasons and dispatch plan underneath.",
       },
       { kind: "h", text: "The backtest" },
       {

@@ -223,9 +223,11 @@ none should be invented.
   opened an empty row on Foreman between "The failure" and "Honest limits"
   (grid auto-placement put them on a row of their own). Short-form pages
   now render `figures` too: Raivana has its shop screenshot and farewatch
-  has its chart. **VibeCheck has no screenshot**: the Streamlit app was
-  asleep, then stuck on a loading skeleton, and its stock Streamlit UI
-  would clash with the site anyway. Assumption: better none than a bad one.
+  has its chart. VibeCheck's screenshot was restored from git history
+  (commit 5cda80e deleted it) and cropped above the purple Curate button
+  and Streamlit's red badge. FireSight's is the real Workshop screen
+  (`public/firesight.jpg`, also on the owner's live site); its figure lives
+  in the study blocks in `studies.ts`, since FireSight is long-form.
 - **farewatch chart** rebuilt for legibility, after the owner said the
   problem was data visibility, not colour. It is now six small panels, one
   per route, with dollar and date axes, the median, and an alert band at
@@ -242,6 +244,17 @@ none should be invented.
 - **/about trimmed**: the status row and the archive are gone (both repeated
   the front page), the record keeps two lines per role, and "Available now"
   sits by the ask.
+- **Project page layout** changed on the owner's note that the reference
+  has content to fill its two-column story and these pages do not:
+  - the rail's copy of the hero art is gone;
+  - THE WORK STORY is one line (`col-full`);
+  - figures span both columns;
+  - the perforated panel covers the whole article;
+  - notes are set as sidebars at ~1.4rem.
+
+  The farewatch chart ships in two cuts: `farewatch.svg` (three across) and
+  `farewatch-narrow.svg` (one across, for phones), chosen with `<picture>`.
+  The ellipse says THE CODE when the only link is GitHub.
 - **Nameplate** enlarged to 24/32px. Whether "The Second Opinion" is the
   right title for a job-search portfolio is the owner's call; see the chat
   for the trade-off.

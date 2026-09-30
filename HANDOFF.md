@@ -34,9 +34,12 @@ overrode `position: fixed` on the catalogue rail and pushed the whole shelf
 overrode every `no-underline` on the site. Base element styles now live in
 `@layer base`. Keep them there.
 
-**React is on canary**, not stable. `ViewTransition` — which drives the folder
-animation between the catalogue and a project page — does not exist on 19.2.4
-stable. Downgrading React will break `/work`.
+**React was on canary and no longer is.** `ViewTransition`, which drives the
+folder animation between the catalogue and a project page, shipped unprefixed
+in React 19.3.0 stable on 2026-09-30, so the canary pin is gone. Do not
+reintroduce it: a caret range on a prerelease (`^19.3.0-canary-…`) also matches
+the stable release above it, which is what broke `npm ci` in CI the first time
+this branch was pushed.
 
 **`next/font/google` and variable fonts.** Requesting an explicit weight array
 alongside `style: ["normal","italic"]` on a variable face makes the loader emit
@@ -70,9 +73,15 @@ the browser tools rather than trusting the token file.
    remaining. Six project slots plus four on the back page.
 2. **Logos** for Accenture and Amoga in the record section. Official files
    from their brand pages, not scraped copies.
-3. **Fonts.** The reference loads three retail faces with no free equivalent.
+3. **The JS budget is at the framework floor.** Every route loads 194.5 KB of
+   gzipped JS; `/_global-error`, which carries essentially no app code, loads
+   185.5 KB. Roughly 185 KB of that is Next 16.2 itself and about 9 KB is this
+   site. The CI ceiling is 210 KB, which is a tripwire for a heavy client
+   dependency rather than a target. There is little to win here without
+   dropping framework weight.
+4. **Fonts.** The reference loads three retail faces with no free equivalent.
    See `src/assets/fonts/README.md`. The current faces approximate them.
-4. **An independent content review.** The copy was written by an agent and
+5. **An independent content review.** The copy was written by an agent and
    never reviewed by one that did not write it. That check has not happened.
 
 ## Positioning, and what not to undo

@@ -238,8 +238,9 @@ none should be invented.
   `scripts/farewatch-series.json` (or the DB when present).
   `scripts/data/farewatch-legacy.svg` was an interim source, used before
   the extract was committed, and can be deleted.
-- **Catalogue order**: foreman, raivana, vibecheck, interface-cua,
-  farewatch, firesight.
+- **Catalogue order**: foreman, interface-cua, raivana, vibecheck,
+  farewatch, firesight. interface-cua was moved to fourth and then put back
+  second at the owner's request ("a strong project").
 - **Menu** re-laid to the reference's open menu: a centred stack, the
   current page struck through with one ember bar, dot-separated socials,
   and sized by `min(vw, svh)` so it fits any window.

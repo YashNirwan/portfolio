@@ -124,6 +124,27 @@ export const work: Work[] = [
     },
   },
   {
+    slug: "interface-cua",
+    title: "interface-cua",
+    kicker: "Automation · 2026",
+    standfirst:
+      "A lot of company software has no way in except the screen. To get data out, something has to click through it the way a person would.",
+    body:
+      "This lets an AI work out a task once — sign in, look up a customer, read the result — and records exactly what it did. After that the recording replays on its own, with no AI involved, so it does the same thing every time instead of improvising a new route and quietly getting it wrong.",
+    turn:
+      "Real systems fail in ways demos never do, so I also built the thing it practises on: a fake bank back-office that breaks on purpose. It drops sessions, throws errors and stalls on command, which is what makes the failures worth measuring.",
+    stack: ["TypeScript", "Playwright", "zod"],
+    links: [],
+    hasStudy: true,
+    isNew: true,
+    image: {
+      src: "/art/interface-cua.jpg",
+      alt: "Engraving of an old computer terminal showing a ruled form of unlabelled fields, with one field flagged in ember",
+      w: 1456,
+      h: 816,
+    },
+  },
+  {
     slug: "raivana",
     title: "Raivana",
     kicker: "Shop · 2024 to now",
@@ -183,27 +204,6 @@ export const work: Work[] = [
     image: {
       src: "/art/vibecheck.jpg",
       alt: "Engraving of a grid of fifteen records; one is an empty dashed outline in ember, a track that does not exist",
-      w: 1456,
-      h: 816,
-    },
-  },
-  {
-    slug: "interface-cua",
-    title: "interface-cua",
-    kicker: "Automation · 2026",
-    standfirst:
-      "A lot of company software has no way in except the screen. To get data out, something has to click through it the way a person would.",
-    body:
-      "This lets an AI work out a task once — sign in, look up a customer, read the result — and records exactly what it did. After that the recording replays on its own, with no AI involved, so it does the same thing every time instead of improvising a new route and quietly getting it wrong.",
-    turn:
-      "Real systems fail in ways demos never do, so I also built the thing it practises on: a fake bank back-office that breaks on purpose. It drops sessions, throws errors and stalls on command, which is what makes the failures worth measuring.",
-    stack: ["TypeScript", "Playwright", "zod"],
-    links: [],
-    hasStudy: true,
-    isNew: true,
-    image: {
-      src: "/art/interface-cua.jpg",
-      alt: "Engraving of an old computer terminal showing a ruled form of unlabelled fields, with one field flagged in ember",
       w: 1456,
       h: 816,
     },

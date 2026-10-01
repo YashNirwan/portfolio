@@ -326,9 +326,21 @@ body {
 }
 
 /* Vertical hairlines between columns, the way a paper separates stories. */
+/* Every .ruled grid becomes columns at md. Below that its children stack, and
+   a left rule with left padding ran down the side of each stacked card and
+   pushed it in off the sheet's edge. Stacked, the rule goes on top. */
 .ruled > * + * {
-  border-left: 1px solid rgba(29, 29, 27, 0.32);
-  padding-left: var(--spacing-29, 29px);
+  border-top: 1px solid rgba(29, 29, 27, 0.32);
+  padding-top: var(--spacing-29, 29px);
+}
+
+@media (min-width: 768px) {
+  .ruled > * + * {
+    border-top: 0;
+    padding-top: 0;
+    border-left: 1px solid rgba(29, 29, 27, 0.32);
+    padding-left: var(--spacing-29, 29px);
+  }
 }
 
 /* Equal newspaper columns. `.ruled` pads columns 2..n on the left and not
@@ -900,4 +912,16 @@ body[data-opening] .opening {
     height: 0.73em;
     margin-bottom: 0.085em;
   }
+}
+
+/* A bigger touch target without moving anything: the hit area grows to
+   ~44px tall around a small text link, invisibly. Used on the footer, menu and
+   back links, which measured 13-19px tall on a phone. */
+.tap {
+  position: relative;
+}
+.tap::after {
+  content: "";
+  position: absolute;
+  inset: -12px -6px;
 }

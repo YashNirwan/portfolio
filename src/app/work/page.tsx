@@ -56,7 +56,7 @@ export default function WorkIndex() {
           width. Ours was parchment end to end. */}
       <main id="main" tabIndex={-1} className="bg-bone lg:pl-[6.5rem]">
         <Lateral>
-          <section className="flex w-[min(92vw,44rem)] shrink-0 flex-col justify-center px-5 md:px-10">
+          <section className="flex w-full shrink-0 flex-col justify-center px-5 py-12 md:px-10 lg:w-[min(92vw,44rem)] lg:py-0">
             {/* The reference sets FEATURED and WORK at the SAME size (Canopee
                 240px) in boxes of different widths, 608 and 460. So each box
                 here is its own word's measured width — Instrument Serif at
@@ -125,7 +125,7 @@ export default function WorkIndex() {
               body copy, which reads as the page running out rather than as an
               invitation. Same register as the FEATURED/WORK opening, so the
               shelf is bracketed by two display panels. */}
-          <section className="flex w-[min(92vw,34rem)] shrink-0 flex-col justify-center border-l border-parchment/25 bg-ink px-5 text-parchment md:px-10">
+          <section className="flex w-full shrink-0 flex-col justify-center bg-ink px-5 py-14 text-parchment md:px-10 lg:w-[min(92vw,34rem)] lg:border-l lg:border-parchment/25 lg:py-0">
             <h2 className="heavy text-[clamp(3rem,7vw,7.2rem)] leading-[0.77]">
               Let’s
               <br />
@@ -143,7 +143,7 @@ export default function WorkIndex() {
               >
                 <span className="heavy text-[15px]">Email me</span>
               </a>
-              <Link href="/" className="byline text-bone no-underline hover:underline">
+              <Link href="/" className="tap byline text-bone no-underline hover:underline">
                 ← Back to the front page
               </Link>
             </div>
@@ -154,6 +154,12 @@ export default function WorkIndex() {
   );
 }
 
+function clip(text: string, max: number) {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(" ")).replace(/[,;:—–-]$/, "").trimEnd() + "…";
+}
+
 function Spine({ item }: { item: (typeof work)[number] }) {
   const year = item.kicker.split("·").pop()?.trim();
 
@@ -162,8 +168,22 @@ function Spine({ item }: { item: (typeof work)[number] }) {
      is what lets it fall open into the project page rather than cutting. */
   return (
     <ViewTransition name={`folder-${item.slug}`}>
-      <article className="leaf group relative h-full w-[11rem] shrink-0 overflow-hidden border-r border-parchment/25 bg-ink sm:w-[13.5rem]">
-        <div className="absolute inset-0 opacity-0 transition-opacity duration-500 ease-out group-focus-within:opacity-100 group-hover:opacity-100">
+      {/* Below lg a spine is a card in a column: the plate shown, the title
+          set horizontally, the standfirst visible. Touch has no hover, so
+          the closed-book reveal cannot work there anyway. */}
+      <article className="leaf group relative w-full shrink-0 overflow-hidden border-b border-parchment/25 bg-ink lg:h-full lg:w-[13.5rem] lg:border-b-0 lg:border-r">
+        {item.image ? (
+          <Image
+            src={item.image.src}
+            alt=""
+            width={item.image.w}
+            height={item.image.h}
+            sizes="100vw"
+            aria-hidden="true"
+            className="block aspect-[16/9] h-auto w-full object-cover lg:hidden"
+          />
+        ) : null}
+        <div className="absolute inset-0 hidden opacity-0 transition-opacity duration-500 ease-out group-focus-within:opacity-100 group-hover:opacity-100 lg:block">
           {item.image ? (
             <Image
               src={item.image.src}
@@ -179,24 +199,25 @@ function Spine({ item }: { item: (typeof work)[number] }) {
 
         <Link
           href={`/work/${item.slug}`}
-          className="relative flex h-full flex-col items-center justify-between gap-5 px-3 py-10 no-underline"
+          className="relative flex flex-col gap-3 px-5 py-6 no-underline lg:h-full lg:items-center lg:justify-between lg:gap-5 lg:px-3 lg:py-10"
         >
           <h2 className="heavy text-[30px] text-parchment">
             <span
-              className="inline-block [writing-mode:vertical-rl] transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
+              className="inline-block transition-transform duration-500 ease-out group-hover:-translate-y-1.5 lg:[writing-mode:vertical-rl]"
               style={{ transform: "none" }}
             >
               {item.title}
             </span>
           </h2>
 
-          <p className="pointer-events-none absolute inset-x-4 bottom-24 text-center text-[13px] leading-[1.38] text-parchment opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100">
-            {item.standfirst.length > 96
-              ? item.standfirst.slice(0, 96).trimEnd() + "…"
-              : item.standfirst}
+          <p className="pointer-events-none text-[16px] leading-[1.38] text-parchment lg:absolute lg:inset-x-4 lg:bottom-24 lg:text-center lg:text-[13px] lg:opacity-0 lg:transition-opacity lg:duration-500 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100">
+            {/* Whole on a card, where there is room; cut to fit the narrow
+                spine from lg, on a word boundary rather than mid-word. */}
+            <span className="lg:hidden">{item.standfirst}</span>
+            <span className="hidden lg:inline">{clip(item.standfirst, 96)}</span>
           </p>
 
-          <div className="relative flex flex-col items-center gap-2.5">
+          <div className="relative flex items-center gap-2.5 lg:flex-col">
             {item.isNew ? (
               <span
                 className="px-1.5 py-[1px]"

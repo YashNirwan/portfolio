@@ -273,7 +273,7 @@ export function CurtainProvider({ children }: { children: React.ReactNode }) {
                   href={l.href}
                   target={l.href.startsWith("http") ? "_blank" : undefined}
                   rel="noreferrer"
-                  className="heavy text-[17px] text-bone no-underline hover:text-parchment"
+                  className="tap heavy text-[17px] text-bone no-underline hover:text-parchment"
                 >
                   {l.label}
                 </a>

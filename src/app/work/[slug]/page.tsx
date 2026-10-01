@@ -150,7 +150,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
             950px of 1440. 0.47em per capital (Instrument Serif, measured),
             so 162/length vw — FOREMAN at 23vw, INTERFACE-CUA at 12.5vw —
             capped at 20rem. */}
-        <div className="sheet relative z-0 -mt-[0.9rem] pb-9 text-center md:-mt-[1.6rem]">
+        <div className="sheet relative z-0 -mt-[0.2rem] pb-9 text-center md:-mt-[1.6rem]">
           <h1
             className="heavy press mx-auto"
             style={{ fontSize: `min(23vw, 20rem, ${(162 / title.length).toFixed(2)}vw)` }}
@@ -247,7 +247,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
               href={live ? live.href : `mailto:${links.email}`}
               target={live ? "_blank" : undefined}
               rel="noreferrer"
-              className="cta-ellipse group mx-auto grid aspect-[569/216] w-full max-w-[36rem] place-items-center overflow-clip border border-ink no-underline"
+              className="cta-ellipse group mx-auto grid aspect-[569/216] w-full max-w-[20rem] place-items-center overflow-clip border border-ink no-underline lg:max-w-[36rem]"
               style={{ borderRadius: "50%" }}
             >
               <span className="cta-text heavy text-[clamp(2rem,3.6vw,3.4rem)]">
@@ -283,7 +283,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
                 ))}
               {/* Where the ellipse already asks, this would say it twice. */}
               {live ? (
-                <a href={`mailto:${links.email}`} className="byline">
+                <a href={`mailto:${links.email}`} className="tap byline">
                   Ask me about it
                 </a>
               ) : null}
@@ -332,7 +332,7 @@ export default async function StudyPage({ params }: { params: Promise<{ slug: st
         </div>
 
         <div className="col-main mt-14">
-          <Link href="/work" className="heavy inline-block text-[17px] no-underline hover:underline">
+          <Link href="/work" className="tap heavy inline-block text-[17px] no-underline hover:underline">
             ← All work
           </Link>
         </div>

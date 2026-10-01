@@ -118,7 +118,7 @@ export default function About() {
                   >
                     <span className="heavy text-[15px]">Hire me, please</span>
                   </a>
-                  <a href={links.resume} className="byline">
+                  <a href={links.resume} className="tap byline">
                     Or read the résumé first
                   </a>
                 </div>
@@ -223,14 +223,14 @@ export default function About() {
             >
               <span className="heavy text-[15px]">Email me</span>
             </a>
-            <a href={links.resume} className="byline text-bone no-underline hover:underline">
+            <a href={links.resume} className="tap byline text-bone no-underline hover:underline">
               Résumé
             </a>
             <a
               href={links.github}
               target="_blank"
               rel="noreferrer"
-              className="byline text-bone no-underline hover:underline"
+              className="tap byline text-bone no-underline hover:underline"
             >
               GitHub
             </a>
@@ -238,7 +238,7 @@ export default function About() {
               href={links.linkedin}
               target="_blank"
               rel="noreferrer"
-              className="byline text-bone no-underline hover:underline"
+              className="tap byline text-bone no-underline hover:underline"
             >
               LinkedIn
             </a>

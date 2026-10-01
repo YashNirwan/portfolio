@@ -292,12 +292,17 @@ function Stats() {
   return (
     <section className="sheet border-y border-ink py-9 md:py-12">
       <span className="draw sr-only" aria-hidden="true" />
-      {/* One-up on phones: COUNTRIES plus a two-digit blackletter numeral
-          needs ~212px, and two-up at 390 gives each ~170 — it overran the
-          viewport by a pixel. */}
-      <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:flex lg:items-start lg:justify-between">
+      {/* Two-up on phones, each figure stacked: numeral on top, then the
+          unit and the label, centred in its half. It used to run one-up with
+          the numeral beside the words, which left the right half of the
+          screen empty down four rows. From sm the numeral sits beside the
+          words again, as on the reference. */}
+      <div className="grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 sm:gap-y-10 lg:flex lg:items-start lg:justify-between">
         {stats.map((s) => (
-          <div key={s.label} className="flex items-start gap-2.5">
+          <div
+            key={s.label}
+            className="flex flex-col-reverse items-center gap-3 text-center sm:flex-row sm:items-start sm:gap-2.5"
+          >
             <div className="text-center">
               <p
                 className="mx-auto max-w-[19ch] uppercase text-charcoal"
@@ -310,11 +315,11 @@ function Stats() {
               >
                 {s.label}
               </p>
-              <p className="heavy mt-1.5 text-[clamp(2rem,3.9vw,4.5rem)] leading-[0.9]">{s.unit}</p>
+              <p className="heavy mt-1.5 text-[clamp(1.7rem,3.9vw,4.5rem)] leading-[0.9]">{s.unit}</p>
             </div>
             <span
-              className="gothic tabular"
-              style={{ fontSize: "clamp(4.2rem, 9vw, 10rem)", lineHeight: 0.55, marginTop: "0.08em" }}
+              className="gothic tabular leading-[0.8] sm:leading-[0.55]"
+              style={{ fontSize: "clamp(4.2rem, 9vw, 10rem)", marginTop: "0.08em" }}
             >
               {s.value}
             </span>
@@ -658,7 +663,7 @@ function Colophon() {
                   href={l.href}
                   target={l.href.startsWith("http") ? "_blank" : undefined}
                   rel="noreferrer"
-                  className="heavy text-[21.6px] no-underline hover:underline"
+                  className="tap heavy text-[21.6px] no-underline hover:underline"
                 >
                   {l.label}
                 </a>

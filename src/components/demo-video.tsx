@@ -87,7 +87,7 @@ export function DemoVideo({
         type="button"
         onClick={toggle}
         aria-label={playing ? "Pause the recording" : "Play the recording"}
-        className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full bg-ink/80 text-parchment"
+        className="absolute right-3 top-3 grid h-10 w-10 place-items-center rounded-full border border-parchment/40 bg-ink/80 text-parchment"
       >
         <svg viewBox="0 0 12 12" className="h-3 w-3" aria-hidden="true">
           {playing ? (

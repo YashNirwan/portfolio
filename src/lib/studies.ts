@@ -142,6 +142,16 @@ export const studies: Study[] = [
         lede: true,
         text: "An agent that calls a model on every step is an agent that can fail differently every time it runs. For a back-office flow that moves money, that is disqualifying. So discovery and execution are split: the model drives a real UI once, working out the flow, and the successful run is recorded as a typed, versioned capability. Replay executes that artifact deterministically and returns typed data. Replay needs no API key.",
       },
+      {
+        kind: "figure",
+        src: "/video/interface-cua-poster.jpg",
+        video: { mp4: "/video/interface-cua.mp4", webm: "/video/interface-cua.webm" },
+        alt: "Screen recording of interface-cua: on the left, a legacy bank back-office app being driven by the agent; on the right, the CLI's event log. The model discovers how to look up a member's savings balance, then the saved capability replays with no model for a different member and returns typed fields, and a lookup for a member who does not exist returns MEMBER_NOT_FOUND",
+        w: 1600,
+        h: 900,
+        caption:
+          "A real run against Meridian, a deliberately hostile stand-in for a bank back office, with synthetic members. The model works the flow out once: ten model calls over about two and a half minutes, compressed here. Replaying the saved capability calls no model. A member it never saw comes back in 286 ms as typed data, and one who does not exist comes back as MEMBER_NOT_FOUND with exit code 0. That outcome was learned in a separate learn-outcome run before the last replay.",
+      },
       { kind: "h", text: "Six decisions worth the argument" },
       {
         kind: "p",

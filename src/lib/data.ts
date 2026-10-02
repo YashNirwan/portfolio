@@ -192,13 +192,13 @@ export const work: Work[] = [
     ],
     figures: [
       {
-        /* Cropped above the Curate button: its purple gradient and
-           Streamlit's red corner badge fought the page's palette. */
-        src: "/vibecheck.jpg",
-        alt: "VibeCheck's opening screen: the title, the line 'AI-curated, API-validated soundtracks for any scene, book, or feeling', five example prompts, and a sidebar describing its truth filter, era mixing, feedback loop and play-all queue",
-        w: 1500,
-        h: 404,
-        caption: "The app at newvibecheck.streamlit.app. The sidebar's first item is the part that matters: every track is checked against YouTube Music before you see it.",
+        src: "/video/vibecheck-poster.jpg",
+        video: { mp4: "/video/vibecheck.mp4", webm: "/video/vibecheck.webm" },
+        alt: "Screen recording of VibeCheck: typing a Kung Fu Hustle prompt, eight suggested tracks being checked against YouTube Music, the resulting playlist, and a notice naming the one track that could not be verified and was dropped",
+        w: 1600,
+        h: 1000,
+        caption:
+          "The live app, asked for Kung Fu Hustle. Eight tracks proposed, seven found on YouTube Music. The eighth — Bai Guang, “夜来香”, 1940 — could not be matched, so it was dropped and named rather than shown. Most runs of this prompt check out clean; this was one of the four in eight that did not.",
       },
     ],
     image: {

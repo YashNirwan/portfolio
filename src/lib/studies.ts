@@ -30,6 +30,10 @@ export type Block =
       /* A second cut for phones, when the wide one would not survive being
          shrunk to 360px (the farewatch chart's labels would be ~5px). */
       narrow?: { src: string; w: number; h: number };
+      /* A screen recording of the real app. When present, `src` is its
+         poster frame and `alt` its label, so a figure is still a figure
+         before the video loads, and for anyone who never plays it. */
+      video?: { mp4: string; webm?: string };
     };
 
 export type Study = {
@@ -60,6 +64,16 @@ export const studies: Study[] = [
           label: "Why it must see pixels",
           body: "The cheap version of this is a reasoning LLM reading the perception pass’s text. That arm scored F1 0.19 — below doing nothing at all. Written evidence is too thin to adjudicate on.",
         },
+      },
+      {
+        kind: "figure",
+        src: "/video/foreman-poster.jpg",
+        video: { mp4: "/video/foreman.mp4", webm: "/video/foreman.webm" },
+        alt: "Screen recording of Foreman's review console: 26 candidates raised, 11 confirmed, 15 filtered out; a confirmed pedestrian-in-truck-path alert opened to its evidence chain; then the audit tab listing the 15 detections the verifier rejected and why",
+        w: 1600,
+        h: 1000,
+        caption:
+          "The live demo, on one training video: 26 candidates raised, 11 kept, 15 thrown out. It ends on the audit tab, where a detection the model proposed at 0.95 confidence was rejected because nobody was in the forklift’s path. The evidence panels are empty because the footage is not mine to redistribute.",
       },
       { kind: "h", text: "What I built" },
       {

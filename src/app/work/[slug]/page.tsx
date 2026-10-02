@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DemoVideo } from "@/components/demo-video";
 import { ViewTransition } from "react";
 import Image, { getImageProps } from "next/image";
 import Link from "next/link";
@@ -431,7 +432,16 @@ function BlockView({ block, capped = false }: { block: Block; capped?: boolean }
     return (
       <figure className="col-full my-10">
         <div className="bg-parchment p-3" style={{ boxShadow: "rgba(29, 29, 27, 0.2) -4px 4px 6px 0px" }}>
-          {block.narrow ? (
+          {block.video ? (
+            <DemoVideo
+              mp4={block.video.mp4}
+              webm={block.video.webm}
+              poster={block.src}
+              w={block.w}
+              h={block.h}
+              label={block.alt}
+            />
+          ) : block.narrow ? (
             <ArtDirected block={block} />
           ) : (
             <Image

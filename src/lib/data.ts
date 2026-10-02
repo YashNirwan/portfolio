@@ -196,9 +196,9 @@ export const work: Work[] = [
         video: { mp4: "/video/vibecheck.mp4", webm: "/video/vibecheck.webm" },
         alt: "Screen recording of VibeCheck: typing a Kung Fu Hustle prompt, eight suggested tracks being checked against YouTube Music, the resulting playlist, and a notice naming the one track that could not be verified and was dropped",
         w: 1600,
-        h: 1000,
+        h: 900,
         caption:
-          "The live app, asked for Kung Fu Hustle. Eight tracks proposed, seven found on YouTube Music. The eighth — Bai Guang, “夜来香”, 1940 — could not be matched, so it was dropped and named rather than shown. Most runs of this prompt check out clean; this was one of the four in eight that did not.",
+          "The live app, asked for Kung Fu Hustle. Eight tracks proposed, seven found on YouTube Music. The eighth — Bai Guang, “夜来香”, 1940 — could not be matched, so it was dropped and named rather than shown. Most runs of this prompt check out clean; this was one of the four in eight that did not. The wait while the model writes the list is shortened.",
       },
     ],
     image: {

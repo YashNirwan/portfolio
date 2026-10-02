@@ -69,11 +69,11 @@ export const studies: Study[] = [
         kind: "figure",
         src: "/video/foreman-poster.jpg",
         video: { mp4: "/video/foreman.mp4", webm: "/video/foreman.webm" },
-        alt: "Screen recording of Foreman's review console: 26 candidates raised, 11 confirmed, 15 filtered out; a confirmed pedestrian-in-truck-path alert opened to its evidence chain; then the audit tab listing the 15 detections the verifier rejected and why",
+        alt: "Screen recording of Foreman's review console: 26 candidates raised, 11 confirmed, 15 filtered out; a confirmed alert opened to its evidence chain and the OSHA standard it cites; a plain-language search for someone sitting on the warehouse floor; then the audit tab, ending on a 0.95-confidence detection the verifier rejected",
         w: 1600,
-        h: 1000,
+        h: 900,
         caption:
-          "The live demo, on one training video: 26 candidates raised, 11 kept, 15 thrown out. It ends on the audit tab, where a detection the model proposed at 0.95 confidence was rejected because nobody was in the forklift’s path. The evidence panels are empty because the footage is not mine to redistribute.",
+          "The live demo, on one training video: 26 candidates raised, 11 kept, 15 thrown out. Midway it searches for “someone sitting on the warehouse floor”, a question none of the alert classes ask, and finds the window that shows it. It ends on a detection the model proposed at 0.95 confidence and the verifier threw out; my own label for that window agrees there was nothing there. The evidence panels are empty because the footage is not mine to redistribute.",
       },
       { kind: "h", text: "What I built" },
       {

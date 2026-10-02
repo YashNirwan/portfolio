@@ -114,15 +114,6 @@ export const studies: Study[] = [
           body: "This is the argument for hand-labelling rather than sampling. A 0.95-confidence detection on a title card looks identical to a correct one in any aggregate metric.",
         },
       },
-      {
-        kind: "figure",
-        src: "/chart-foreman-audit.jpg",
-        alt: "Foreman audit view listing suppressed detections alongside the evidence that caused each rejection",
-        w: 1500,
-        h: 1000,
-        caption:
-          "Every suppressed detection stays visible and auditable. A safety tool that cannot show what it threw away is one nobody should trust.",
-      },
       { kind: "h", text: "Honest limits" },
       {
         kind: "p",

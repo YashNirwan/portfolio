@@ -222,6 +222,21 @@ export const work: Work[] = [
     links: [{ label: "GitHub", href: "https://github.com/YashNirwan/farewatch" }],
     figures: [
       {
+        /* Real data, animated: every fare farewatch.db holds for EWR to Tokyo
+           with a December departure, the running median anomaly.py compares
+           against (drawn as it stood after each poll), and the five alerts the
+           route actually fired, at their real times and prices. Rebuilt from
+           the raw observations, the medians and counts match the alerts'
+           own text. */
+        src: "/video/farewatch-poster.jpg",
+        video: { mp4: "/video/farewatch.mp4", webm: "/video/farewatch.webm" },
+        alt: "Animated chart of every fare farewatch recorded for Newark to Tokyo with a December departure, from Aug 22 to Sep 14: dots for each fare, a running median that settles at $1,897, a dashed alert line at 0.6 times the median, and five alerts in ember, ending on a $735 fare with farewatch's own alert text: 61% below the $1,897 median of 176 observations",
+        w: 1600,
+        h: 900,
+        caption:
+          "Every fare farewatch recorded for Newark to Tokyo with a December departure: 197 of them, Aug 22 to Sep 14. The solid line is the median the alert rule compares against; the dashed one is where it fires, at 60% of it. The five red points are the five alerts this route actually sent. The last, a $735 United round trip, came in 61% under a $1,897 median built from 176 earlier fares, and was the cheapest it ever saw.",
+      },
+      {
         /* Real data: scripts/farewatch-plot.py drawing
            scripts/farewatch-series.json, the committed slice of the
            owner's farewatch.db (six routes, cheapest fare per three-hour

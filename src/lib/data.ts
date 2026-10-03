@@ -185,7 +185,7 @@ export const work: Work[] = [
       "So the model never gets the last word. It proposes tracks, and then the app checks every single one against YouTube Music before showing you anything — forty at a time, in parallel. Anything it cannot find gets dropped rather than displayed with a broken link.",
     turn:
       "It is the smallest version of the idea I keep coming back to: let the model be creative, then put something boring and literal downstream of it.",
-    stack: ["Python", "Llama 3.3", "Groq", "Streamlit"],
+    stack: ["Python", "gpt-oss-120b", "Groq", "Streamlit"],
     links: [
       { label: "Try it", href: "https://newvibecheck.streamlit.app" },
       { label: "GitHub", href: "https://github.com/yashnirwan/VibeCheck" },

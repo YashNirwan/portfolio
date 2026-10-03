@@ -16,7 +16,11 @@ export const metadata: Metadata = {
    project is a spine, closed until you touch it. */
 export default function WorkIndex() {
   return (
-    <>
+    /* One screen tall, header included. Below lg a small header sits above
+       the shelf; with the shelf at a full 100svh of its own, the two together
+       ran a header's height past the screen and the page scrolled down. The
+       shelf now takes whatever height the header leaves. */
+    <div className="flex h-svh flex-col">
       {/* The rail. Fixed, so it stays put while the shelf slides past. */}
       <div className="pointer-events-none fixed inset-y-0 left-0 z-20 hidden w-[6.5rem] border-r border-ink bg-bone lg:block">
         <div className="grid h-full grid-rows-[auto_1fr_auto] justify-items-center py-7">
@@ -54,9 +58,9 @@ export default function WorkIndex() {
           opening panel then runs on ink — the page is bone up to roughly one
           viewport and near-black for the remaining ~4,200px of its 5,617px
           width. Ours was parchment end to end. */}
-      <main id="main" tabIndex={-1} className="bg-bone lg:pl-[6.5rem]">
+      <main id="main" tabIndex={-1} className="min-h-0 flex-1 bg-bone lg:pl-[6.5rem]">
         <Lateral>
-          <section className="flex w-full shrink-0 flex-col justify-center px-5 py-12 md:px-10 lg:w-[min(92vw,44rem)] lg:py-0">
+          <section className="flex w-[min(92vw,44rem)] shrink-0 flex-col justify-center px-5 md:px-10">
             {/* The reference sets FEATURED and WORK at the SAME size (Canopee
                 240px) in boxes of different widths, 608 and 460. So each box
                 here is its own word's measured width — Instrument Serif at
@@ -125,7 +129,7 @@ export default function WorkIndex() {
               body copy, which reads as the page running out rather than as an
               invitation. Same register as the FEATURED/WORK opening, so the
               shelf is bracketed by two display panels. */}
-          <section className="flex w-full shrink-0 flex-col justify-center bg-ink px-5 py-14 text-parchment md:px-10 lg:w-[min(92vw,34rem)] lg:border-l lg:border-parchment/25 lg:py-0">
+          <section className="flex w-[min(92vw,34rem)] shrink-0 flex-col justify-center border-l border-parchment/25 bg-ink px-5 text-parchment md:px-10">
             <h2 className="heavy text-[clamp(3rem,7vw,7.2rem)] leading-[0.77]">
               Let’s
               <br />
@@ -150,10 +154,11 @@ export default function WorkIndex() {
           </section>
         </Lateral>
       </main>
-    </>
+    </div>
   );
 }
 
+/* Cut on a word boundary, never mid-word. */
 function clip(text: string, max: number) {
   if (text.length <= max) return text;
   const cut = text.slice(0, max);
@@ -168,22 +173,8 @@ function Spine({ item }: { item: (typeof work)[number] }) {
      is what lets it fall open into the project page rather than cutting. */
   return (
     <ViewTransition name={`folder-${item.slug}`}>
-      {/* Below lg a spine is a card in a column: the plate shown, the title
-          set horizontally, the standfirst visible. Touch has no hover, so
-          the closed-book reveal cannot work there anyway. */}
-      <article className="leaf group relative w-full shrink-0 overflow-hidden border-b border-parchment/25 bg-ink lg:h-full lg:w-[13.5rem] lg:border-b-0 lg:border-r">
-        {item.image ? (
-          <Image
-            src={item.image.src}
-            alt=""
-            width={item.image.w}
-            height={item.image.h}
-            sizes="100vw"
-            aria-hidden="true"
-            className="block aspect-[16/9] h-auto w-full object-cover lg:hidden"
-          />
-        ) : null}
-        <div className="absolute inset-0 hidden opacity-0 transition-opacity duration-500 ease-out group-focus-within:opacity-100 group-hover:opacity-100 lg:block">
+      <article className="leaf group relative h-full w-[11rem] shrink-0 overflow-hidden border-r border-parchment/25 bg-ink sm:w-[13.5rem]">
+        <div className="absolute inset-0 opacity-0 transition-opacity duration-500 ease-out group-focus-within:opacity-100 group-hover:opacity-100">
           {item.image ? (
             <Image
               src={item.image.src}
@@ -199,25 +190,22 @@ function Spine({ item }: { item: (typeof work)[number] }) {
 
         <Link
           href={`/work/${item.slug}`}
-          className="relative flex flex-col gap-3 px-5 py-6 no-underline lg:h-full lg:items-center lg:justify-between lg:gap-5 lg:px-3 lg:py-10"
+          className="relative flex h-full flex-col items-center justify-between gap-5 px-3 py-10 no-underline"
         >
           <h2 className="heavy text-[30px] text-parchment">
             <span
-              className="inline-block transition-transform duration-500 ease-out group-hover:-translate-y-1.5 lg:[writing-mode:vertical-rl]"
+              className="inline-block [writing-mode:vertical-rl] transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
               style={{ transform: "none" }}
             >
               {item.title}
             </span>
           </h2>
 
-          <p className="pointer-events-none text-[16px] leading-[1.38] text-parchment lg:absolute lg:inset-x-4 lg:bottom-24 lg:text-center lg:text-[13px] lg:opacity-0 lg:transition-opacity lg:duration-500 lg:group-focus-within:opacity-100 lg:group-hover:opacity-100">
-            {/* Whole on a card, where there is room; cut to fit the narrow
-                spine from lg, on a word boundary rather than mid-word. */}
-            <span className="lg:hidden">{item.standfirst}</span>
-            <span className="hidden lg:inline">{clip(item.standfirst, 96)}</span>
+          <p className="pointer-events-none absolute inset-x-4 bottom-24 text-center text-[13px] leading-[1.38] text-parchment opacity-0 transition-opacity duration-500 group-focus-within:opacity-100 group-hover:opacity-100">
+            {clip(item.standfirst, 96)}
           </p>
 
-          <div className="relative flex items-center gap-2.5 lg:flex-col">
+          <div className="relative flex flex-col items-center gap-2.5">
             {item.isNew ? (
               <span
                 className="px-1.5 py-[1px]"

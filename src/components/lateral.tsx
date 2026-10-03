@@ -53,15 +53,10 @@ export function Lateral({ children }: { children: React.ReactNode }) {
       tabIndex={0}
       // Its own wheel remapping drives this shelf; smooth scroll stays out.
       data-lenis-prevent
-      aria-label="Project catalogue"
-      /* Sideways from lg only. On a phone a sideways shelf showed the opening
-         panel and a sliver of the first spine, with nothing to say there was
-         more, and its swipe competed with the back gesture. Below lg it is an
-         ordinary column; the wheel handler finds nothing to scroll and stands
-         aside. */
-      className="lg:h-svh lg:overflow-x-auto lg:overflow-y-hidden"
+      aria-label="Project catalogue, scrolls sideways"
+      className="h-full overflow-x-auto overflow-y-hidden"
     >
-      <div className="shelf flex flex-col lg:h-full lg:w-max lg:flex-row lg:items-stretch">{children}</div>
+      <div className="shelf flex h-full w-max items-stretch">{children}</div>
     </div>
   );
 }

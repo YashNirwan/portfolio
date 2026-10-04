@@ -153,7 +153,7 @@ export const work: Work[] = [
     body:
       "Most of the work here is invisible. When someone pays, the payment company tells the site — and sometimes tells it twice, or late, or while the customer is refreshing the page. Making sure one order is recorded exactly once through all of that is the real engineering, and it is the difference between a demo and a shop.",
     turn:
-      "It is plain JavaScript with no framework and no tests. That was right for one person and 156 products, and it is the first thing I would change before a second person touched it.",
+      "It is plain JavaScript with no framework and no tests. That was right for one person and 229 products, and it is the first thing I would change before a second person touched it.",
     stack: ["Node.js", "Netlify Functions", "Razorpay"],
     links: [
       { label: "Visit the shop", href: "https://raivana.in/" },
@@ -161,11 +161,16 @@ export const work: Work[] = [
     ],
     figures: [
       {
-        src: "/raivana.jpg",
-        alt: "The Raivana shop's home page: 'Objects with centuries of memory', a hand-painted ceramic vase, and links to brass, ceramics and woodwork",
-        w: 1500,
-        h: 754,
-        caption: "The shop as customers see it, at raivana.in.",
+        /* Recorded on the live site as two visitors, one in India and one in
+           the US (location set through the Cloudflare trace the shop reads).
+           Analytics were blocked during recording; it stops at checkout. */
+        src: "/video/raivana-poster.jpg",
+        video: { mp4: "/video/raivana.mp4", webm: "/video/raivana.webm" },
+        alt: "Screen recording of raivana.in: the home page with its hand-painted plates video, the Blue Pottery menu, the Aaina Plate at ₹22,500 for a visitor in India, the same plate at $466.95 for a visitor in the US, added to the bag, and the checkout total",
+        w: 1600,
+        h: 900,
+        caption:
+          "The live shop, visited from India and then from the US. The Aaina Plate is ₹22,500 at home and $466.95 abroad, its export price, and the checkout total matches. The order function prices the bag again from the catalogue before Razorpay is asked to charge anything, and refuses a total that does not match.",
       },
     ],
     image: {

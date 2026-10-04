@@ -4,6 +4,7 @@ import { profile, links, SITE } from "@/lib/data";
 import "./globals.css";
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { CurtainProvider } from "@/components/curtain";
+import { VisitorCount } from "@/components/visitor-count";
 
 /* Standing in for Canopee (banners) and Domaine Display Condensed (headings).
 
@@ -144,6 +145,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Skip to content
         </a>
         <CurtainProvider>{children}</CurtainProvider>
+        <VisitorCount silent />
         <SmoothScroll />
         <script
           type="application/ld+json"

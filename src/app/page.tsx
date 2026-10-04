@@ -21,6 +21,7 @@ import { Opening } from "@/components/opening";
 import { WorkCard } from "@/components/work-card";
 import { SiteNav } from "@/components/site-nav";
 import { OrgMark } from "@/components/org-mark";
+import { VisitorCount } from "@/components/visitor-count";
 
 export const metadata = { alternates: { canonical: "/" } };
 
@@ -671,6 +672,9 @@ function Colophon() {
             ))}
           </ul>
         </div>
+      </div>
+      <div className="sheet pb-6">
+        <VisitorCount />
       </div>
     </footer>
   );

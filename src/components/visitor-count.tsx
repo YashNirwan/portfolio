@@ -26,7 +26,10 @@ function load(): Promise<Visit | null> {
     try {
       if (saved) {
         const { total } = await (await fetch("/api/visitors")).json();
-        return total ? { you: saved, total, returning: true } : null;
+        if (total === null) return null;
+        // A saved number above the total means the counter was reset since this
+        // browser last came by; count it again as a new visit.
+        if (total >= saved) return { you: saved, total, returning: true };
       }
       const { you, total } = await (await fetch("/api/visitors", { method: "POST" })).json();
       if (!you) return null;
@@ -56,7 +59,7 @@ export function VisitorCount({ silent = false }: { silent?: boolean }) {
     <p className="text-[15px] text-charcoal" aria-live="polite">
       {v.returning ? (
         <>
-          Welcome back. You were the <span className="text-ember">{ordinal(v.you)}</span>; {v.total.toLocaleString("en-US")} people have found this page so far.
+          Welcome back. You were the <span className="text-ember">{ordinal(v.you)}</span>; {v.total === 1 ? "so far, you’re the only one" : `${v.total.toLocaleString("en-US")} people have found this page so far`}.
         </>
       ) : (
         <>

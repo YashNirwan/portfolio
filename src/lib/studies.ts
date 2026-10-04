@@ -69,11 +69,11 @@ export const studies: Study[] = [
         kind: "figure",
         src: "/video/foreman-poster.jpg",
         video: { mp4: "/video/foreman.mp4", webm: "/video/foreman.webm" },
-        alt: "Screen recording of Foreman's review console: 26 candidates raised, 11 confirmed, 15 filtered out; a confirmed alert opened to its evidence chain and the OSHA standard it cites; a plain-language search for someone sitting on the warehouse floor; then the audit tab, ending on a 0.95-confidence detection the verifier rejected",
+        alt: "Screen recording of Foreman's review console: 26 candidates raised, 11 confirmed, 15 filtered out; the first confirmed alert's window playing from its YouTube source, a pedestrian in an orange vest walking into a moving forklift's path; its evidence chain and the OSHA standard it cites; then the audit tab, zoomed on a detection proposed at 0.95 confidence that the verifier rejected",
         w: 1600,
         h: 900,
         caption:
-          "The live demo, on one training video: 26 candidates raised, 11 kept, 15 thrown out. Midway it searches for “someone sitting on the warehouse floor”, a question none of the alert classes ask, and finds the window that shows it. It ends on a detection the model proposed at 0.95 confidence and the verifier threw out; my own label for that window agrees there was nothing there. The evidence panels are empty because the footage is not mine to redistribute.",
+          "The live demo, on one training video: 26 candidates raised, 11 kept, 15 thrown out. The first alert plays the exact window it was raised on, a pedestrian walking into a moving forklift’s path, streamed from the source video on YouTube rather than rehosted. It ends on a detection the model proposed at 0.95 confidence and the verifier threw out; my own label for that window agrees there was nothing there.",
       },
       { kind: "h", text: "What I built" },
       {

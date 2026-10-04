@@ -90,11 +90,11 @@ export default function About() {
         <section className="sheet mt-14 border-t border-ink pt-10">
           <div className="grid gap-x-10 gap-y-10 md:grid-cols-[18rem_minmax(0,1fr)] xl:grid-cols-[20rem_minmax(0,1fr)_20rem]">
             <div className="flex flex-col gap-8">
-              <Photo {...portrait} position="50% 34%" />
-              {/* Under the portrait while there are two columns, where the
+              <Photo {...graduation} />
+              {/* Under the first photo while there are two columns, where the
                   left one has room to spare; its own column from 1280. */}
               <div className="max-md:hidden xl:hidden">
-                <Photo {...graduation} />
+                <Photo {...portrait} position="50% 34%" />
               </div>
             </div>
 
@@ -140,12 +140,12 @@ export default function About() {
             </div>
 
             {/* Third column from 1280 up, set to the foot of the row so the
-                two photos stagger — the portrait at the head of its column,
-                this one at the foot of its own — rather than both stopping
+                two photos stagger — the graduation photo at the head of its column,
+                the Edinburgh portrait at the foot of its own — rather than both stopping
                 at the same height above the same empty band. On phones it
                 closes the stack. */}
             <div className="md:hidden xl:block xl:self-end">
-              <Photo {...graduation} />
+              <Photo {...portrait} position="50% 34%" />
             </div>
           </div>
         </section>

@@ -134,7 +134,7 @@ export const work: Work[] = [
     turn:
       "Real systems fail in ways demos never do, so I also built the thing it practises on: a fake bank back-office that breaks on purpose. It drops sessions, throws errors and stalls on command, which is what makes the failures worth measuring.",
     stack: ["TypeScript", "Playwright", "zod"],
-    links: [],
+    links: [{ label: "GitHub", href: "https://github.com/YashNirwan/interface-cua" }],
     hasStudy: true,
     isNew: true,
     image: {
